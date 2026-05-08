@@ -13,14 +13,10 @@
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:var(--space-md)">
     <h1 style="font-family:var(--font-display);font-size:2rem">Избранное</h1>
-    {% if user.is_authenticated and favorites %}
-    <span style="font-size:.9rem;color:var(--color-text-muted)" id="fav-count">{{ favorites|length }} товар{{ favorites|length|pluralize:",а,ов" }}</span>
-    {% endif %}
+    <span style="font-size:.9rem;color:var(--color-text-muted)" id="fav-count"></span>
   </div>
 
-  {% if not user.is_authenticated %}
-
-  <div class="empty-state" style="padding:var(--space-4xl) 0">
+  <div id="fav-guest-prompt" style="display:none" class="empty-state" style="padding:var(--space-4xl) 0">
     <div class="empty-state-icon">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
         <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
@@ -31,9 +27,21 @@
     <a href="/account/login/?next=/catalog/favorites/" class="btn btn-primary" style="margin-top:var(--space-lg)">Войти</a>
   </div>
 
-  {% elif favorites %}
+  <div class="products-grid" id="favorites-grid" style="display:none"></div>
 
-  <div class="products-grid" id="favorites-grid">
+  <div id="fav-empty-guest" style="display:none" class="empty-state" style="padding:var(--space-4xl) 0">
+    <div class="empty-state-icon">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
+        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+      </svg>
+    </div>
+    <h3>Список избранного пуст</h3>
+    <p>Добавляйте товары в избранное, нажимая на ♡ на карточке товара</p>
+    <a href="/catalog/" class="btn btn-primary" style="margin-top:var(--space-lg)">Перейти в каталог</a>
+  </div>
+
+  {% if user.is_authenticated and favorites %}
+  <div class="products-grid" id="fav-auth-grid">
     {% for product in favorites %}
     <div class="fav-card-wrap" data-product-id="{{ product.id }}">
       <a href="/catalog/{{ product.category.slug }}/{{ product.slug }}/" class="product-card fav-product-card">
@@ -74,41 +82,17 @@
     </div>
     {% endfor %}
   </div>
-
-  {% else %}
-
-  <div class="empty-state" style="padding:var(--space-4xl) 0" id="favorites-empty">
-    <div class="empty-state-icon">
-      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
-        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-      </svg>
-    </div>
-    <h3>Список избранного пуст</h3>
-    <p>Добавляйте товары в избранное, нажимая на ♡ на карточке товара</p>
-    <a href="/catalog/" class="btn btn-primary" style="margin-top:var(--space-lg)">Перейти в каталог</a>
-  </div>
-
   {% endif %}
 
 </div>
 
 <style>
-.fav-card-wrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-.fav-product-card {
-  flex: 1;
-}
+.fav-card-wrap { position: relative; display: flex; flex-direction: column; }
+.fav-product-card { flex: 1; }
 .fav-remove-btn {
-  position: absolute;
-  top: 10px; right: 10px;
-  z-index: 20;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: var(--color-error);
-  color: #fff;
+  position: absolute; top: 10px; right: 10px; z-index: 20;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--color-error); color: #fff;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,.25);
   transition: transform .15s, background .15s;
@@ -118,50 +102,122 @@
 </style>
 
 <script>
-async function removeFavorite(productId, btn) {
-  const isAuth = document.body.dataset.authenticated === 'true';
-  if (isAuth) {
-    try { await apiRequest(`/api/favorites/${productId}/`, 'POST'); } catch { return; }
+const _favKey = 'velour_favorites';
+let _favorites = new Set(JSON.parse(localStorage.getItem(_favKey) || '[]'));
+
+function updateFavBadge() {
+  const badge = document.getElementById('fav-count-badge');
+  if (badge) {
+    badge.textContent = _favorites.size;
+    badge.style.display = _favorites.size > 0 ? 'flex' : 'none';
+  }
+  const countEl = document.getElementById('fav-count');
+  if (countEl) {
+    const n = _favorites.size;
+    countEl.textContent = n > 0 ? `${n} товар${n === 1 ? '' : n < 5 ? 'а' : 'ов'}` : '';
+  }
+}
+
+async function loadGuestFavorites() {
+  if (_favorites.size === 0) {
+    document.getElementById('fav-empty-guest').style.display = 'flex';
+    document.getElementById('fav-empty-guest').style.flexDirection = 'column';
+    document.getElementById('fav-empty-guest').style.alignItems = 'center';
+    document.getElementById('fav-empty-guest').style.justifyContent = 'center';
+    return;
+  }
+  try {
+    const ids = [..._favorites].join(',');
+    const res = await fetch(`/api/products/?ids=${ids}&fields=id,name,slug,category_slug,category_name,price,old_price,main_image,discount_percent,is_new,has_variants&page_size=${_favorites.size}`);
+    const data = await res.json();
+    renderFavorites(data.results);
+  } catch {
+    document.getElementById('fav-empty-guest').style.display = 'flex';
+  }
+}
+
+function renderFavorites(products) {
+  const grid = document.getElementById('favorites-grid');
+  const empty = document.getElementById('fav-empty-guest');
+  const authGrid = document.getElementById('fav-auth-grid');
+
+  if (!products || products.length === 0) {
+    if (grid) grid.style.display = 'none';
+    if (empty) { empty.style.display = 'flex'; empty.style.flexDirection = 'column'; empty.style.alignItems = 'center'; empty.style.justifyContent = 'center'; }
+    return;
   }
 
-  const key = 'velour_favorites';
-  const favs = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
-  favs.delete(productId);
-  localStorage.setItem(key, JSON.stringify([...favs]));
+  if (authGrid) authGrid.style.display = 'none';
+  if (empty) empty.style.display = 'none';
+  if (grid) {
+    grid.style.display = '';
+    grid.innerHTML = products.map(p => {
+      const img = p.main_image ? `<img src="${p.main_image}" alt="${p.name}" loading="lazy">` : '<div style="width:100%;height:100%;background:var(--color-bg-alt)"></div>';
+      const badges = (p.is_new ? '<span class="badge badge-new">Новинка</span>' : '') + (p.discount_percent ? `<span class="badge badge-sale">-${p.discount_percent}%</span>` : '');
+      const oldPrice = p.old_price ? `<span class="product-card-old-price">${Number(p.old_price).toLocaleString('ru')} ₽</span>` : '';
+      const cartAction = p.has_variants
+        ? `window.location.href='/catalog/${p.category_slug}/${p.slug}/'`
+        : `addToCart(${p.id})`;
+      const cartLabel = p.has_variants ? 'Выбрать' : 'В корзину';
+      return `
+      <div class="fav-card-wrap" data-product-id="${p.id}">
+        <a href="/catalog/${p.category_slug}/${p.slug}/" class="product-card fav-product-card">
+          <div class="product-card-img">${img}<div class="product-card-badges">${badges}</div></div>
+          <div class="product-card-body">
+            <div class="product-card-category">${p.category_name || ''}</div>
+            <div class="product-card-name">${p.name}</div>
+            <div class="product-card-prices">
+              <span class="product-card-price">${Number(p.price).toLocaleString('ru')} ₽</span>
+              ${oldPrice}
+            </div>
+          </div>
+          <div class="product-card-add" onclick="event.preventDefault();${cartAction}">${cartLabel}</div>
+        </a>
+        <button class="fav-remove-btn" onclick="removeFavorite(${p.id}, this)" title="Убрать">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+      </div>`;
+    }).join('');
+  }
+}
+
+function removeFavorite(productId, btn) {
+  _favorites.delete(productId);
+  localStorage.setItem(_favKey, JSON.stringify([..._favorites]));
+  updateFavBadge();
 
   const card = btn.closest('.fav-card-wrap');
-  card.style.transition = 'opacity .25s, transform .25s';
-  card.style.opacity = '0';
-  card.style.transform = 'scale(.95)';
-
-  setTimeout(() => {
-    card.remove();
-    const remaining = document.querySelectorAll('.fav-card-wrap').length;
-    const countEl = document.getElementById('fav-count');
-    if (countEl) {
-      countEl.textContent = remaining > 0
-        ? `${remaining} товар${remaining === 1 ? '' : remaining < 5 ? 'а' : 'ов'}`
-        : '';
-    }
-    if (remaining === 0) {
-      document.getElementById('favorites-grid')?.remove();
-      const container = document.getElementById('favorites-container');
-      const empty = document.createElement('div');
-      empty.className = 'empty-state';
-      empty.style.padding = 'var(--space-4xl) 0';
-      empty.innerHTML = `
-        <div class="empty-state-icon">
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
-            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-          </svg>
-        </div>
-        <h3>Список избранного пуст</h3>
-        <p>Добавляйте товары в избранное, нажимая на ♡</p>
-        <a href="/catalog/" class="btn btn-primary" style="margin-top:var(--space-lg)">Перейти в каталог</a>`;
-      container.appendChild(empty);
-    }
-  }, 270);
+  if (card) {
+    card.style.transition = 'opacity .25s, transform .25s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(.95)';
+    setTimeout(() => {
+      card.remove();
+      updateFavBadge();
+      if (_favorites.size === 0) loadGuestFavorites();
+    }, 270);
+  }
 }
-</script>
 
+document.addEventListener('DOMContentLoaded', () => {
+  const isAuth = document.body.dataset.authenticated === 'true';
+  const hasAuthFavs = document.getElementById('fav-auth-grid');
+  const prompt = document.getElementById('fav-guest-prompt');
+  const empty = document.getElementById('fav-empty-guest');
+
+  if (isAuth && hasAuthFavs) {
+    updateFavBadge();
+  } else if (!isAuth) {
+    if (_favorites.size === 0 && prompt) {
+      prompt.style.display = 'flex';
+      prompt.style.flexDirection = 'column';
+      prompt.style.alignItems = 'center';
+      prompt.style.justifyContent = 'center';
+    } else {
+      loadGuestFavorites();
+    }
+  }
+  updateFavBadge();
+});
+</script>
 {% endblock %}
