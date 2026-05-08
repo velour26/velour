@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Вход — {{ site_settings.site_name|default:"VELOUR" }}{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <a href="/" class="logo" style="display:block;margin-bottom:var(--space-xl)">М<span>О</span></a>
+    <h1 class="auth-title">Вход в аккаунт</h1>
+    <p class="auth-subtitle">Войдите для отслеживания заказов и быстрого оформления</p>
+
+    <form id="login-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" placeholder="mail@example.com" required autofocus>
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="display:flex;justify-content:space-between">
+          Пароль
+          <a href="/account/password-reset/" style="font-size:.8rem;color:var(--color-accent);font-weight:400">Забыли пароль?</a>
+        </label>
+        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+      </div>
+      <div id="login-error" style="display:none;color:var(--color-error);font-size:.85rem;margin-bottom:var(--space-md)"></div>
+      <button type="submit" class="btn btn-dark btn-block btn-lg">Войти</button>
+    </form>
+
+    <div class="auth-divider">или</div>
+    <a href="/account/register/" class="btn btn-secondary btn-block">Создать аккаунт</a>
+
+    <div style="margin-top:var(--space-lg);text-align:center;font-size:.85rem;color:var(--color-text-muted)">
+      Продолжая, вы соглашаетесь с <a href="/terms/" style="color:var(--color-accent)">условиями использования</a>
+    </div>
+  </div>
+</div>
+<script>
+document.getElementById('login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('[type="submit"]');
+  const errEl = document.getElementById('login-error');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+  errEl.style.display = 'none';
+  const fd = Object.fromEntries(new FormData(e.target));
+  try {
+    await apiRequest('/api/auth/login/', 'POST', fd);
+    const next = new URLSearchParams(location.search).get('next') || '/account/profile/';
+    window.location.href = next;
+  } catch(err) {
+    errEl.textContent = err.detail || 'Ошибка входа';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Войти';
+  }
+});
+</script>
+{% endblock %}
+

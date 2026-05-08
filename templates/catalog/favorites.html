@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Избранное — {{ site_settings.site_name|default:"VELOUR" }}{% endblock %}
+
+{% block content %}
+<div class="container" id="favorites-container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
+
+  <div class="breadcrumb">
+    <a href="/">Главная</a><span class="breadcrumb-sep">›</span>
+    <span>Избранное</span>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:var(--space-md)">
+    <h1 style="font-family:var(--font-display);font-size:2rem">Избранное</h1>
+    {% if user.is_authenticated and favorites %}
+    <span style="font-size:.9rem;color:var(--color-text-muted)" id="fav-count">{{ favorites|length }} товар{{ favorites|length|pluralize:",а,ов" }}</span>
+    {% endif %}
+  </div>
+
+  {% if not user.is_authenticated %}
+
+  <div class="empty-state" style="padding:var(--space-4xl) 0">
+    <div class="empty-state-icon">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
+        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+      </svg>
+    </div>
+    <h3>Войдите, чтобы видеть избранное</h3>
+    <p>После авторизации ваше избранное сохраняется между устройствами</p>
+    <a href="/account/login/?next=/catalog/favorites/" class="btn btn-primary" style="margin-top:var(--space-lg)">Войти</a>
+  </div>
+
+  {% elif favorites %}
+
+  <div class="products-grid" id="favorites-grid">
+    {% for product in favorites %}
+    <div class="fav-card-wrap" data-product-id="{{ product.id }}">
+      <a href="/catalog/{{ product.category.slug }}/{{ product.slug }}/" class="product-card fav-product-card">
+        <div class="product-card-img">
+          {% with product.main_image as img %}
+            {% if img %}
+              <img src="{{ img.image.url }}" alt="{{ product.name }}" loading="lazy">
+            {% else %}
+              <div style="width:100%;height:100%;background:var(--color-bg-alt)"></div>
+            {% endif %}
+          {% endwith %}
+          <div class="product-card-badges">
+            {% if product.is_new %}<span class="badge badge-new">Новинка</span>{% endif %}
+            {% if product.discount_percent %}<span class="badge badge-sale">-{{ product.discount_percent }}%</span>{% endif %}
+          </div>
+        </div>
+        <div class="product-card-body">
+          <div class="product-card-category">{{ product.category.name }}</div>
+          <div class="product-card-name">{{ product.name }}</div>
+          <div class="product-card-prices">
+            <span class="product-card-price">{{ product.price|floatformat:0 }} ₽</span>
+            {% if product.old_price %}
+              <span class="product-card-old-price">{{ product.old_price|floatformat:0 }} ₽</span>
+            {% endif %}
+          </div>
+        </div>
+        {% if product.variants.all %}
+        <div class="product-card-add" onclick="event.preventDefault();window.location.href='/catalog/{{ product.category.slug }}/{{ product.slug }}/'">Выбрать</div>
+        {% else %}
+        <div class="product-card-add" onclick="event.preventDefault();addToCart({{ product.id }})">В корзину</div>
+        {% endif %}
+      </a>
+      <button class="fav-remove-btn" onclick="removeFavorite({{ product.id }}, this)" title="Убрать из избранного">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+        </svg>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+
+  <div class="empty-state" style="padding:var(--space-4xl) 0" id="favorites-empty">
+    <div class="empty-state-icon">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
+        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+      </svg>
+    </div>
+    <h3>Список избранного пуст</h3>
+    <p>Добавляйте товары в избранное, нажимая на ♡ на карточке товара</p>
+    <a href="/catalog/" class="btn btn-primary" style="margin-top:var(--space-lg)">Перейти в каталог</a>
+  </div>
+
+  {% endif %}
+
+</div>
+
+<style>
+.fav-card-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.fav-product-card {
+  flex: 1;
+}
+.fav-remove-btn {
+  position: absolute;
+  top: 10px; right: 10px;
+  z-index: 20;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--color-error);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  transition: transform .15s, background .15s;
+  cursor: pointer; border: none;
+}
+.fav-remove-btn:hover { transform: scale(1.12); background: #c0392b; }
+</style>
+
+<script>
+async function removeFavorite(productId, btn) {
+  const isAuth = document.body.dataset.authenticated === 'true';
+  if (isAuth) {
+    try { await apiRequest(`/api/favorites/${productId}/`, 'POST'); } catch { return; }
+  }
+
+  const key = 'velour_favorites';
+  const favs = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+  favs.delete(productId);
+  localStorage.setItem(key, JSON.stringify([...favs]));
+
+  const card = btn.closest('.fav-card-wrap');
+  card.style.transition = 'opacity .25s, transform .25s';
+  card.style.opacity = '0';
+  card.style.transform = 'scale(.95)';
+
+  setTimeout(() => {
+    card.remove();
+    const remaining = document.querySelectorAll('.fav-card-wrap').length;
+    const countEl = document.getElementById('fav-count');
+    if (countEl) {
+      countEl.textContent = remaining > 0
+        ? `${remaining} товар${remaining === 1 ? '' : remaining < 5 ? 'а' : 'ов'}`
+        : '';
+    }
+    if (remaining === 0) {
+      document.getElementById('favorites-grid')?.remove();
+      const container = document.getElementById('favorites-container');
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.style.padding = 'var(--space-4xl) 0';
+      empty.innerHTML = `
+        <div class="empty-state-icon">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+          </svg>
+        </div>
+        <h3>Список избранного пуст</h3>
+        <p>Добавляйте товары в избранное, нажимая на ♡</p>
+        <a href="/catalog/" class="btn btn-primary" style="margin-top:var(--space-lg)">Перейти в каталог</a>`;
+      container.appendChild(empty);
+    }
+  }, 270);
+}
+</script>
+
+{% endblock %}

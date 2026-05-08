@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% if site_settings %}{{ site_settings.site_name }}{% else %}VELOUR{% endif %}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{% if site_settings %}{{ site_settings.site_description }}{% endif %}{% endblock %}">
+
+  {% load static %}
+  <!-- Local fonts -->
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+  <!-- Styles -->
+  <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'css/catalog.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}">
+  <div class="overlay" id="overlay"></div>
+
+  {% if site_settings and site_settings.delivery_info %}
+  <div class="announcement-bar">
+    <span>Бесплатная доставка при заказе от {{ site_settings.free_delivery_from|floatformat:0 }} ₽</span>
+  </div>
+  {% endif %}
+
+  {% include "includes/header.html" %}
+
+  <main style="flex:1">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "includes/footer.html" %}
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JS -->
+  <script>
+    window.CSRF_TOKEN = '{{ csrf_token }}';
+    window.FREE_DELIVERY_FROM = {{ site_settings.free_delivery_from|default:5000 }};
+  </script>
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: velour
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application --workers 2 --bind 0.0.0.0:$PORT --timeout 120"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings
+      - key: DEBUG
+        value: "True"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: EMAIL_BACKEND
+        value: "django.core.mail.backends.smtp.EmailBackend"
+      - key: EMAIL_HOST
+        value: "smtp.gmail.com"
+      - key: EMAIL_PORT
+        value: "465"
+      - key: EMAIL_USE_TLS
+        value: "False"
+      - key: EMAIL_USE_SSL
+        value: "True"
+      - key: DEFAULT_FROM_EMAIL
+        value: "VELOUR <kgpk527@gmail.com>"
+

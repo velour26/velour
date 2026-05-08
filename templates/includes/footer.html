@@ -1,0 +1,87 @@
+{% load static %}
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-main">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <a href="/" class="logo" style="font-family:var(--font-display);font-size:1.7rem;letter-spacing:.08em;color:#fff;margin-bottom:16px;display:block">VEL<span style="color:var(--color-accent)">OUR</span></a>
+        <p class="footer-desc">
+          {% if site_settings and site_settings.site_description %}
+            {{ site_settings.site_description }}
+          {% else %}
+            Магазин современной одежды. Качество, стиль и комфорт в каждой вещи.
+          {% endif %}
+        </p>
+        <div class="footer-socials">
+          {% if site_settings and site_settings.vk_url %}
+          <a href="{{ site_settings.vk_url }}" class="footer-social-link" target="_blank" rel="noopener" aria-label="ВКонтакте">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm3.08 13.5h-1.83c-.69 0-.9-.55-2.14-1.81-.98-.98-1.41-.81-1.41.08v1.73H11.5c-2.52 0-4.34-1.56-4.34-5.28 0-3.72 1.82-5.28 4.34-5.28h1.27v1.75c0 .89-.02 1.12.54 1.12 1.21 0 2.65-1.87 3.73-4.87H19c-.12 3.25-1.89 5.19-3.28 5.89 1.39.71 3.4 2.64 2.43 6.67z"/></svg>
+          </a>
+          {% endif %}
+          {% if site_settings and site_settings.telegram_url %}
+          <a href="{{ site_settings.telegram_url }}" class="footer-social-link" target="_blank" rel="noopener" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.7 8.02c-.12.57-.45.71-.91.44l-2.53-1.87-1.22 1.17c-.13.13-.25.25-.51.25l.18-2.57 4.65-4.2c.2-.18-.04-.28-.31-.1L7.66 14.3l-2.47-.77c-.54-.17-.55-.54.11-.8l9.64-3.72c.45-.16.84.11.7.79z"/></svg>
+          </a>
+          {% endif %}
+          {% if site_settings and site_settings.instagram_url %}
+          <a href="{{ site_settings.instagram_url }}" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Каталог -->
+      <div>
+        <div class="footer-col-title">Каталог</div>
+        <div class="footer-links">
+          <a href="/catalog/" class="footer-link">Все товары</a>
+          <a href="/catalog/?is_new=true" class="footer-link">Новинки</a>
+          <a href="/catalog/?is_featured=true" class="footer-link">Хиты продаж</a>
+        </div>
+      </div>
+
+      <!-- Информация -->
+      <div>
+        <div class="footer-col-title">Информация</div>
+        <div class="footer-links">
+          <a href="/about/" class="footer-link">О нас</a>
+          <a href="/delivery/" class="footer-link">Доставка и оплата</a>
+          <a href="/returns/" class="footer-link">Возврат</a>
+          <a href="/contacts/" class="footer-link">Контакты</a>
+        </div>
+      </div>
+
+      <!-- Подписка + контакты -->
+      <div>
+        <div class="footer-col-title">Контакты</div>
+        {% if site_settings %}
+        <div class="footer-links" style="margin-bottom:20px">
+          {% if site_settings.phone %}<a href="tel:{{ site_settings.phone }}" class="footer-link">{{ site_settings.phone }}</a>{% endif %}
+          {% if site_settings.email %}<a href="mailto:{{ site_settings.email }}" class="footer-link">{{ site_settings.email }}</a>{% endif %}
+          {% if site_settings.address %}<span class="footer-link" style="cursor:default">{{ site_settings.address }}</span>{% endif %}
+        </div>
+        {% endif %}
+        <div class="footer-newsletter">
+          <div style="font-size:.82rem;opacity:.7;margin-bottom:10px">Подпишитесь на новости и акции</div>
+          <form class="footer-newsletter-form newsletter-form">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Ваш email" class="footer-newsletter-input" required>
+            <button type="submit" class="footer-newsletter-btn">→</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {% now "Y" %} {% if site_settings %}{{ site_settings.site_name }}{% else %}VELOUR{% endif %}. Все права защищены.</span>
+      <div class="footer-bottom-links">
+        <a href="/privacy/">Политика конфиденциальности</a>
+        <a href="/terms/">Оферта</a>
+      </div>
+    </div>
+  </div>
+</footer>
+

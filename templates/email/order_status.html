@@ -1,0 +1,26 @@
+{% extends "email/base_email.html" %}
+{% block subject %}Статус заказа {{ order.number }} изменился{% endblock %}
+
+{% block body %}
+<h1 class="email-title">Обновление по заказу</h1>
+<p class="email-text">
+  Статус вашего заказа <strong>{{ order.number }}</strong> изменился:
+</p>
+
+<div class="info-box" style="text-align:center;font-size:1.1rem;font-weight:600;color:#1a1a2e">
+  {{ order.get_status_display }}
+</div>
+
+{% if order.status == 'shipped' %}
+<p class="email-text">Ваш заказ отправлен и скоро будет доставлен!</p>
+{% elif order.status == 'delivered' %}
+<p class="email-text">Ваш заказ доставлен. Спасибо за покупку в VELOUR! 🎉</p>
+{% elif order.status == 'cancelled' %}
+<p class="email-text">Ваш заказ был отменён. Если это ошибка — свяжитесь с нами.</p>
+{% endif %}
+
+{% if user %}
+<a href="https://velour-7dna.onrender.com/orders/{{ order.number }}/" class="email-btn">Посмотреть заказ</a>
+{% endif %}
+{% endblock %}
+

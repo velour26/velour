@@ -1,0 +1,35 @@
+:root {
+  --jazzmin-accent: #c9a96e;
+}
+
+.brand-link .brand-text { font-weight: 700; letter-spacing: 0.02em; }
+
+/* Hide default Jazzmin logo icon */
+.brand-link .brand-image,
+.brand-link img,
+.navbar-brand img { display: none !important; }
+
+.nav-sidebar .nav-link.active {
+  background-color: var(--jazzmin-accent) !important;
+  color: #fff !important;
+}
+.nav-sidebar .nav-link:hover { background: rgba(201,169,110,0.15) !important; }
+
+.btn-primary, .btn-warning { background-color: var(--jazzmin-accent) !important; border-color: var(--jazzmin-accent) !important; }
+.btn-primary:hover, .btn-warning:hover { background-color: #b8915a !important; border-color: #b8915a !important; }
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
+  background-color: var(--jazzmin-accent) !important;
+}
+
+/* Hide Jazzmin version in footer */
+.main-footer .float-right { display: none !important; }
+
+/* Hide user avatar circle in navbar */
+.navbar-nav .user-menu > .nav-link .user-image,
+.navbar-nav .user-menu > .nav-link img { display: none !important; }
+
+.content-header h1 { font-size: 1.5rem; font-weight: 600; }
+
+.small-box { border-radius: 8px; }
+.small-box-footer { background: rgba(0,0,0,0.15); border-radius: 0 0 8px 8px; }

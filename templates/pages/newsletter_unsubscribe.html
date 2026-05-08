@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Отписка от рассылки — VELOUR{% endblock %}
+{% block content %}
+<div class="container" style="padding-top:var(--space-4xl);padding-bottom:var(--space-4xl);max-width:520px;text-align:center">
+  <h1 style="font-family:var(--font-display);margin-bottom:var(--space-md)">Отписка от рассылки</h1>
+  <p style="color:var(--color-text-muted);margin-bottom:var(--space-2xl)">Укажите email для отписки от рассылки VELOUR.</p>
+  <form id="unsub-form" style="max-width:360px;margin:0 auto">
+    {% csrf_token %}
+    <div class="form-group">
+      <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
+    </div>
+    <button type="submit" class="btn btn-secondary btn-block">Отписаться</button>
+  </form>
+  <div id="unsub-result" style="display:none;margin-top:var(--space-lg);color:var(--color-text-muted)"></div>
+</div>
+<script>
+document.getElementById('unsub-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = e.target.querySelector('[name="email"]').value;
+  try {
+    const res = await apiRequest('/api/newsletter/unsubscribe/', 'POST', {email});
+    document.getElementById('unsub-result').textContent = res.detail;
+    document.getElementById('unsub-result').style.display = 'block';
+    e.target.style.display = 'none';
+  } catch(err) { showToast('Ошибка', 'error'); }
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,20 @@
+{% extends "email/base_email.html" %}
+{% block subject %}Добро пожаловать в VELOUR!{% endblock %}
+
+{% block body %}
+<h1 class="email-title">Добро пожаловать в VELOUR! 🎉</h1>
+<p class="email-text">
+  Привет{% if user.first_name %}, <strong>{{ user.first_name }}</strong>{% endif %}!<br>
+  Мы рады, что вы стали частью нашего сообщества. Теперь вы можете:
+</p>
+<ul style="margin:0 0 20px 20px;font-size:.95rem;line-height:2;color:#4a4a4a">
+  <li>Отслеживать статусы заказов в личном кабинете</li>
+  <li>Сохранять адреса доставки</li>
+  <li>Получать персональные предложения</li>
+  <li>Оставлять отзывы на товары</li>
+</ul>
+<div style="text-align:center">
+  <a href="https://velour-7dna.onrender.com/catalog/" class="email-btn">Начать покупки</a>
+</div>
+{% endblock %}
+

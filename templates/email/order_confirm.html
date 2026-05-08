@@ -1,0 +1,58 @@
+{% extends "email/base_email.html" %}
+{% block subject %}Заказ {{ order.number }} подтверждён{% endblock %}
+
+{% block body %}
+<h1 class="email-title">Заказ оформлен! 🎉</h1>
+<p class="email-text">
+  Спасибо за покупку! Ваш заказ <strong>{{ order.number }}</strong> принят и передан в обработку.
+</p>
+
+<div class="info-box">
+  <strong>Способ оплаты:</strong> {{ order.get_payment_method_display }}<br>
+  <strong>Адрес доставки:</strong> {{ order.delivery_city }}, {{ order.delivery_street }}
+  {% if order.delivery_apartment %}, кв. {{ order.delivery_apartment }}{% endif %}<br>
+  <strong>Индекс:</strong> {{ order.delivery_postal_code }}
+</div>
+
+<table class="order-table">
+  <thead>
+    <tr>
+      <th>Товар</th>
+      <th style="text-align:right">Кол-во</th>
+      <th style="text-align:right">Сумма</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in order.items.all %}
+    <tr>
+      <td>
+        {{ item.product_name }}
+        {% if item.variant_info %}<br><span style="font-size:.8rem;color:#9e9890">{{ item.variant_info }}</span>{% endif %}
+      </td>
+      <td style="text-align:right">{{ item.quantity }}</td>
+      <td style="text-align:right">{{ item.subtotal|floatformat:0 }} ₽</td>
+    </tr>
+    {% endfor %}
+    {% if order.delivery_cost > 0 %}
+    <tr><td>Доставка</td><td></td><td style="text-align:right">{{ order.delivery_cost|floatformat:0 }} ₽</td></tr>
+    {% endif %}
+    <tr class="total-row">
+      <td>Итого</td><td></td>
+      <td style="text-align:right;color:#1a1a2e">{{ order.total|floatformat:0 }} ₽</td>
+    </tr>
+  </tbody>
+</table>
+
+{% if order.payment_method == 'cash' %}
+<p class="email-text">Оплатите заказ при получении. Курьер свяжется с вами заранее.</p>
+{% elif order.payment_method == 'sbp' %}
+<p class="email-text">Пожалуйста, оплатите заказ через СБП в течение 24 часов.</p>
+{% endif %}
+
+<div class="email-divider"></div>
+<p class="email-text" style="font-size:.85rem;color:#9e9890">
+  Если у вас есть вопросы по заказу, напишите нам или позвоните.
+  Номер заказа для связи: <strong>{{ order.number }}</strong>
+</p>
+{% endblock %}
+

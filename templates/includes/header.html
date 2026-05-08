@@ -1,0 +1,100 @@
+{% load static %}
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+
+      <!-- Logo -->
+      <a href="/" class="logo" style="font-family:var(--font-display);font-size:1.7rem;letter-spacing:.08em">VEL<span>OUR</span></a>
+
+      <!-- Desktop Nav -->
+      <nav class="header-nav">
+        <a href="/" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Главная</a>
+        <a href="/catalog/" class="nav-link {% if 'catalog' in request.path %}active{% endif %}">Каталог</a>
+        <a href="/about/" class="nav-link">О нас</a>
+        <a href="/delivery/" class="nav-link">Доставка</a>
+        <a href="/contacts/" class="nav-link">Контакты</a>
+      </nav>
+
+      <!-- Search -->
+      <div class="header-search hide-mobile">
+        <svg class="header-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" placeholder="Поиск товаров..." id="header-search-input" autocomplete="off">
+      </div>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <!-- Favorites -->
+        <a href="/catalog/favorites/" class="header-action-btn" title="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+          </svg>
+        </a>
+
+        <!-- Cart -->
+        <a href="/cart/" class="header-action-btn" title="Корзина">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="badge-count cart-badge" style="{% if not cart_count %}display:none{% endif %}">{{ cart_count }}</span>
+        </a>
+
+        <!-- Account -->
+        {% if user.is_authenticated %}
+        <a href="/account/profile/" class="header-action-btn" title="Профиль">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+        {% else %}
+        <a href="/account/login/" class="header-action-btn" title="Войти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+        </a>
+        {% endif %}
+
+        {% if user.is_staff %}
+        <!-- Admin panel link -->
+        <a href="/admin/" class="header-action-btn" title="Админ панель" style="font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--color-text-muted);width:auto;padding:0 10px">
+          ADMIN
+        </a>
+        {% endif %}
+
+        <!-- Mobile toggle -->
+        <button class="menu-toggle" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="/" class="mobile-nav-link">Главная</a>
+  <a href="/catalog/" class="mobile-nav-link">Каталог</a>
+  <a href="/catalog/favorites/" class="mobile-nav-link">Избранное</a>
+  <a href="/about/" class="mobile-nav-link">О нас</a>
+  <a href="/delivery/" class="mobile-nav-link">Доставка</a>
+  <a href="/contacts/" class="mobile-nav-link">Контакты</a>
+  <div style="padding:16px;margin-top:8px;border-top:1px solid var(--color-border)">
+    <div style="position:relative;margin-bottom:16px">
+      <input type="text" id="mobile-search-input" placeholder="Поиск..." style="width:100%;box-sizing:border-box;padding:10px 16px 10px 36px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:.9rem;outline:none">
+      <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--color-text-light)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="/account/profile/" class="btn btn-secondary btn-block">Личный кабинет</a>
+    {% else %}
+    <a href="/account/login/" class="btn btn-primary btn-block">Войти</a>
+    {% endif %}
+  </div>
+</nav>
+

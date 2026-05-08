@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Заказ {{ order_number }}{% endblock %}
+{% block content %}
+<div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl);max-width:860px">
+  <div class="breadcrumb">
+    <a href="/">Главная</a><span class="breadcrumb-sep">›</span>
+    <a href="/orders/my/">Мои заказы</a><span class="breadcrumb-sep">›</span>
+    <span>{{ order_number }}</span>
+  </div>
+  <div id="order-detail-container">
+    <div style="text-align:center;padding:60px"><span class="spinner" style="border-color:var(--color-border);border-top-color:var(--color-accent);width:32px;height:32px;border-width:3px"></span></div>
+  </div>
+</div>
+<script>
+const ORDER_NUMBER = '{{ order_number }}';
+async function loadOrder() {
+  const container = document.getElementById('order-detail-container');
+  try {
+    const data = await apiRequest(`/api/orders/${ORDER_NUMBER}/`);
+    container.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-xl);flex-wrap:wrap;gap:12px">
+        <h1 style="font-size:1.8rem">Заказ ${data.number}</h1>
+        <span class="order-status-badge status-${data.status}">${data.status_display}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-bottom:var(--space-xl)">
+        <div class="card" style="padding:var(--space-xl)">
+          <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">Доставка</div>
+          <div style="font-size:.9rem;color:var(--color-text-muted);line-height:1.8">
+            ${data.delivery_city}, ${data.delivery_street}${data.delivery_apartment ? ', кв. ' + data.delivery_apartment : ''}<br>
+            Индекс: ${data.delivery_postal_code}
+          </div>
+        </div>
+        <div class="card" style="padding:var(--space-xl)">
+          <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">Оплата</div>
+          <div style="font-size:.9rem;color:var(--color-text-muted)">${data.payment_display}</div>
+        </div>
+      </div>
+      <div class="card" style="overflow:auto;margin-bottom:var(--space-xl)">
+        <table class="orders-table">
+          <thead><tr><th>Товар</th><th>Вариант</th><th>Цена</th><th>Кол-во</th><th>Сумма</th></tr></thead>
+          <tbody>${data.items.map(i=>`<tr>
+            <td><strong>${i.product_name}</strong><div style="font-size:.75rem;color:var(--color-text-muted)">${i.product_article}</div></td>
+            <td style="font-size:.85rem;color:var(--color-text-muted)">${i.variant_info||'—'}</td>
+            <td>${Number(i.price).toLocaleString('ru')} ₽</td>
+            <td>${i.quantity}</td>
+            <td><strong>${Number(i.subtotal).toLocaleString('ru')} ₽</strong></td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <div style="min-width:260px">
+          <div class="summary-row" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--color-border-light)"><span>Товары</span><span>${Number(data.subtotal).toLocaleString('ru')} ₽</span></div>
+          <div class="summary-row" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--color-border-light)"><span>Доставка</span><span>${data.delivery_cost == 0 ? 'Бесплатно' : Number(data.delivery_cost).toLocaleString('ru') + ' ₽'}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:12px 0;font-weight:700;font-size:1.1rem"><span>Итого</span><span>${Number(data.total).toLocaleString('ru')} ₽</span></div>
+        </div>
+      </div>
+      ${data.status === 'pending' || data.status === 'confirmed' ? `
+        <div style="margin-top:var(--space-xl)">
+          <button class="btn btn-outline" style="color:var(--color-error);border-color:var(--color-error)" onclick="cancelOrder('${data.number}')">Отменить заказ</button>
+        </div>` : ''}`;
+  } catch(e) { container.innerHTML = '<p style="color:var(--color-error)">Ошибка загрузки заказа</p>'; }
+}
+async function cancelOrder(number) {
+  if (!confirm('Вы уверены, что хотите отменить заказ?')) return;
+  try {
+    await apiRequest(`/api/orders/${number}/cancel/`, 'POST');
+    showToast('Заказ отменён');
+    loadOrder();
+  } catch(e) { showToast(e.detail || 'Ошибка', 'error'); }
+}
+document.addEventListener('DOMContentLoaded', loadOrder);
+</script>
+{% endblock %}
+

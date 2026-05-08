@@ -1,0 +1,19 @@
+{% extends "email/base_email.html" %}
+{% block subject %}Подтвердите подписку на рассылку VELOUR{% endblock %}
+{% block unsubscribe_url %}/newsletter/unsubscribe/{% endblock %}
+
+{% block body %}
+<h1 class="email-title">Подтвердите подписку</h1>
+<p class="email-text">
+  Привет{% if name %}, <strong>{{ name }}</strong>{% endif %}! 👋<br>
+  Вы подписались на рассылку VELOUR. Нажмите кнопку ниже, чтобы подтвердить подписку и получать новости первыми.
+</p>
+<div style="text-align:center">
+  <a href="https://velour-7dna.onrender.com/newsletter/confirm/{{ token }}/" class="email-btn">Подтвердить подписку</a>
+</div>
+<div class="email-divider"></div>
+<p class="email-text" style="font-size:.82rem;color:#9e9890">
+  Если вы не подписывались — просто проигнорируйте это письмо.
+</p>
+{% endblock %}
+

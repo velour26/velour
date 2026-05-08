@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — VELOUR{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <a href="/" class="logo" style="display:block;margin-bottom:var(--space-xl)">VEL<span>OUR</span></a>
+    <h1 class="auth-title">Создать аккаунт</h1>
+    <p class="auth-subtitle">Уже есть аккаунт? <a href="/account/login/" style="color:var(--color-accent)">Войти</a></p>
+
+    <form id="register-form">
+      {% csrf_token %}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)">
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input type="text" name="first_name" class="form-control" placeholder="Иван">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Фамилия</label>
+          <input type="text" name="last_name" class="form-control" placeholder="Иванов">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input type="email" name="email" class="form-control" placeholder="mail@example.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Телефон</label>
+        <input type="tel" name="phone" class="form-control" placeholder="+7 (999) 000-00-00">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль *</label>
+        <input type="password" name="password" class="form-control" placeholder="Минимум 8 символов" required minlength="8">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Повторите пароль *</label>
+        <input type="password" name="password2" class="form-control" placeholder="••••••••" required>
+      </div>
+      <div id="reg-errors" style="display:none;background:var(--color-error);color:#fff;padding:10px 14px;border-radius:var(--radius-md);font-size:.85rem;margin-bottom:var(--space-md)"></div>
+      <button type="submit" class="btn btn-dark btn-block btn-lg">Зарегистрироваться</button>
+    </form>
+
+    <div style="margin-top:var(--space-lg);text-align:center;font-size:.82rem;color:var(--color-text-muted)">
+      Регистрируясь, вы соглашаетесь с <a href="/terms/" style="color:var(--color-accent)">условиями использования</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('register-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('[type="submit"]');
+  const errEl = document.getElementById('reg-errors');
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+
+  const fd = Object.fromEntries(new FormData(e.target));
+  // generate username from email
+  fd.username = fd.email.split('@')[0] + '_' + Math.random().toString(36).slice(2,6);
+
+  try {
+    await apiRequest('/api/auth/register/', 'POST', fd);
+    const next = new URLSearchParams(location.search).get('next') || '/account/profile/';
+    window.location.href = next;
+  } catch(err) {
+    const msgs = [];
+    if (typeof err === 'object') {
+      Object.entries(err).forEach(([k, v]) => {
+        const label = {email:'Email',password:'Пароль',password2:'Подтверждение',phone:'Телефон'}[k] || k;
+        msgs.push(`${label}: ${Array.isArray(v) ? v.join(', ') : v}`);
+      });
+    }
+    errEl.textContent = msgs.join(' · ') || 'Ошибка регистрации';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Зарегистрироваться';
+  }
+});
+</script>
+{% endblock %}
+

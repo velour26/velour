@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} — VELOUR{% endblock %}
+{% block meta_description %}{{ page.meta_description }}{% endblock %}
+
+{% block content %}
+
+{# ── Page Hero ────────────────────────────────────────────────────── #}
+<div style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);color:#fff;padding:56px 0 48px;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;opacity:.04;background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%) 0/20px 20px"></div>
+  <div class="container" style="max-width:900px;position:relative">
+    <div style="font-size:.78rem;letter-spacing:.06em;opacity:.55;margin-bottom:14px;text-transform:uppercase">
+      <a href="/" style="color:inherit">Главная</a>
+      <span style="margin:0 8px">›</span>
+      <span>{{ page.title }}</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;margin:0;line-height:1.2">{{ page.title }}</h1>
+  </div>
+</div>
+
+{# ── Content ──────────────────────────────────────────────────────── #}
+<div class="container" style="max-width:900px;padding-top:56px;padding-bottom:80px">
+
+{# ═══════════════════════════════ О НАС ═══════════════════════════════ #}
+{% if page.slug == 'about' %}
+
+  <div style="display:grid;gap:24px">
+
+    {% if sections.intro %}
+    <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:40px;display:flex;gap:32px;align-items:flex-start">
+      <div style="flex-shrink:0;width:48px;height:48px;background:var(--color-primary);border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-size:1.1rem">{{ sections.intro.label }}</h3>
+        <div style="line-height:1.85;color:var(--color-text-muted)">{{ sections.intro.text|linebreaks }}</div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if sections.mission %}
+    <div style="background:var(--color-primary);color:#fff;border-radius:var(--radius-lg);padding:40px;display:flex;gap:32px;align-items:flex-start">
+      <div style="flex-shrink:0;width:48px;height:48px;background:var(--color-accent);border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-size:1.1rem;color:#fff">{{ sections.mission.label }}</h3>
+        <div style="line-height:1.85;opacity:.85">{{ sections.mission.text|linebreaks }}</div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if sections.team %}
+    <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:40px;display:flex;gap:32px;align-items:flex-start">
+      <div style="flex-shrink:0;width:48px;height:48px;background:var(--color-primary);border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-size:1.1rem">{{ sections.team.label }}</h3>
+        <div style="line-height:1.85;color:var(--color-text-muted)">{{ sections.team.text|linebreaks }}</div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+{# ═══════════════════════════════ ДОСТАВКА ════════════════════════════ #}
+{% elif page.slug == 'delivery' %}
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px">
+
+    {% if sections.delivery_main %}
+    <div style="border-radius:var(--radius-lg);border:1.5px solid var(--color-border);padding:36px">
+      <div style="width:44px;height:44px;background:var(--color-primary);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <h3 style="margin:0 0 16px;font-size:1.1rem">{{ sections.delivery_main.label }}</h3>
+      <div style="line-height:1.9;color:var(--color-text-muted);font-size:.93rem">{{ sections.delivery_main.text|linebreaks }}</div>
+    </div>
+    {% endif %}
+
+    {% if sections.payment_main %}
+    <div style="border-radius:var(--radius-lg);border:1.5px solid var(--color-border);padding:36px">
+      <div style="width:44px;height:44px;background:var(--color-primary);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      </div>
+      <h3 style="margin:0 0 16px;font-size:1.1rem">{{ sections.payment_main.label }}</h3>
+      <div style="line-height:1.9;color:var(--color-text-muted);font-size:.93rem">{{ sections.payment_main.text|linebreaks }}</div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <div style="background:var(--color-primary);color:#fff;border-radius:var(--radius-lg);padding:32px 40px;display:flex;align-items:center;gap:24px">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5" style="flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+    <div>
+      <div style="font-weight:600;margin-bottom:4px">Бесплатная доставка</div>
+      <div style="opacity:.7;font-size:.9rem">При заказе от {{ site_settings.free_delivery_from|default:5000|floatformat:0 }} ₽ — доставка бесплатно по всей России</div>
+    </div>
+  </div>
+
+{# ═══════════════════════════════ ВОЗВРАТ ═════════════════════════════ #}
+{% elif page.slug == 'returns' %}
+
+  {% if sections.return_policy %}
+  <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:40px;margin-bottom:32px">
+    <h3 style="margin:0 0 16px">{{ sections.return_policy.label }}</h3>
+    <div style="line-height:1.9;color:var(--color-text-muted)">{{ sections.return_policy.text|linebreaks }}</div>
+  </div>
+  {% endif %}
+
+  {% if sections.return_process %}
+  <div style="border-radius:var(--radius-lg);border:1.5px solid var(--color-border);padding:40px">
+    <h3 style="margin:0 0 28px">{{ sections.return_process.label }}</h3>
+    <div style="display:grid;gap:20px">
+      {% with steps=sections.return_process.text|linebreaksbr %}
+      {% for step in sections.return_process.text.splitlines %}
+      {% if step.strip %}
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0;width:32px;height:32px;background:var(--color-primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;margin-top:2px">{{ forloop.counter }}</div>
+        <div style="line-height:1.7;color:var(--color-text-muted);padding-top:6px">{{ step|cut:"1. "|cut:"2. "|cut:"3. "|cut:"4. " }}</div>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% endwith %}
+    </div>
+  </div>
+  {% endif %}
+
+{# ═══════════════════════════════ КОНТАКТЫ ════════════════════════════ #}
+{% elif page.slug == 'contacts' %}
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px">
+
+    <div style="border-radius:var(--radius-lg);border:1.5px solid var(--color-border);padding:36px">
+      <h3 style="margin:0 0 24px;font-size:1.1rem">Свяжитесь с нами</h3>
+      {% if site_settings %}
+      <div style="display:grid;gap:16px">
+        {% if site_settings.phone %}
+        <div style="display:flex;gap:14px;align-items:center">
+          <div style="width:36px;height:36px;background:var(--color-bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.8 19.79 19.79 0 01.18 2.18 2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09A16 16 0 0016.9 17.08l.48-.48a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:.75rem;color:var(--color-text-muted);margin-bottom:2px">Телефон</div>
+            <a href="tel:{{ site_settings.phone }}" style="font-weight:600;color:var(--color-primary)">{{ site_settings.phone }}</a>
+          </div>
+        </div>
+        {% endif %}
+        {% if site_settings.email %}
+        <div style="display:flex;gap:14px;align-items:center">
+          <div style="width:36px;height:36px;background:var(--color-bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div style="font-size:.75rem;color:var(--color-text-muted);margin-bottom:2px">Email</div>
+            <a href="mailto:{{ site_settings.email }}" style="font-weight:600;color:var(--color-primary)">{{ site_settings.email }}</a>
+          </div>
+        </div>
+        {% endif %}
+        {% if site_settings.address %}
+        <div style="display:flex;gap:14px;align-items:center">
+          <div style="width:36px;height:36px;background:var(--color-bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div style="font-size:.75rem;color:var(--color-text-muted);margin-bottom:2px">Адрес</div>
+            <span style="font-weight:600;color:var(--color-primary)">{{ site_settings.address }}</span>
+          </div>
+        </div>
+        {% endif %}
+        <div style="display:flex;gap:14px;align-items:center">
+          <div style="width:36px;height:36px;background:var(--color-bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div style="font-size:.75rem;color:var(--color-text-muted);margin-bottom:2px">Режим работы</div>
+            <span style="font-weight:600;color:var(--color-primary)">ПН–ПТ, 9:00–18:00</span>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div style="background:var(--color-primary);border-radius:var(--radius-lg);padding:36px;color:#fff;display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <h3 style="margin:0 0 12px;font-size:1.1rem;color:#fff">Мы в социальных сетях</h3>
+        <p style="opacity:.7;font-size:.9rem;line-height:1.7;margin-bottom:28px">Следите за новинками, акциями и вдохновением в наших аккаунтах</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          {% if site_settings and site_settings.vk_url %}
+          <a href="{{ site_settings.vk_url }}" target="_blank" rel="noopener"
+             style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:var(--radius-md);padding:12px 16px;color:#fff;text-decoration:none;transition:background .2s"
+             onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm3.08 13.5h-1.83c-.69 0-.9-.55-2.14-1.81-.98-.98-1.41-.81-1.41.08v1.73H11.5c-2.52 0-4.34-1.56-4.34-5.28 0-3.72 1.82-5.28 4.34-5.28h1.27v1.75c0 .89-.02 1.12.54 1.12 1.21 0 2.65-1.87 3.73-4.87H19c-.12 3.25-1.89 5.19-3.28 5.89 1.39.71 3.4 2.64 2.43 6.67z"/></svg>
+            ВКонтакте
+          </a>
+          {% endif %}
+          {% if site_settings and site_settings.telegram_url %}
+          <a href="{{ site_settings.telegram_url }}" target="_blank" rel="noopener"
+             style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:var(--radius-md);padding:12px 16px;color:#fff;text-decoration:none;transition:background .2s"
+             onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.7 8.02c-.12.57-.45.71-.91.44l-2.53-1.87-1.22 1.17c-.13.13-.25.25-.51.25l.18-2.57 4.65-4.2c.2-.18-.04-.28-.31-.1L7.66 14.3l-2.47-.77c-.54-.17-.55-.54.11-.8l9.64-3.72c.45-.16.84.11.7.79z"/></svg>
+            Telegram
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+{# ═══════════════════════════════ ПОЛИТИКА / ОФЕРТА ═══════════════════ #}
+{% elif page.slug == 'privacy' or page.slug == 'terms' %}
+
+  <div style="display:grid;gap:2px;border-radius:var(--radius-lg);overflow:hidden;border:1.5px solid var(--color-border)">
+    {% for key, section in sections.items %}
+    {% if section.is_visible %}
+    <details style="background:#fff;border-bottom:1px solid var(--color-border-light)" {% if forloop.first %}open{% endif %}>
+      <summary style="padding:20px 28px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:.95rem;list-style:none;user-select:none">
+        <span>{{ section.label }}</span>
+        <svg class="details-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;transition:transform .2s"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div style="padding:0 28px 24px;line-height:1.9;color:var(--color-text-muted);font-size:.93rem;border-top:1px solid var(--color-border-light)">
+        {{ section.text|linebreaks }}
+      </div>
+    </details>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+{# ══════════════════════ GENERIC FALLBACK ════════════════════════════ #}
+{% else %}
+
+  <div style="display:grid;gap:24px">
+    {% for key, section in sections.items %}
+    {% if section.is_visible %}
+    <div style="border-radius:var(--radius-lg);border:1.5px solid var(--color-border);padding:36px">
+      <h3 style="margin:0 0 16px;font-size:1.1rem">{{ section.label }}</h3>
+      <div style="line-height:1.9;color:var(--color-text-muted)">{{ section.text|linebreaks }}</div>
+      {% if section.link %}
+      <a href="{{ section.link }}" class="btn btn-outline" style="margin-top:var(--space-md)">Подробнее</a>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+{% endif %}
+
+{% if not sections %}
+<p style="color:var(--color-text-muted);text-align:center;padding:60px 0">
+  Содержимое не заполнено. <a href="/admin/" style="color:var(--color-accent)">Добавить в админ-панели</a>.
+</p>
+{% endif %}
+
+</div>
+
+<style>
+details[open] .details-icon { transform: rotate(180deg); }
+details summary::-webkit-details-marker { display: none; }
+@media (max-width: 640px) {
+  [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+}
+</style>
+
+{% endblock %}

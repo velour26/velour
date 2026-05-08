@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Оплата заказа {{ order.number }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:var(--space-2xl);padding-bottom:var(--space-4xl);max-width:600px">
+
+  <div class="breadcrumb">
+    <a href="/">Главная</a><span class="breadcrumb-sep">›</span>
+    <a href="/cart/">Корзина</a><span class="breadcrumb-sep">›</span>
+    <span>Оплата</span>
+  </div>
+
+  <div class="card" style="padding:var(--space-2xl);text-align:center">
+    <div style="font-size:3rem;margin-bottom:var(--space-lg)">
+      {% if order.payment_method == 'sbp' %}📱
+      {% elif order.payment_method == 'card' %}💳
+      {% else %}✅{% endif %}
+    </div>
+
+    <h1 style="font-size:1.8rem;margin-bottom:var(--space-sm)">
+      {% if order.payment_method == 'cash' %}Заказ оформлен!
+      {% elif order.payment_method == 'sbp' %}Оплата через СБП
+      {% else %}Оплата картой{% endif %}
+    </h1>
+
+    <p style="color:var(--color-text-muted);margin-bottom:var(--space-xl)">
+      Заказ <strong>{{ order.number }}</strong> · {{ order.total|floatformat:0 }} ₽
+    </p>
+
+    {% if order.payment_method == 'cash' %}
+      <div style="background:var(--color-accent-light);border-radius:var(--radius-lg);padding:var(--space-xl);margin-bottom:var(--space-xl);text-align:left">
+        <div style="font-weight:700;margin-bottom:8px">Оплата при получении</div>
+        <p style="font-size:.9rem;color:var(--color-text-muted);margin:0">Оплатите заказ наличными или картой при получении. Курьер свяжется с вами для уточнения времени доставки.</p>
+      </div>
+      <a href="/orders/success/{{ order.number }}/" class="btn btn-dark btn-lg btn-block">Готово</a>
+
+    {% elif order.payment_method == 'sbp' %}
+      <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:var(--space-xl);margin-bottom:var(--space-xl)">
+        <div style="font-size:.85rem;color:var(--color-text-muted);margin-bottom:var(--space-lg)">Отсканируйте QR-код в приложении банка</div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ request.build_absolute_uri }}orders/success/{{ order.number }}/"
+             alt="QR для оплаты" width="200" height="200"
+             style="display:block;margin:0 auto var(--space-lg);border-radius:var(--radius-md);background:#fff;padding:6px">
+        <div style="font-size:.85rem;color:var(--color-text-muted)">Или переведите <strong>{{ order.total|floatformat:0 }} ₽</strong> по номеру телефона магазина</div>
+      </div>
+      <button class="btn btn-primary btn-lg btn-block" id="sbp-pay-btn" onclick="simulatePayment()">
+        Я оплатил(а)
+      </button>
+
+    {% elif order.payment_method == 'card' %}
+      <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:var(--space-xl);margin-bottom:var(--space-xl);text-align:left">
+        <div style="font-weight:600;margin-bottom:var(--space-lg)">Данные карты</div>
+        <div class="form-group">
+          <label class="form-label">Номер карты</label>
+          <input type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19" id="card-number" oninput="formatCard(this)">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label">Срок действия</label>
+            <input type="text" class="form-control" placeholder="ММ/ГГ" maxlength="5" id="card-expiry" oninput="formatExpiry(this)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">CVV</label>
+            <input type="password" class="form-control" placeholder="•••" maxlength="3">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Имя на карте</label>
+          <input type="text" class="form-control" placeholder="IVAN IVANOV" style="text-transform:uppercase">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-lg btn-block" onclick="simulatePayment()">
+        Оплатить {{ order.total|floatformat:0 }} ₽
+      </button>
+      <div style="font-size:.75rem;color:var(--color-text-muted);margin-top:var(--space-md)">🔒 Защищённое соединение · Данные карты не сохраняются</div>
+    {% endif %}
+
+    <a href="/catalog/" style="display:block;margin-top:var(--space-lg);font-size:.85rem;color:var(--color-text-muted)">Вернуться в каталог</a>
+  </div>
+</div>
+
+<script>
+function simulatePayment() {
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Обрабатываем...';
+  setTimeout(() => { window.location.href = '/orders/success/{{ order.number }}/'; }, 2000);
+}
+function formatCard(el) {
+  el.value = el.value.replace(/\D/g,'').replace(/(\d{4})/g,'$1 ').trim();
+}
+function formatExpiry(el) {
+  el.value = el.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1/$2');
+}
+</script>
+{% endblock %}
+

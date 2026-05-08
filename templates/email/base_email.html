@@ -1,0 +1,44 @@
+{% load static %}{% load i18n %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block subject %}VELOUR{% endblock %}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f1ec; color: #1a1a1a; }
+    .email-wrap { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
+    .email-header { background: #1a1a2e; padding: 28px 32px; border-radius: 12px 12px 0 0; text-align: center; }
+    .email-logo { font-size: 1.8rem; font-weight: 700; color: #fff; letter-spacing: .05em; }
+    .email-logo span { color: #c9a96e; }
+    .email-body { background: #fff; padding: 36px 32px; border-radius: 0 0 12px 12px; }
+    .email-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 16px; color: #1a1a2e; }
+    .email-text { font-size: .95rem; line-height: 1.7; color: #4a4a4a; margin-bottom: 20px; }
+    .email-btn { display: inline-block; background: #c9a96e; color: #fff !important; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: .95rem; text-decoration: none; margin: 16px 0; }
+    .email-divider { height: 1px; background: #e8e3db; margin: 24px 0; }
+    .email-footer { text-align: center; font-size: .78rem; color: #9e9890; padding: 20px 0 0; }
+    .email-footer a { color: #c9a96e; text-decoration: none; }
+    .order-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    .order-table th { background: #f4f1ec; padding: 10px 12px; font-size: .8rem; text-align: left; text-transform: uppercase; letter-spacing: .05em; color: #6b6560; }
+    .order-table td { padding: 12px; border-bottom: 1px solid #f0ece5; font-size: .9rem; }
+    .total-row td { font-weight: 700; font-size: 1rem; padding-top: 16px; border-bottom: none; }
+    .info-box { background: #f4f1ec; border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-size: .88rem; line-height: 1.7; }
+  </style>
+</head>
+<body>
+<div class="email-wrap">
+  <div class="email-header">
+    <div class="email-logo">VEL<span>OUR</span></div>
+  </div>
+  <div class="email-body">
+    {% block body %}{% endblock %}
+  </div>
+  <div class="email-footer">
+    <p>© {% now "Y" %} VELOUR · <a href="{% block unsubscribe_url %}#{% endblock %}">Отписаться от рассылки</a></p>
+    <p style="margin-top:4px">Это письмо отправлено автоматически, не отвечайте на него.</p>
+  </div>
+</div>
+</body>
+</html>
+

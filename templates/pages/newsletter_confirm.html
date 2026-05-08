@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Подписка — VELOUR{% endblock %}
+{% block content %}
+<div class="container" style="padding-top:var(--space-4xl);padding-bottom:var(--space-4xl);max-width:520px;text-align:center">
+  {% if success %}
+    <div style="font-size:4rem;margin-bottom:var(--space-lg)">🎉</div>
+    <h1 style="font-family:var(--font-display);font-size:2rem;margin-bottom:var(--space-md)">Подписка подтверждена!</h1>
+    <p style="color:var(--color-text-muted);margin-bottom:var(--space-2xl)">Теперь вы будете первыми узнавать о новинках и акциях VELOUR.</p>
+  {% else %}
+    <div style="font-size:4rem;margin-bottom:var(--space-lg)">😕</div>
+    <h1 style="font-family:var(--font-display);font-size:2rem;margin-bottom:var(--space-md)">Неверная ссылка</h1>
+    <p style="color:var(--color-text-muted);margin-bottom:var(--space-2xl)">Ссылка недействительна или уже была использована.</p>
+  {% endif %}
+  <a href="/" class="btn btn-dark btn-lg">На главную</a>
+</div>
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% load static %}
+<a href="/catalog/{{ product.category.slug }}/{{ product.slug }}/" class="product-card">
+  <div class="product-card-img">
+    {% with product.main_image as img %}
+      {% if img %}
+        <img src="{{ img.image.url }}" alt="{{ product.name }}" loading="lazy">
+      {% else %}
+        <div style="width:100%;height:100%;background:var(--color-bg-alt)"></div>
+      {% endif %}
+    {% endwith %}
+    <div class="product-card-badges">
+      {% if product.is_new %}<span class="badge badge-new">Новинка</span>{% endif %}
+      {% if product.discount_percent %}<span class="badge badge-sale">-{{ product.discount_percent }}%</span>{% endif %}
+    </div>
+    <div class="product-card-actions">
+      <button class="product-card-action-btn" title="{% if product.variants.all %}Выбрать{% else %}В корзину{% endif %}"
+              onclick="event.preventDefault();{% if product.variants.all %}window.location.href='/catalog/{{ product.category.slug }}/{{ product.slug }}/'{% else %}addToCart({{ product.id }}){% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="product-card-body">
+    <div class="product-card-category">{{ product.category.name }}</div>
+    <div class="product-card-name">{{ product.name }}</div>
+    <div class="product-card-prices">
+      <span class="product-card-price">{{ product.price|floatformat:0 }} ₽</span>
+      {% if product.old_price %}
+        <span class="product-card-old-price">{{ product.old_price|floatformat:0 }} ₽</span>
+        <span class="product-card-discount">-{{ product.discount_percent }}%</span>
+      {% endif %}
+    </div>
+  </div>
+  {% if product.variants.all %}
+  <div class="product-card-add" onclick="event.preventDefault();window.location.href='/catalog/{{ product.category.slug }}/{{ product.slug }}/'">Выбрать</div>
+  {% else %}
+  <div class="product-card-add" onclick="event.preventDefault();addToCart({{ product.id }})">В корзину</div>
+  {% endif %}
+</a>
+

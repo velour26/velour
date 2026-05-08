@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Корзина — {{ site_settings.site_name|default:"VELOUR" }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
+
+  <div class="breadcrumb">
+    <a href="/">Главная</a><span class="breadcrumb-sep">›</span><span>Корзина</span>
+  </div>
+
+  <h1 style="margin-bottom:var(--space-2xl)">Корзина</h1>
+
+  <div class="cart-layout">
+    <!-- Items -->
+    <div id="cart-container">
+      <div style="text-align:center;padding:60px 0">
+        <span class="spinner" style="border-color:var(--color-border);border-top-color:var(--color-accent);width:36px;height:36px;border-width:3px"></span>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div id="cart-summary" style="display:none">
+      <div class="cart-summary">
+        <h3 class="summary-title">Итого</h3>
+
+        <div class="summary-row">
+          <span class="summary-row-label">Товары</span>
+          <span class="summary-row-value summary-subtotal-val">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Доставка</span>
+          <span class="summary-row-value summary-delivery-val">—</span>
+        </div>
+        <div style="font-size:.78rem;color:var(--color-success);padding:4px 0;display:none" class="delivery-hint"></div>
+
+        <div class="summary-row summary-total">
+          <span class="summary-row-label">К оплате</span>
+          <span class="summary-row-value summary-total-val">—</span>
+        </div>
+
+        <a href="/orders/checkout/" class="btn btn-dark btn-block btn-lg" style="margin-top:var(--space-xl)" id="cart-checkout-btn">
+          Оформить заказ
+        </a>
+        <a href="/catalog/" class="btn btn-ghost btn-block" style="margin-top:var(--space-sm)">
+          Продолжить покупки
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}
+

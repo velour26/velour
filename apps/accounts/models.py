@@ -1,0 +1,60 @@
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+
+class User(AbstractUser):
+    class Role(models.TextChoices):
+        CUSTOMER = 'customer', 'Покупатель'
+        MANAGER = 'manager', 'Менеджер'
+        ADMIN = 'admin', 'Администратор'
+
+    email = models.EmailField(unique=True)
+    role = models.CharField(max_length=20, choices=Role.choices, default=Role.CUSTOMER)
+    phone = models.CharField(max_length=20, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    email_confirmed = models.BooleanField(default=False)
+    email_confirm_token = models.CharField(max_length=64, blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return self.email
+
+    @property
+    def is_manager(self):
+        return self.role in (self.Role.MANAGER, self.Role.ADMIN) or self.is_staff
+
+    @property
+    def is_admin_user(self):
+        return self.role == self.Role.ADMIN or self.is_superuser
+
+    def get_full_name(self):
+        full = f'{self.first_name} {self.last_name}'.strip()
+        return full or self.email
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses')
+    label = models.CharField(max_length=50, default='Домой')
+    city = models.CharField(max_length=100)
+    street = models.CharField(max_length=200)
+    apartment = models.CharField(max_length=50, blank=True)
+    postal_code = models.CharField(max_length=20)
+    is_default = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Адрес'
+        verbose_name_plural = 'Адреса'
+
+    def __str__(self):
+        return f'{self.city}, {self.street}'
+
+    def save(self, *args, **kwargs):
+        if self.is_default:
+            Address.objects.filter(user=self.user, is_default=True).exclude(pk=self.pk).update(is_default=False)
+        super().save(*args, **kwargs)

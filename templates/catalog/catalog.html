@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if current_category %}{{ current_category.name }} — {% endif %}Каталог{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="/">Главная</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="/catalog/">Каталог</a>
+    {% if current_category %}
+    <span class="breadcrumb-sep">›</span>
+    <span>{{ current_category.name }}</span>
+    {% endif %}
+  </div>
+
+  <h1 style="margin-bottom:var(--space-xl)">{% if current_category %}{{ current_category.name }}{% else %}Все товары{% endif %}</h1>
+
+  <!-- Subcategories -->
+  {% if current_category and current_category.subcategories.exists %}
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--space-xl)">
+    <button class="btn btn-sm btn-dark active" data-subcategory="">Все</button>
+    {% for sub in current_category.subcategories.all %}
+    <button class="btn btn-sm btn-secondary" data-subcategory="{{ sub.slug }}">{{ sub.name }}</button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="catalog-layout">
+
+    <!-- Filters sidebar -->
+    <aside class="filters-sidebar">
+      <div class="filters-header">
+        <span class="filters-title">Фильтры</span>
+        <button class="filters-clear">Сбросить</button>
+      </div>
+
+      <!-- Price -->
+      <div class="filter-group open">
+        <button class="filter-group-header">
+          Цена
+          <svg class="filter-group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="filter-group-body">
+          <div class="price-range">
+            <div class="price-range-inputs">
+              <input type="number" id="price-min" class="price-range-input" placeholder="От">
+              <span class="price-range-sep">—</span>
+              <input type="number" id="price-max" class="price-range-input" placeholder="До">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic filter groups from DB -->
+      {% for group in filter_groups %}
+      <div class="filter-group">
+        <button class="filter-group-header">
+          {{ group.name }}
+          <svg class="filter-group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="filter-group-body">
+          {% for option in group.options.all %}
+          <label class="filter-option">
+            <input type="checkbox" value="{{ option.id }}" data-group="{{ group.slug }}" data-label="{{ option.value }}">
+            <span class="filter-checkbox"></span>
+            {% if group.filter_type == 'color' and option.color_code %}
+              <span class="filter-color-dot" style="background:{{ option.color_code }}"></span>
+            {% endif %}
+            <span class="filter-label">{{ option.value }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+      <div style="padding:var(--space-lg)">
+        <button class="btn btn-secondary btn-block filters-close hide-mobile" onclick="document.querySelector('.filters-sidebar').classList.remove('open');document.querySelector('.overlay').classList.remove('active');document.body.style.overflow=''">Применить</button>
+      </div>
+    </aside>
+
+    <!-- Products area -->
+    <div>
+      <!-- Toolbar -->
+      <div class="catalog-toolbar">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button class="filters-mobile-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            Фильтры
+          </button>
+          <div id="products-count" class="catalog-count">Загрузка...</div>
+        </div>
+        <div class="catalog-sort">
+          <label for="catalog-sort">Сортировка:</label>
+          <select id="catalog-sort">
+            <option value="-created_at">Сначала новые</option>
+            <option value="price">По цене ↑</option>
+            <option value="-price">По цене ↓</option>
+            <option value="name">По названию</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Active filters -->
+      <div id="active-filters" class="active-filters"></div>
+
+      <!-- Loading -->
+      <div id="products-loading" style="text-align:center;padding:40px;display:none">
+        <span class="spinner" style="border-color:var(--color-border);border-top-color:var(--color-accent);width:32px;height:32px;border-width:3px"></span>
+      </div>
+
+      <!-- Grid -->
+      <div class="products-grid" id="products-grid"></div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  window.CATALOG_CATEGORY = '{{ current_category.slug|default:"" }}';
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/catalog.js' %}"></script>
+{% endblock %}
+

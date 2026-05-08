@@ -1,0 +1,53 @@
+:root {
+  /* Palette */
+  --color-primary: #1a1a2e;
+  --color-primary-light: #16213e;
+  --color-accent: #c9a96e;
+  --color-accent-hover: #b8915a;
+  --color-accent-light: #f5efe6;
+  --color-white: #ffffff;
+  --color-bg: #fafaf8;
+  --color-bg-alt: #f4f1ec;
+  --color-border: #e8e3db;
+  --color-border-light: #f0ece5;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6560;
+  --color-text-light: #9e9890;
+  --color-success: #2d7a4e;
+  --color-error: #c0392b;
+  --color-warning: #d68910;
+
+  /* Typography */
+  --font-main: 'Manrope', sans-serif;
+  --font-display: 'Cormorant Garamond', serif;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+
+  /* Sizes */
+  --container-max: 1400px;
+  --header-h: 72px;
+
+  /* Borders */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+  --shadow-card: 0 2px 8px rgba(26,26,46,.06);
+
+  /* Transitions */
+  --transition: 0.2s ease;
+  --transition-slow: 0.4s ease;
+}

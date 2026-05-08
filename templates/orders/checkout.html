@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Оформление заказа — {{ site_settings.site_name|default:"VELOUR" }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
+
+  <div class="breadcrumb">
+    <a href="/">Главная</a><span class="breadcrumb-sep">›</span>
+    <a href="/cart/">Корзина</a><span class="breadcrumb-sep">›</span>
+    <span>Оформление</span>
+  </div>
+
+  <h1 style="margin-bottom:var(--space-2xl)">Оформление заказа</h1>
+
+  <form id="checkout-form">
+    {% csrf_token %}
+    <div class="checkout-layout">
+
+      <!-- Left: form -->
+      <div>
+
+        <!-- Contact info -->
+        <div class="checkout-section">
+          <div class="checkout-section-title">
+            <div class="checkout-step-num">1</div>
+            Контактные данные
+          </div>
+          {% if user.is_authenticated %}
+          <div style="background:var(--color-accent-light);border-radius:var(--radius-md);padding:12px 16px;font-size:.88rem;margin-bottom:var(--space-lg)">
+            Заказ оформляется для: <strong>{{ user.email }}</strong>
+            {% if user.phone %} · {{ user.phone }}{% endif %}
+          </div>
+          {% else %}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)">
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">Имя и фамилия *</label>
+              <input type="text" name="guest_name" class="form-control" placeholder="Иван Иванов" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email *</label>
+              <input type="email" name="guest_email" class="form-control" placeholder="mail@example.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Телефон</label>
+              <input type="tel" name="guest_phone" class="form-control" placeholder="+7 (999) 000-00-00">
+            </div>
+          </div>
+
+          <!-- Create account toggle -->
+          <div style="border-top:1px solid var(--color-border-light);padding-top:var(--space-lg);margin-top:var(--space-sm)">
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.9rem;font-weight:500">
+              <input type="checkbox" id="create-account-toggle" style="width:18px;height:18px;accent-color:var(--color-accent)">
+              Создать аккаунт для отслеживания заказов
+            </label>
+            <div id="create-account-block" style="display:none;margin-top:var(--space-md)">
+              <div class="form-group">
+                <label class="form-label">Пароль</label>
+                <input type="password" name="account_password" class="form-control" placeholder="Минимум 8 символов" minlength="8">
+              </div>
+              <div style="font-size:.8rem;color:var(--color-text-muted)">Аккаунт будет создан на указанный email</div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Delivery address -->
+        <div class="checkout-section">
+          <div class="checkout-section-title">
+            <div class="checkout-step-num">2</div>
+            Адрес доставки
+          </div>
+
+          {% if user.is_authenticated and addresses %}
+          <div class="form-group">
+            <label class="form-label">Сохранённые адреса</label>
+            <select id="saved-address-select" class="form-control">
+              <option value="">— Ввести новый адрес —</option>
+              {% for addr in addresses %}
+              <option value="{{ addr.id }}"
+                data-city="{{ addr.city }}"
+                data-street="{{ addr.street }}"
+                data-apt="{{ addr.apartment }}"
+                data-postal="{{ addr.postal_code }}">
+                {{ addr.label }}: {{ addr.city }}, {{ addr.street }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endif %}
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)">
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">Город *</label>
+              <input type="text" name="delivery_city" id="delivery_city" class="form-control" placeholder="Москва" required>
+            </div>
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">Улица, дом *</label>
+              <input type="text" name="delivery_street" id="delivery_street" class="form-control" placeholder="ул. Пушкина, д. 10" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Квартира / офис</label>
+              <input type="text" name="delivery_apartment" id="delivery_apartment" class="form-control" placeholder="кв. 42">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Индекс *</label>
+              <input type="text" name="delivery_postal_code" id="delivery_postal_code" class="form-control" placeholder="123456" required>
+            </div>
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">Комментарий к заказу</label>
+              <textarea name="comment" class="form-control" rows="2" placeholder="Пожелания по доставке..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="checkout-section">
+          <div class="checkout-section-title">
+            <div class="checkout-step-num">3</div>
+            Способ оплаты
+          </div>
+
+          <div class="payment-methods">
+
+            <label class="payment-method selected">
+              <input type="radio" name="payment_method" value="cash" checked>
+              <div class="payment-radio"></div>
+              <div class="payment-method-info">
+                <div class="payment-method-name">При получении</div>
+                <div class="payment-method-desc">Наличными или картой курьеру</div>
+              </div>
+              <div style="font-size:1.5rem">💵</div>
+            </label>
+
+            <label class="payment-method">
+              <input type="radio" name="payment_method" value="sbp">
+              <div class="payment-radio"></div>
+              <div class="payment-method-info">
+                <div class="payment-method-name">СБП</div>
+                <div class="payment-method-desc">Система быстрых платежей</div>
+              </div>
+              <div style="font-size:1.5rem">📱</div>
+            </label>
+
+            <label class="payment-method">
+              <input type="radio" name="payment_method" value="card">
+              <div class="payment-radio"></div>
+              <div class="payment-method-info">
+                <div class="payment-method-name">Банковская карта</div>
+                <div class="payment-method-desc">Visa, Mastercard, МИР</div>
+              </div>
+              <div style="font-size:1.5rem">💳</div>
+            </label>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: summary -->
+      <div>
+        <div class="cart-summary" id="checkout-summary">
+          <h3 class="summary-title">Ваш заказ</h3>
+          <div id="checkout-items" style="margin-bottom:var(--space-lg)"></div>
+          <div class="summary-row">
+            <span class="summary-row-label">Товары</span>
+            <span class="summary-row-value summary-subtotal-val">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Доставка</span>
+            <span class="summary-row-value summary-delivery-val">—</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span class="summary-row-label">К оплате</span>
+            <span class="summary-row-value summary-total-val">—</span>
+          </div>
+          <button type="submit" class="btn btn-dark btn-block btn-lg" style="margin-top:var(--space-xl)">
+            Оформить заказ
+          </button>
+          <div style="font-size:.75rem;color:var(--color-text-muted);text-align:center;margin-top:var(--space-md)">
+            Нажимая «Оформить заказ», вы соглашаетесь с <a href="/terms/" style="color:var(--color-accent)">условиями</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/checkout.js' %}"></script>
+{% endblock %}
+
