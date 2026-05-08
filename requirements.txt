@@ -11,3 +11,4 @@ djangorestframework-simplejwt==5.3.1
 python-slugify==8.0.4
 Faker==33.1.0
 requests==2.32.3
+resend==2.30.0
