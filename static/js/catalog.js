@@ -282,6 +282,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Restore subcategory active state from URL
+  document.querySelectorAll('[data-subcategory]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.subcategory === state.subcategory);
+  });
+
   // Pre-fill sort from URL
   const sortEl = document.getElementById('catalog-sort');
   if (sortEl && state.ordering) sortEl.value = state.ordering;

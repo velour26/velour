@@ -6,6 +6,10 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from apps.newsletter.models import Subscriber
 import threading
+import logging
+import sys
+
+logger = logging.getLogger(__name__)
 
 
 class SubscribeView(APIView):
@@ -38,10 +42,11 @@ class SubscribeView(APIView):
                     html_message=html,
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[email],
-                    fail_silently=True,
+                    fail_silently=False,
                 )
-            except Exception:
-                pass
+                logger.info(f'Welcome email sent to {email}')
+            except Exception as e:
+                logger.error(f'Failed to send welcome email to {email}: {e}', exc_info=True)
         threading.Thread(target=send_welcome).start()
 
         return Response({'detail': 'Вы подписаны на рассылку!'}, status=201)
