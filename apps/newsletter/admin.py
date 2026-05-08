@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.utils import timezone
-from django.core.mail import send_mail
-from django.conf import settings
 from .models import Subscriber, Newsletter
+from apps.api.utils.email import send_email
 import threading
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(Subscriber)
@@ -33,14 +35,13 @@ class NewsletterAdmin(admin.ModelAdmin):
             )
             if recipients:
                 def send():
-                    send_mail(
-                        subject=newsletter.subject,
-                        message=newsletter.body_text or '',
-                        html_message=newsletter.body_html,
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipient_list=recipients,
-                        fail_silently=True,
+                    ok = send_email(
+                        recipients,
+                        newsletter.subject,
+                        newsletter.body_html or f'<p>{newsletter.body_text or ""}</p>'
                     )
+                    logger.info(f'Newsletter "{newsletter.subject}" to {len(recipients)} recipients: {"ok" if ok else "failed"}')
+
                 threading.Thread(target=send).start()
                 newsletter.status = Newsletter.Status.SENT
                 newsletter.sent_at = timezone.now()

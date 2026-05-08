@@ -12,6 +12,7 @@ from apps.api.serializers.orders import (
     CreateOrderSerializer, OrderListSerializer, OrderDetailSerializer
 )
 from apps.api.views.cart import get_or_create_cart
+from apps.api.utils.email import send_email
 import threading
 import logging
 
@@ -118,17 +119,10 @@ class CreateOrderView(APIView):
         def send_order_email():
             try:
                 html = render_to_string('email/order_confirm.html', {'order': order})
-                send_mail(
-                    subject=f'Заказ {order.number} подтверждён',
-                    message=f'Ваш заказ {order.number} принят.',
-                    html_message=html,
-                    from_email=django_settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[email_addr],
-                    fail_silently=False,
-                )
-                logger.info(f'Order confirm email sent to {email_addr} for order {order.number}')
+                ok = send_email(email_addr, f'Заказ {order.number} подтверждён', html)
+                logger.info(f'Order email to {email_addr}: {"ok" if ok else "failed"}')
             except Exception as e:
-                logger.error(f'Failed to send order email to {email_addr}: {e}', exc_info=True)
+                logger.error(f'Failed to send order email to {email_addr}: {e}')
         if email_addr:
             threading.Thread(target=send_order_email).start()
 

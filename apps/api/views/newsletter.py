@@ -1,13 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.conf import settings
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from apps.newsletter.models import Subscriber
+from apps.api.utils.email import send_email
 import threading
 import logging
-import sys
 
 logger = logging.getLogger(__name__)
 
@@ -36,19 +34,12 @@ class SubscribeView(APIView):
         def send_welcome():
             try:
                 html = render_to_string('email/welcome.html', {'name': name or email})
-                send_mail(
-                    subject='Добро пожаловать в VELOUR!',
-                    message='Вы подписаны на рассылку магазина VELOUR.',
-                    html_message=html,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[email],
-                    fail_silently=False,
-                )
-                logger.info(f'Welcome email sent to {email}')
+                ok = send_email(email, 'Добро пожаловать в VELOUR!', html)
+                logger.info(f'Welcome email to {email}: {"ok" if ok else "failed"}')
             except Exception as e:
-                logger.error(f'Failed to send welcome email to {email}: {e}', exc_info=True)
-        threading.Thread(target=send_welcome).start()
+                logger.error(f'Failed to send welcome email to {email}: {e}')
 
+        threading.Thread(target=send_welcome).start()
         return Response({'detail': 'Вы подписаны на рассылку!'}, status=201)
 
 
