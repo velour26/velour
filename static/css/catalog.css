@@ -207,7 +207,7 @@
   transform: rotate(45deg) translateY(-1px);
   display: block;
 }
-.filter-option input:checked ~ .filter-label { color: var(--color-text); font-weight: 500; }
+.filter-option:has(input:checked) .filter-label { color: var(--color-text); font-weight: 500; }
 
 .filter-color-dot {
   width: 16px; height: 16px;

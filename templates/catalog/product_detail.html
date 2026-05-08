@@ -75,9 +75,9 @@
           <div class="qty-value" id="product-qty">1</div>
           <button class="qty-btn qty-plus">+</button>
         </div>
-        <button class="btn btn-dark btn-lg" style="flex:1" id="add-to-cart-btn" onclick="addProductToCart()">
+        <button class="btn btn-dark btn-lg" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px" id="add-to-cart-btn" onclick="addProductToCart()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-          В корзину
+          <span>В корзину</span>
         </button>
         <button class="btn fav-btn-detail" id="detail-fav-btn" title="В избранное" onclick="toggleFavoriteDetail()">
           <svg id="detail-fav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
@@ -313,11 +313,11 @@ function refreshAddBtn() {
   const svgCart = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>';
   if (selectedStock !== null && selectedStock === 0) {
     addBtn.disabled = true;
-    addBtn.innerHTML = 'Нет в наличии';
+    addBtn.querySelector('span').textContent = 'Нет в наличии';
     addBtn.style.opacity = '0.5';
   } else {
     addBtn.disabled = false;
-    addBtn.innerHTML = `${svgCart} В корзину`;
+    addBtn.querySelector('span').textContent = 'В корзину';
     addBtn.style.opacity = '';
   }
 
