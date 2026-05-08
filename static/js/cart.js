@@ -14,15 +14,17 @@ function renderCart(data) {
   if (!container) return;
 
   if (!data.items || !data.items.length) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">🛍️</div>
-        <h3>Корзина пуста</h3>
-        <p>Добавьте товары из нашего каталога</p>
+    const layout = document.getElementById('cart-layout');
+    if (layout) {
+      layout.setAttribute('style', 'display:flex !important;justify-content:center;align-items:center;min-height:350px');
+      layout.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--space-4xl) var(--space-xl)">
+        <div style="font-size:4rem;margin-bottom:var(--space-lg);opacity:.4">🛍️</div>
+        <h3 style="margin-bottom:var(--space-md);color:var(--color-text)">Корзина пуста</h3>
+        <p style="color:var(--color-text-muted)">Добавьте товары из нашего каталога</p>
         <a href="/catalog/" class="btn btn-primary" style="margin-top:24px">Перейти в каталог</a>
       </div>`;
-    if (summaryContainer) summaryContainer.style.display = 'none';
-    document.getElementById('cart-checkout-btn')?.setAttribute('disabled', 'disabled');
+    }
     return;
   }
 
