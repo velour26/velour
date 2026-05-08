@@ -284,7 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Restore subcategory active state from URL
   document.querySelectorAll('[data-subcategory]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.subcategory === state.subcategory);
+    const isActive = btn.dataset.subcategory === state.subcategory;
+    btn.classList.toggle('active', isActive);
   });
 
   // Pre-fill sort from URL

@@ -39,7 +39,7 @@
     {% elif order.payment_method == 'sbp' %}
       <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:var(--space-xl);margin-bottom:var(--space-xl)">
         <div style="font-size:.85rem;color:var(--color-text-muted);margin-bottom:var(--space-lg)">Отсканируйте QR-код в приложении банка</div>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ request.build_absolute_uri }}orders/success/{{ order.number }}/"
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://velour-7dna.onrender.com/orders/success/{{ order.number }}/"
              alt="QR для оплаты" width="200" height="200"
              style="display:block;margin:0 auto var(--space-lg);border-radius:var(--radius-md);background:#fff;padding:6px">
         <div style="font-size:.85rem;color:var(--color-text-muted)">Или переведите <strong>{{ order.total|floatformat:0 }} ₽</strong> по номеру телефона магазина</div>

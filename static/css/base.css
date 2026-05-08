@@ -76,6 +76,8 @@ p:last-child { margin-bottom: 0; }
 .btn-ghost:hover { color: var(--color-text); background: var(--color-bg-alt); }
 .btn-dark { background: var(--color-primary); color: var(--color-white); }
 .btn-dark:hover { background: var(--color-primary-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-dark.active { background: var(--color-primary-light); box-shadow: var(--shadow-sm); }
+.btn-secondary.active { background: var(--color-primary); color: var(--color-white); }
 .btn-sm { padding: 8px 18px; font-size: 0.8rem; }
 .btn-lg { padding: 16px 40px; font-size: 1rem; }
 .btn-block { width: 100%; justify-content: center; }
