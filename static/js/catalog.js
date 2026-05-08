@@ -28,16 +28,30 @@ async function toggleFavorite(productId, event) {
 }
 
 async function syncFavorites() {
-  if (document.body.dataset.authenticated !== 'true') return;
-  try {
-    const res = await apiRequest('/api/favorites/status/');
-    _favorites = new Set(res.favorite_ids);
-    saveFavorites();
-    document.querySelectorAll('.fav-btn').forEach(b => {
-      const id = parseInt(b.dataset.id);
-      b.classList.toggle('active', _favorites.has(id));
-    });
-  } catch {}
+  if (document.body.dataset.authenticated === 'true') {
+    try {
+      const res = await apiRequest('/api/favorites/status/');
+      _favorites = new Set(res.favorite_ids);
+      saveFavorites();
+    } catch {}
+  }
+  document.querySelectorAll('.fav-btn').forEach(b => {
+    const id = parseInt(b.dataset.id);
+    b.classList.toggle('active', _favorites.has(id));
+  });
+  updateFavBadge();
+}
+
+function updateFavBadge() {
+  const badge = document.getElementById('fav-count-badge');
+  if (!badge) return;
+  const count = _favorites.size;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
 }
 
 const state = {

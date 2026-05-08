@@ -182,8 +182,13 @@ function initNewsletter() {
 // Header search
 function initHeaderSearch() {
   function handleSearch(input) {
-    if (!input) return;
-    const doSearch = () => {
+    const clearBtn = input?.parentElement?.querySelector('.search-clear');
+    function updateClear() {
+      if (clearBtn) clearBtn.style.display = input.value ? 'flex' : 'none';
+    }
+    if (clearBtn) clearBtn.addEventListener('click', () => { input.value = ''; updateClear(); input.focus(); });
+
+    function doSearch() {
       const q = input.value.trim();
       if (!q) return;
       const onCatalog = window.location.pathname.startsWith('/catalog/') && typeof state !== 'undefined';
@@ -196,14 +201,14 @@ function initHeaderSearch() {
       } else {
         window.location.href = `/catalog/?search=${encodeURIComponent(q)}`;
       }
-    };
+    }
     input.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+    if (clearBtn) { input.addEventListener('input', updateClear); updateClear(); }
   }
 
   handleSearch(document.getElementById('header-search-input'));
   handleSearch(document.getElementById('mobile-search-input'));
 
-  // If arriving at catalog with ?search=, pre-fill header input
   const urlSearch = new URLSearchParams(window.location.search).get('search');
   if (urlSearch) {
     const input = document.getElementById('header-search-input');

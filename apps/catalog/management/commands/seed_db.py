@@ -255,7 +255,7 @@ class Command(BaseCommand):
         s.site_description = 'Магазин современной одежды. Качество, стиль и комфорт в каждой вещи.'
         s.phone = '+7 (800) 555-35-35'
         s.email = 'hello@velour.ru'
-        s.address = 'Москва, ул. Тверская, д. 1'
+        s.address = 'Курск, ул. Ленина, д. 30'
         s.vk_url = 'https://vk.com/velour'
         s.telegram_url = 'https://t.me/velour'
         s.delivery_info = (

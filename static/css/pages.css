@@ -522,4 +522,23 @@
   .auth-card { padding: var(--space-xl); }
   .product-add-section { flex-direction: column; }
   .product-add-section .btn { width: 100%; justify-content: center; }
+  .qty-control { display: inline-flex; }
+  .qty-btn { width: 36px; height: 40px; font-size: 1rem; }
+  .qty-value { width: 40px; height: 40px; font-size: 0.85rem; }
+  .checkout-form .form-group input,
+  .checkout-form .form-group select { font-size: 16px; }
+  .product-detail-layout { grid-template-columns: 1fr; gap: var(--space-xl); }
+  .product-gallery { max-width: 100%; }
+}
+
+@media (max-width: 425px) {
+  .checkout-section { padding: var(--space-md); }
+  .payment-method { padding: var(--space-sm) var(--space-md); }
+  .checkout-layout { gap: var(--space-lg); }
+}
+
+@media (max-width: 375px) {
+  .auth-card { padding: var(--space-lg); }
+  .footer-main { grid-template-columns: 1fr; gap: var(--space-xl); }
+  .cart-summary { padding: var(--space-lg); }
 }

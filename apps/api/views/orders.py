@@ -35,11 +35,14 @@ class CreateOrderView(APIView):
         user = request.user if request.user.is_authenticated else None
         if not user and data.get('create_account') and data.get('guest_email') and data.get('account_password'):
             if not User.objects.filter(email=data['guest_email']).exists():
+                parts = (data.get('guest_name') or '').split()
                 user = User.objects.create_user(
                     email=data['guest_email'],
                     username=data['guest_email'],
                     password=data['account_password'],
-                    first_name=data.get('guest_name', '').split()[0] if data.get('guest_name') else '',
+                    first_name=parts[0] if parts else '',
+                    last_name=parts[1] if len(parts) > 1 else '',
+                    phone=data.get('guest_phone', ''),
                 )
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 

@@ -166,4 +166,18 @@
   .header-nav, .header-search { display: none; }
   .menu-toggle { display: flex; }
   .mobile-nav { display: block; }
+  .site-header .container { padding: 0 var(--space-md); }
+}
+
+@media (max-width: 480px) {
+  .header-inner { gap: var(--space-sm); }
+  .logo { font-size: 1.3rem; }
+  .header-action-btn { width: 36px; height: 36px; }
+  .header-action-btn svg { width: 18px; height: 18px; }
+}
+
+@media (max-width: 375px) {
+  .logo { font-size: 1.1rem; }
+  .header-actions { gap: 2px; }
+  .header-action-btn { width: 32px; height: 32px; }
 }
