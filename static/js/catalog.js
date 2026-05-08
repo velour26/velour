@@ -249,9 +249,15 @@ function initCatalogFilters() {
   document.querySelectorAll('[data-subcategory]').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
-      state.subcategory = link.dataset.subcategory;
-      document.querySelectorAll('[data-subcategory]').forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
+      const sub = link.dataset.subcategory;
+      state.subcategory = sub;
+      document.querySelectorAll('[data-subcategory]').forEach(l => {
+        const isAllEmpty = l.dataset.subcategory === '';
+        const isActive = sub === '' ? isAllEmpty : l.dataset.subcategory === sub;
+        l.classList.toggle('active', isActive);
+        l.classList.toggle('btn-dark', isActive);
+        l.classList.toggle('btn-secondary', !isActive);
+      });
       refreshFiltersAndLoad();
     });
   });
@@ -284,7 +290,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Restore subcategory active state from URL
   document.querySelectorAll('[data-subcategory]').forEach(btn => {
-    const isActive = btn.dataset.subcategory === state.subcategory;
+    const isEmpty = btn.dataset.subcategory === '';
+    const isActive = !state.subcategory ? isEmpty : btn.dataset.subcategory === state.subcategory;
     btn.classList.toggle('active', isActive);
   });
 
