@@ -16,6 +16,14 @@ RUN python manage.py collectstatic --noinput
 
 RUN python scripts/download_fonts.py
 
+RUN chmod +x ./entrypoint.sh
+
 EXPOSE 8000
 
-CMD ["gunicorn", "config.wsgi:application", "--workers", "2", "--bind", "0.0.0.0:8000", "--timeout", "120"]
+ENV PYTHON_VERSION=3.11.0
+ENV DJANGO_SETTINGS_MODULE=config.settings
+ENV DEBUG=True
+ENV ALLOWED_HOSTS=.onrender.com,localhost,127.0.0.1
+ENV PORT=8000
+
+ENTRYPOINT ["./entrypoint.sh"]
