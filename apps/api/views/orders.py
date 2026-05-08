@@ -12,6 +12,7 @@ from apps.api.serializers.orders import (
     CreateOrderSerializer, OrderListSerializer, OrderDetailSerializer
 )
 from apps.api.views.cart import get_or_create_cart
+import threading
 
 
 class CreateOrderView(APIView):
@@ -109,9 +110,9 @@ class CreateOrderView(APIView):
 
         cart.items.all().delete()
 
-        # Email подтверждение
         email_addr = order.user.email if order.user else order.guest_email
-        if email_addr:
+
+        def send_order_email():
             try:
                 html = render_to_string('email/order_confirm.html', {'order': order})
                 send_mail(
@@ -124,6 +125,8 @@ class CreateOrderView(APIView):
                 )
             except Exception:
                 pass
+        if email_addr:
+            threading.Thread(target=send_order_email).start()
 
         return Response({'order_number': order.number, 'order_id': order.pk}, status=status.HTTP_201_CREATED)
 

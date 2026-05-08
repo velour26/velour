@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Subscriber, Newsletter
+import threading
 
 
 @admin.register(Subscriber)
@@ -31,14 +32,16 @@ class NewsletterAdmin(admin.ModelAdmin):
                 Subscriber.objects.filter(is_active=True).values_list('email', flat=True)
             )
             if recipients:
-                send_mail(
-                    subject=newsletter.subject,
-                    message=newsletter.body_text or '',
-                    html_message=newsletter.body_html,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=recipients,
-                    fail_silently=True,
-                )
+                def send():
+                    send_mail(
+                        subject=newsletter.subject,
+                        message=newsletter.body_text or '',
+                        html_message=newsletter.body_html,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=recipients,
+                        fail_silently=True,
+                    )
+                threading.Thread(target=send).start()
                 newsletter.status = Newsletter.Status.SENT
                 newsletter.sent_at = timezone.now()
                 newsletter.recipients_count = len(recipients)

@@ -1,10 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.conf import settings
 from apps.newsletter.models import Subscriber
+import threading
 
 
 class SubscribeView(APIView):
@@ -28,21 +29,20 @@ class SubscribeView(APIView):
             else:
                 return Response({'detail': 'Вы уже подписаны на рассылку'})
 
-        # Приветственное письмо (не блокирует ответ)
-        try:
-            html = render_to_string('email/welcome.html', {
-                'name': name or email,
-            })
-            send_mail(
-                subject='Добро пожаловать в VELOUR!',
-                message='Вы подписаны на рассылку магазина VELOUR.',
-                html_message=html,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[email],
-                fail_silently=True,
-            )
-        except Exception:
-            pass
+        def send_welcome():
+            try:
+                html = render_to_string('email/welcome.html', {'name': name or email})
+                send_mail(
+                    subject='Добро пожаловать в VELOUR!',
+                    message='Вы подписаны на рассылку магазина VELOUR.',
+                    html_message=html,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email],
+                    fail_silently=True,
+                )
+            except Exception:
+                pass
+        threading.Thread(target=send_welcome).start()
 
         return Response({'detail': 'Вы подписаны на рассылку!'}, status=201)
 

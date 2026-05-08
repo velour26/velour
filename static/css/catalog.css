@@ -186,6 +186,7 @@
   transition: var(--transition);
 }
 .filter-option:hover { color: var(--color-text); }
+.filter-option.active .filter-label { color: var(--color-text); font-weight: 500; }
 .filter-option input[type="checkbox"] { display: none; }
 .filter-checkbox {
   width: 18px; height: 18px;
@@ -207,7 +208,6 @@
   transform: rotate(45deg) translateY(-1px);
   display: block;
 }
-.filter-option:has(input:checked) .filter-label { color: var(--color-text); font-weight: 500; }
 
 .filter-color-dot {
   width: 16px; height: 16px;

@@ -101,7 +101,7 @@ function renderProductCard(p) {
         <div class="product-card-badges">${badgeNew}${badgeSale}</div>
         <div class="product-card-actions">
           <button class="product-card-action-btn fav-btn ${_favorites.has(p.id) ? 'active' : ''}" data-id="${p.id}" title="${_favorites.has(p.id) ? 'Убрать из избранного' : 'В избранное'}" onclick="event.preventDefault();toggleFavorite(${p.id},event)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <svg viewBox="0 0 24 24" fill="transparent" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </button>
           <button class="product-card-action-btn" title="${cartLabel}" onclick="event.preventDefault();${cartAction}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
@@ -222,6 +222,7 @@ function initCatalogFilters() {
       } else {
         state.filters[group] = state.filters[group].filter(i => i !== id);
       }
+      cb.closest('.filter-option').classList.toggle('active', cb.checked);
       refreshFiltersAndLoad();
     });
   });
@@ -273,6 +274,18 @@ function initCatalogFilters() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Restore filter state from URL params
+  Object.entries(state.filters).forEach(([group, ids]) => {
+    ids.forEach(id => {
+      const cb = document.querySelector(`input[data-group="${group}"][value="${id}"]`);
+      if (cb) { cb.checked = true; cb.closest('.filter-option').classList.add('active'); }
+    });
+  });
+
+  // Pre-fill sort from URL
+  const sortEl = document.getElementById('catalog-sort');
+  if (sortEl && state.ordering) sortEl.value = state.ordering;
+
   // Pre-fill inputs from URL params
   if (state.search) {
     const inp = document.getElementById('catalog-search');

@@ -170,7 +170,7 @@ function initNewsletter() {
       if (!email) return;
       try {
         const res = await apiRequest('/api/newsletter/subscribe/', 'POST', { email, name });
-        showToast(res.detail);
+        if (res.detail) showToast(res.detail);
         form.reset();
       } catch (err) {
         showToast(err.detail || 'Ошибка подписки', 'error');

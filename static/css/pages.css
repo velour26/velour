@@ -191,16 +191,10 @@
 
 .product-add-section { display: flex; gap: var(--space-md); align-items: stretch; }
 
-.fav-btn-detail {
-  width: 52px; height: 52px; flex-shrink: 0;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-md);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--color-text-muted);
-  transition: var(--transition);
-  background: var(--color-white);
-}
+.fav-btn-detail { border: 1.5px solid var(--color-border); }
 .fav-btn-detail:hover { border-color: var(--color-error); color: var(--color-error); }
+.fav-btn-detail.active { border-color: var(--color-error); color: var(--color-error); }
+.fav-btn-detail.active svg { fill: currentColor; stroke: currentColor; }
 
 .product-share-row {
   display: flex;
