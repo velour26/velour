@@ -35,6 +35,7 @@
 │  ├─ orders/
 │  └─ pages/
 ├─ config/
+├─ docs/
 ├─ media/
 ├─ scripts/
 ├─ seed_data/
@@ -58,6 +59,7 @@
 - Django-проект живёт в корне репозитория, рядом с `manage.py`;
 - `apps/` содержит прикладные Django-модули;
 - `config/` содержит настройки и корневой URLConf;
+- `docs/` содержит инструкции по PostgreSQL/Render и переносу данных;
 - `seed_data/` и `media/` содержат demo-изображения и runtime media;
 - `build.sh`, `Dockerfile`, `Procfile` и `render.yaml` относятся к деплою.
 
@@ -74,7 +76,7 @@
 
 Ключевые файлы:
 
-- `settings.py` - `INSTALLED_APPS`, SQLite, static/media, DRF, Jazzmin, email, CORS, logging;
+- `settings.py` - `INSTALLED_APPS`, SQLite fallback, PostgreSQL через `DATABASE_URL`, static/media, DRF, Jazzmin, email, CORS, logging;
 - `urls.py` - объединяет `/admin/`, `/api/`, публичные страницы и app-level маршруты;
 - `middleware.py` - project middleware;
 - `wsgi.py`, `asgi.py` - production entrypoints.
@@ -149,8 +151,10 @@
 
 - product lookup на публичных страницах использует slug;
 - встроенный `<slug:>` не подходит для кириллических slug, поэтому в `urls.py` используется `<str:category_slug>`;
+- односложный URL `/catalog/<product_slug>/` поддержан как fallback: если slug не является категорией, но является товаром, `CategoryView` редиректит на канонический `/catalog/<category_slug>/<product_slug>/`;
 - `Product.main_image` берёт главное изображение или первое доступное;
 - `ProductImage.save()` поддерживает только одно главное изображение на товар.
+- новые `Review` создаются с `is_approved=False`; публичные списки, счётчики и рейтинг товара используют только `approved_reviews`.
 
 ### 3.4 `apps.cart`
 
@@ -322,7 +326,13 @@ apps/api/
 Для пользователя избранное хранится в `catalog.Favorite`.  
 Для гостевого режима есть API-синхронизация через cache/session flow в `GuestFavoritesSyncView`.
 
-### 4.4 Рассылки
+### 4.4 Отзывы и модерация
+
+`apps.api.views.catalog.ProductViewSet.add_review` создаёт отзыв с `is_approved=False`.  
+`ProductDetailView` передаёт в шаблон только `approved_reviews`, `approved_reviews_count` и среднюю оценку по одобренным отзывам.  
+До одобрения в админке отзыв не отображается на странице товара, не увеличивает `Отзывы (N)` и не влияет на звёзды рейтинга.
+
+### 4.5 Рассылки
 
 Подписка идёт через `/api/newsletter/subscribe/`.  
 Админка хранит подписчиков и черновики рассылок.  
@@ -382,15 +392,17 @@ Action `send_newsletter` отправляет письма активным по
 
 ### 6.2 `seed_data/`
 
-Содержит исходные изображения для demo-каталога:
+Содержит исходные изображения для demo-каталога и может временно содержать fixture для переноса БД:
 
 ```text
 seed_data/images/VL-01002/01.jpg
 seed_data/images/VL-01002/02.jpg
+seed_data/current_db.json
 ...
 ```
 
 `import_images.py` сопоставляет артикулы товаров с папками `seed_data/images/<article>/` и переносит изображения в Django media.
+`current_db.json` не нужен для обычной разработки; он используется только для разового `loaddata` при переносе SQLite -> PostgreSQL.
 
 ### 6.3 Принципы организации
 
@@ -405,6 +417,7 @@ seed_data/images/VL-01002/02.jpg
 
 - `seed_db.py` - наполнение БД demo-данными;
 - `import_images.py` - импорт изображений товаров из `seed_data/images/`.
+- `dumpdata`/`loaddata` - штатные Django-команды для fixture-переноса данных между SQLite и PostgreSQL.
 
 Скрипты:
 
@@ -428,11 +441,13 @@ Seed создаёт:
 - `.env.example`;
 - `requirements.txt`;
 - `build.sh`;
-- `render.yaml`.
+- `render.yaml`;
+- `docs/POSTGRESQL_RENDER_MIGRATION.md`.
 
 По умолчанию:
 
-- локальная БД - `db.sqlite3`;
+- локальная БД - `db.sqlite3`, если `DATABASE_URL` не задан;
+- production БД - PostgreSQL через `DATABASE_URL`;
 - `MEDIA_ROOT` - `media/`;
 - `STATIC_ROOT` - `staticfiles/`;
 - `STATICFILES_STORAGE` - WhiteNoise compressed manifest storage;
@@ -440,7 +455,38 @@ Seed создаёт:
 - timezone - `Europe/Moscow`;
 - кастомный user model - `accounts.User`.
 
-## 9. Практика для разработчиков
+Важные env vars:
+
+- `DATABASE_URL` - подключение PostgreSQL, например Render Internal Database URL;
+- `SEED_DEMO_DATA=false` - отключает demo seed в `build.sh`;
+- `DJANGO_LOAD_FIXTURE=seed_data/current_db.json` - разово загружает fixture во время build;
+- `EMAIL_*` - SMTP-настройки;
+- `CORS_ALLOWED_ORIGINS` - внешние frontend origins, если нужны.
+
+`build.sh` выполняет установку зависимостей, `collectstatic`, миграции, загрузку локальных шрифтов, затем опциональный `loaddata` из `DJANGO_LOAD_FIXTURE` и demo seed, если товары отсутствуют и `SEED_DEMO_DATA` не выключен.
+
+## 9. PostgreSQL и перенос данных
+
+Для Render production-сценария:
+
+1. Создать Render Postgres в том же регионе, что и web service.
+2. Добавить `DATABASE_URL=<Internal Database URL>` в web service.
+3. Если переносится текущая SQLite БД, добавить `SEED_DEMO_DATA=false`.
+4. Выгрузить SQLite в `seed_data/current_db.json` через `dumpdata`.
+5. На Windows перед `dumpdata` включить UTF-8:
+
+```powershell
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+```
+
+6. Закоммитить fixture и задать `DJANGO_LOAD_FIXTURE=seed_data/current_db.json`.
+7. После успешного импорта очистить `DJANGO_LOAD_FIXTURE`.
+
+Подробно: `docs/POSTGRESQL_RENDER_MIGRATION.md`.
+
+## 10. Практика для разработчиков
 
 Рекомендуемый порядок анализа новой задачи:
 
@@ -479,7 +525,7 @@ Seed создаёт:
 2. `config/settings.py` блок `JAZZMIN_SETTINGS`
 3. `static/css/admin_custom.css`
 
-## 10. Контроль качества
+## 11. Контроль качества
 
 Минимальная проверка:
 
@@ -521,6 +567,7 @@ Smoke-проверка API:
 
 - проверить миграции;
 - проверить seed на чистой БД;
+- если меняется production data flow, проверить `dumpdata`/`loaddata` на отдельной базе;
 - выборочно открыть admin change forms;
 - проверить API serializer output;
 - пройти сценарий "товар -> корзина -> checkout -> заказ".

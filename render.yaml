@@ -16,6 +16,10 @@ services:
         generateValue: true
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
+      - key: DATABASE_URL
+        sync: false
+      - key: DJANGO_LOAD_FIXTURE
+        sync: false
       - key: EMAIL_BACKEND
         value: "django.core.mail.backends.smtp.EmailBackend"
       - key: EMAIL_HOST
@@ -32,4 +36,3 @@ services:
         sync: false
       - key: DEFAULT_FROM_EMAIL
         sync: false
-

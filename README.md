@@ -2,7 +2,7 @@
 
 VELOUR - полнофункциональный интернет-магазин одежды на Django 5.1 и Django REST Framework. В проекте есть публичный каталог, фильтры, карточки товаров с вариантами, корзина, оформление заказов, личный кабинет, избранное, email-рассылки, редактируемые CMS-страницы и кастомизированная Jazzmin-админка.
 
-Проект рассчитан на локальную разработку без обязательных внешних сервисов: SQLite, локальные `media`-файлы, Django templates и vanilla JS. SMTP, Gunicorn/WhiteNoise и Render-конфигурация подключены для production-сценариев.
+Проект рассчитан на локальную разработку без обязательных внешних сервисов: SQLite, локальные `media`-файлы, Django templates и vanilla JS. Для production поддерживается PostgreSQL через `DATABASE_URL`, SMTP, Gunicorn/WhiteNoise и Render-конфигурация.
 
 ---
 
@@ -15,7 +15,7 @@ VELOUR - полнофункциональный интернет-магазин 
 - **Оформление заказа** - заказ для гостя или пользователя, адрес доставки, способы оплаты, создание аккаунта при checkout, списание остатков.
 - **Личный кабинет** - профиль, адреса, история заказов, детали заказа, смена пароля.
 - **Избранное** - хранение для авторизованных пользователей и синхронизация гостевых избранных через API.
-- **Отзывы** - оценки и тексты отзывов с модерацией через админку.
+- **Отзывы** - новые отзывы создаются как `is_approved=False`, не попадают в публичный счётчик/рейтинг до одобрения и модерируются через админку.
 - **Рассылки** - подписчики, приветственные письма, отписка и отправка newsletter из админки.
 - **CMS-страницы** - главная, о магазине, доставка, контакты, возврат, оферта, политика конфиденциальности и редактируемые секции.
 - **Админка** - Jazzmin, inline-изображения, варианты товаров, адреса пользователей, статусы заказов, страницы, баннеры и рассылки.
@@ -29,7 +29,7 @@ VELOUR - полнофункциональный интернет-магазин 
 |---|---|
 | Backend | Python 3.11, Django 5.1.4, Django REST Framework 3.15 |
 | Admin | django-jazzmin 3.0.1 + кастомный CSS |
-| DB | SQLite локально |
+| DB | SQLite локально, PostgreSQL через `DATABASE_URL` на Render/production |
 | Frontend | Django templates, HTML, CSS, Vanilla JS |
 | API | DRF ViewSets/APIView, django-filter, Simple JWT |
 | Media | Django `ImageField`, Pillow, локальные `media/` и `seed_data/images/` |
@@ -71,6 +71,13 @@ DEBUG=True
 SECRET_KEY=your-secret-key-here
 ALLOWED_HOSTS=localhost,127.0.0.1
 
+# Production DB, если нужно. Если не задано, используется SQLite db.sqlite3.
+# DATABASE_URL=postgres://user:password@host:5432/dbname
+
+# Render deploy helpers
+# SEED_DEMO_DATA=false
+# DJANGO_LOAD_FIXTURE=seed_data/current_db.json
+
 # Email через SMTP
 EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 EMAIL_HOST=smtp-relay.brevo.com
@@ -85,7 +92,7 @@ DEFAULT_FROM_EMAIL=VELOUR <noreply@velour.ru>
 CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
-В `render.yaml` также предусмотрены SMTP-настройки для Yandex/SSL и автоматическая генерация `SECRET_KEY`.
+В `render.yaml` также предусмотрены SMTP-настройки для Yandex/SSL, автоматическая генерация `SECRET_KEY`, `DATABASE_URL` для PostgreSQL и `DJANGO_LOAD_FIXTURE` для разовой загрузки fixture при деплое.
 
 ---
 
@@ -249,6 +256,52 @@ DRF pagination: `PAGE_SIZE = 24`.
 
 ---
 
+## PostgreSQL на Render
+
+Локально проект работает с `db.sqlite3`, если переменная `DATABASE_URL` не задана. На Render для PostgreSQL нужно:
+
+1. Создать Render Postgres в том же регионе, что и web service.
+2. Скопировать `Internal Database URL`.
+3. В Render web service добавить:
+
+```env
+DATABASE_URL=<Internal Database URL>
+SEED_DEMO_DATA=false
+```
+
+`SEED_DEMO_DATA=false` нужен, если production база должна наполняться не demo seed, а переносом текущей SQLite БД.
+
+### Перенос текущей SQLite БД в PostgreSQL
+
+На машине с рабочим Python выгрузить текущую БД:
+
+```powershell
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+
+python manage.py dumpdata `
+  --natural-foreign `
+  --natural-primary `
+  --exclude contenttypes `
+  --exclude auth.permission `
+  --indent 2 `
+  -o seed_data/current_db.json
+```
+
+UTF-8 переменные важны для Windows: без них `dumpdata` может упасть на символах вроде `₽` с ошибкой `charmap codec can't encode character`.
+
+Затем закоммитить `seed_data/current_db.json`, добавить в Render:
+
+```env
+DJANGO_LOAD_FIXTURE=seed_data/current_db.json
+SEED_DEMO_DATA=false
+```
+
+После успешного деплоя удалить или очистить `DJANGO_LOAD_FIXTURE`, чтобы fixture не загружался повторно на каждом build. Подробная инструкция лежит в [docs/POSTGRESQL_RENDER_MIGRATION.md](docs/POSTGRESQL_RENDER_MIGRATION.md).
+
+---
+
 ## Структура проекта
 
 ```text
@@ -264,9 +317,10 @@ DRF pagination: `PAGE_SIZE = 24`.
 ├── config/             # settings, urls, middleware, wsgi/asgi
 ├── media/              # uploaded/generated media
 ├── scripts/            # загрузка шрифтов и изображений
-├── seed_data/          # исходные demo-изображения товаров
+├── seed_data/          # demo-изображения и опциональные fixture для переноса БД
 ├── static/             # CSS, JS, images
 ├── templates/          # HTML и email-шаблоны
+├── docs/               # инструкции по деплою и миграции данных
 ├── manage.py
 ├── requirements.txt
 ├── build.sh
@@ -291,6 +345,10 @@ python manage.py import_images --replace
 python manage.py createsuperuser
 python manage.py collectstatic
 python manage.py shell
+
+# Data migration
+python manage.py dumpdata --natural-foreign --natural-primary --exclude contenttypes --exclude auth.permission --indent 2 -o seed_data/current_db.json
+python manage.py loaddata seed_data/current_db.json
 
 # Assets
 python scripts/download_fonts.py
@@ -323,6 +381,9 @@ gunicorn config.wsgi:application --workers 2 --bind 0.0.0.0:8000 --timeout 120
 - Установите сильный `SECRET_KEY`.
 - Переведите `DEBUG=False` после проверки production-настроек.
 - Настройте `ALLOWED_HOSTS` и домен Render/сервера.
+- Подключите PostgreSQL через `DATABASE_URL`.
+- Для переноса текущей SQLite БД используйте `dumpdata`/`loaddata` и `DJANGO_LOAD_FIXTURE`.
+- Если импортируете реальную fixture, задайте `SEED_DEMO_DATA=false`, чтобы demo seed не заполнил пустую production БД.
 - Выполните `python manage.py collectstatic`.
 - Выполните `python manage.py migrate`.
 - Запустите `python manage.py seed_db` только если нужны demo-данные.
@@ -330,7 +391,7 @@ gunicorn config.wsgi:application --workers 2 --bind 0.0.0.0:8000 --timeout 120
 - Проверьте хранение `media/`: в текущей конфигурации файлы лежат локально в репозитории/файловой системе.
 - Смените или удалите demo-пользователей.
 
-На Render сборка выполняется через `build.sh`: установка зависимостей, `collectstatic`, миграции, загрузка шрифтов и seed только при пустой таблице товаров.
+На Render сборка выполняется через `build.sh`: установка зависимостей, `collectstatic`, миграции, загрузка шрифтов, опциональный `loaddata` из `DJANGO_LOAD_FIXTURE` и seed только при пустой таблице товаров, если `SEED_DEMO_DATA` не выключен.
 
 ---
 
@@ -373,6 +434,18 @@ admin1@velour.ru / Admin123!
 ### Не отправляются письма
 
 Проверьте `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USE_TLS`/`EMAIL_USE_SSL`, логин, пароль приложения и `DEFAULT_FROM_EMAIL`.
+
+### `dumpdata` падает с `charmap codec can't encode character`
+
+На Windows включите UTF-8 перед выгрузкой:
+
+```powershell
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+```
+
+После этого повторите `python manage.py dumpdata ... -o seed_data/current_db.json`.
 
 ---
 
