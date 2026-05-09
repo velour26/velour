@@ -600,6 +600,7 @@
   .checkout-layout .checkout-section input,
   .checkout-layout .checkout-section select { font-size: 16px; }
   .checkout-section-title { font-size: 1rem; }
+  .profile-form-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 425px) {
@@ -621,10 +622,13 @@
   .payment-method-desc { font-size: 0.72rem; }
   .orders-table th, .orders-table td { padding: var(--space-sm); font-size: 0.78rem; }
   .account-sidebar { padding: var(--space-md); }
+  .account-sidebar .account-user-info { padding: var(--space-md); }
+  .account-avatar { width: 48px; height: 48px; font-size: 1.2rem; }
   .account-nav-link { padding: 8px var(--space-sm); font-size: 0.82rem; }
   .product-name { font-size: 1.3rem; }
   .product-price-current { font-size: 1.6rem; }
   .product-add-section { gap: var(--space-sm); }
+  .profile-form-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 375px) {

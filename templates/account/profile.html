@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Личный кабинет{% endblock %}
+{% block extra_css %}
+<style>
+.profile-form-grid { grid-template-columns: 1fr 1fr; }
+.profile-form-grid .form-group { margin-bottom: 0; }
+@media (max-width: 480px) {
+  .profile-form-grid { grid-template-columns: 1fr; }
+  .profile-form-grid .form-group { grid-column: 1; }
+}
+@media (max-width: 390px) {
+  .account-sidebar .account-user-info { padding: var(--space-md); }
+  .account-avatar { width: 48px; height: 48px; font-size: 1.2rem; }
+}
+</style>
+{% endblock %}
 {% block content %}
 <div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
   <h1 style="margin-bottom:var(--space-2xl)">Личный кабинет</h1>
@@ -58,10 +72,10 @@
 
       <!-- Settings tab -->
       <div id="settings" class="account-tab">
-        <div class="card" style="padding:var(--space-xl)">
+        <div class="card" style="padding:var(--space-xl);overflow-x:auto">
           <h3 style="margin-bottom:var(--space-xl)">Личные данные</h3>
           <form id="profile-form">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)" class="profile-form-grid">
               <div class="form-group">
                 <label class="form-label">Имя</label>
                 <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}">
