@@ -80,6 +80,7 @@ class CreateOrderView(APIView):
 
         order = Order.objects.create(
             user=user,
+            session_key=request.session.session_key or '',
             guest_email=data.get('guest_email', ''),
             guest_name=data.get('guest_name', ''),
             guest_phone=data.get('guest_phone', ''),
@@ -128,6 +129,9 @@ class CreateOrderView(APIView):
                 logger.error(f'Failed to send order email to {email_addr}: {e}')
         if email_addr:
             threading.Thread(target=send_order_email).start()
+
+        # Запоминаем номер заказа в сессии
+        request.session['last_order_number'] = order.number
 
         return Response({'order_number': order.number, 'order_id': order.pk}, status=status.HTTP_201_CREATED)
 

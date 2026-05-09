@@ -2,11 +2,22 @@
 
 const _urlParams = new URLSearchParams(window.location.search);
 
-// Favorites (guest: localStorage; auth: synced from backend)
+// Favorites (guest: localStorage + session; auth: synced from backend)
 const _favKey = 'velour_favorites';
 let _favorites = new Set(JSON.parse(localStorage.getItem(_favKey) || '[]'));
 
-function saveFavorites() { localStorage.setItem(_favKey, JSON.stringify([..._favorites])); }
+function saveFavorites() {
+  localStorage.setItem(_favKey, JSON.stringify([..._favorites]));
+  syncFavToSession();
+}
+
+async function syncFavToSession() {
+  if (document.body.dataset.authenticated !== 'true') {
+    try {
+      await apiRequest('/api/favorites/sync/', 'POST', { ids: [..._favorites] });
+    } catch {}
+  }
+}
 
 async function toggleFavorite(productId, event) {
   if (event) event.preventDefault();
@@ -34,6 +45,14 @@ async function syncFavorites() {
       const res = await apiRequest('/api/favorites/status/');
       _favorites = new Set(res.favorite_ids);
       saveFavorites();
+    } catch {}
+  } else {
+    try {
+      const res = await apiRequest('/api/favorites/sync/', 'GET');
+      if (res.ids && res.ids.length > 0) {
+        res.ids.forEach(id => _favorites.add(id));
+        saveFavorites();
+      }
     } catch {}
   }
   document.querySelectorAll('.fav-btn').forEach(b => {

@@ -403,11 +403,20 @@ async function toggleFavoriteDetail() {
     } catch { return; }
   } else {
     _favsD.has(PRODUCT_ID) ? _favsD.delete(PRODUCT_ID) : _favsD.add(PRODUCT_ID);
+    syncFavToSession();
   }
   localStorage.setItem(_favKeyD, JSON.stringify([..._favsD]));
   updateDetailFavBtn();
   if (typeof showToast === 'function')
     showToast(_favsD.has(PRODUCT_ID) ? 'Добавлено в избранное' : 'Убрано из избранного');
+}
+
+async function syncFavToSession() {
+  if (document.body.dataset.authenticated !== 'true') {
+    try {
+      await apiRequest('/api/favorites/sync/', 'POST', { ids: [..._favsD] });
+    } catch {}
+  }
 }
 
 document.addEventListener('DOMContentLoaded', updateDetailFavBtn);

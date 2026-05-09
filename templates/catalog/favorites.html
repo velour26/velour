@@ -107,6 +107,12 @@ function updateFavBadge() {
   }
 }
 
+async function syncFavToSession() {
+  try {
+    await fetch('/api/favorites/sync/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids: [..._favorites] }) });
+  } catch {}
+}
+
 async function loadGuestFavorites() {
   if (_favorites.size === 0) {
     const empty = document.getElementById('fav-empty');
@@ -178,6 +184,7 @@ function removeFavorite(productId, btn) {
   _favorites.delete(productId);
   localStorage.setItem(_favKey, JSON.stringify([..._favorites]));
   updateFavBadge();
+  syncFavToSession();
 
   const card = btn.closest('.fav-card-wrap');
   if (card) {

@@ -8,7 +8,7 @@ from apps.api.views.accounts import (
     AddressListCreateView, AddressDetailView
 )
 from apps.api.views.newsletter import SubscribeView, ConfirmSubscriptionView, UnsubscribeView
-from apps.api.views.favorites import FavoriteListView, FavoriteToggleView, FavoriteStatusView
+from apps.api.views.favorites import FavoriteListView, FavoriteToggleView, FavoriteStatusView, GuestFavoritesSyncView
 
 router = DefaultRouter()
 router.register('categories', CategoryViewSet, basename='category')
@@ -45,6 +45,7 @@ urlpatterns = [
     path('favorites/', FavoriteListView.as_view(), name='api-favorites'),
     path('favorites/status/', FavoriteStatusView.as_view(), name='api-favorites-status'),
     path('favorites/<int:product_id>/', FavoriteToggleView.as_view(), name='api-favorite-toggle'),
+    path('favorites/sync/', GuestFavoritesSyncView.as_view(), name='api-favorites-sync'),
 
     # Newsletter
     path('newsletter/subscribe/', SubscribeView.as_view(), name='api-subscribe'),
