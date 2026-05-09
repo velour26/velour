@@ -9,6 +9,8 @@ python manage.py migrate --noinput
 
 if [ "${RUN_IMPORT:-false}" = "true" ]; then
   echo "RUN_IMPORT=true detected, loading fixture..."
+  mkdir -p media/products
+  cp -r seed_data/images/* media/products/ 2>/dev/null || true
   python manage.py loaddata seed_data/current_db.json --verbosity=2
 fi
 
