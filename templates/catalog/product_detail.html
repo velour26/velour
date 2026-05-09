@@ -407,6 +407,12 @@ async function toggleFavoriteDetail() {
   }
   localStorage.setItem(_favKeyD, JSON.stringify([..._favsD]));
   updateDetailFavBtn();
+  const badge = document.getElementById('fav-count-badge');
+  if (badge) {
+    const count = _favsD.size;
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
   if (typeof showToast === 'function')
     showToast(_favsD.has(PRODUCT_ID) ? 'Добавлено в избранное' : 'Убрано из избранного');
 }

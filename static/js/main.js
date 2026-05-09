@@ -204,7 +204,22 @@ function initHeaderSearch() {
     function updateClear() {
       if (clearBtn) clearBtn.style.display = input.value ? 'flex' : 'none';
     }
-    if (clearBtn) clearBtn.addEventListener('click', () => { input.value = ''; updateClear(); input.focus(); });
+    if (clearBtn) clearBtn.addEventListener('click', () => {
+      input.value = '';
+      updateClear();
+      const onCatalog = window.location.pathname.startsWith('/catalog/') && typeof state !== 'undefined';
+      if (onCatalog) {
+        state.search = '';
+        state.page = 1;
+        if (typeof loadProducts === 'function') loadProducts();
+        const catalogSearch = document.getElementById('catalog-search');
+        if (catalogSearch) catalogSearch.value = '';
+        const url = new URL(window.location);
+        url.searchParams.delete('search');
+        history.replaceState(null, '', url);
+      }
+      input.focus();
+    });
 
     function doSearch() {
       const q = input.value.trim();
