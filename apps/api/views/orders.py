@@ -146,11 +146,17 @@ class OrderListView(generics.ListAPIView):
 
 class OrderDetailView(generics.RetrieveAPIView):
     serializer_class = OrderDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     lookup_field = 'number'
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user).prefetch_related('items', 'status_history')
+        qs = Order.objects.prefetch_related('items', 'status_history')
+        if self.request.user.is_authenticated:
+            return qs.filter(user=self.request.user)
+        sk = self.request.session.session_key
+        if sk:
+            return qs.filter(session_key=sk)
+        return qs.none()
 
 
 class OrderCancelView(APIView):

@@ -44,20 +44,23 @@ class OrderSuccessView(TemplateView):
 class SBPSuccessView(TemplateView):
     template_name = 'orders/sbp_success.html'
 
-    def get_context_data(self, order_number=None, **kwargs):
-        ctx = super().get_context_data(**kwargs)
+    def get(self, request, order_number=None, **kwargs):
         qs = Order.objects.filter(number=order_number)
-        if self.request.user.is_authenticated:
-            qs = qs.filter(user=self.request.user)
+        if request.user.is_authenticated:
+            qs = qs.filter(user=request.user)
         else:
-            sk = self.request.session.session_key
+            sk = request.session.session_key
             if sk:
                 qs = qs.filter(session_key=sk)
             if not qs.exists():
                 qs = Order.objects.filter(number=order_number, user__isnull=True)
-        get_object_or_404(qs)
-        ctx['order_number'] = order_number
-        return ctx
+        order = get_object_or_404(qs)
+        if order.payment_status != 'paid':
+            order.payment_status = 'paid'
+            order.status = Order.Status.PAID
+            order.save(update_fields=['payment_status', 'status'])
+        ctx = self.get_context_data(order_number=order_number)
+        return self.render_to_response(ctx)
 
 
 class MyOrdersView(LoginRequiredMixin, TemplateView):

@@ -43,13 +43,10 @@
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://velour-7dna.onrender.com/orders/sbp-success/{{ order.number }}/"
              alt="QR для оплаты" width="220" height="220"
              style="display:block;margin:0 auto var(--space-lg);border-radius:var(--radius-md);background:#fff;padding:12px">
-        <div style="font-size:.82rem;color:var(--color-text-muted);padding:12px;background:#fff;border-radius:var(--radius-md);border:1px solid var(--color-border)">
-          После сканирования нажмите "Готово" в приложении банка.<br>Вы будете автоматически перенаправлены на страницу подтверждения.
+        <div id="sbp-status" style="font-size:.82rem;color:var(--color-text-muted);padding:12px;background:#fff;border-radius:var(--radius-md);border:1px solid var(--color-border)">
+          Дождитесь подтверждения оплаты в приложении банка...
         </div>
       </div>
-      <a href="/orders/sbp-success/{{ order.number }}/" class="btn btn-primary btn-lg btn-block">
-        Открыть страницу оплаты
-      </a>
       <div style="font-size:.78rem;color:var(--color-text-light);margin-top:var(--space-sm)">
         Наведите камеру телефона на QR-код для оплаты
       </div>
@@ -87,6 +84,26 @@
 </div>
 
 <script>
+let _pollTries = 0;
+(function pollSBP() {
+  const statusEl = document.getElementById('sbp-status');
+  if (!statusEl) return;
+  fetch(`/api/orders/{{ order.number }}/`)
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data) return;
+      if (data.payment_status === 'paid') {
+        statusEl.textContent = '✓ Оплата подтверждена!';
+        statusEl.style.color = 'var(--color-success)';
+        statusEl.style.borderColor = 'var(--color-success)';
+        setTimeout(() => { window.location.href = '/orders/success/{{ order.number }}/'; }, 1200);
+      } else if (_pollTries++ < 60) {
+        setTimeout(pollSBP, 2000);
+      }
+    })
+    .catch(() => { if (_pollTries++ < 60) setTimeout(pollSBP, 2000); });
+})();
+
 function checkSBP(btn) {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Проверяем...';
