@@ -25,6 +25,7 @@ async function toggleFavorite(productId, event) {
     b.classList.toggle('active', isFav);
     b.title = isFav ? 'Убрать из избранного' : 'В избранное';
   });
+  updateFavBadge();
 }
 
 async function syncFavorites() {

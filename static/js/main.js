@@ -64,10 +64,9 @@ async function addToCart(productId, variantId = null, quantity = 1) {
 // Mobile menu
 function initMobileMenu() {
   const toggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('.mobile-nav');
-  const overlay = document.querySelector('.overlay');
+  const nav = document.getElementById('mobile-nav');
+  const overlay = document.getElementById('overlay');
   if (!toggle || !nav) return;
-
   toggle.addEventListener('click', () => {
     nav.classList.toggle('open');
     overlay?.classList.toggle('active');
@@ -78,6 +77,20 @@ function initMobileMenu() {
     overlay.classList.remove('active');
     document.body.style.overflow = '';
   });
+}
+
+function updateFavBadge() {
+  const badge = document.getElementById('fav-count-badge');
+  if (!badge) return;
+  const key = 'velour_favorites';
+  const favs = JSON.parse(localStorage.getItem(key) || '[]');
+  const count = favs.length;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
 }
 
 // Hero slider
@@ -265,4 +278,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initNewsletter();
   initQtyControls();
   initHeaderSearch();
+  if (typeof updateFavBadge === 'function') updateFavBadge();
 });

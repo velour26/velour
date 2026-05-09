@@ -113,8 +113,15 @@ LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email (Resend API)
-EMAIL_BACKEND = env('EMAIL_BACKEND', default='apps.api.backends.resend.ResendEmailBackend')
+# Email (Yandex SMTP)
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.yandex.ru')
+EMAIL_PORT = env.int('EMAIL_PORT', default=465)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=False)
+EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', default=True)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='VELOUR <noreply@velour.ru>')
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='VELOUR <noreply@velour.ru>')
 
 # DRF

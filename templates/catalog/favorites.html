@@ -16,20 +16,7 @@
     <span style="font-size:.9rem;color:var(--color-text-muted)" id="fav-count"></span>
   </div>
 
-  <div id="fav-guest-prompt" style="display:none" class="empty-state" style="padding:var(--space-4xl) 0">
-    <div class="empty-state-icon">
-      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
-        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-      </svg>
-    </div>
-    <h3>Войдите, чтобы видеть избранное</h3>
-    <p>После авторизации ваше избранное сохраняется между устройствами</p>
-    <a href="/account/login/?next=/catalog/favorites/" class="btn btn-primary" style="margin-top:var(--space-lg)">Войти</a>
-  </div>
-
-  <div class="products-grid" id="favorites-grid" style="display:none"></div>
-
-  <div id="fav-empty-guest" style="display:none" class="empty-state" style="padding:var(--space-4xl) 0">
+  <div id="fav-empty" style="display:none" class="empty-state" style="padding:var(--space-4xl) 0">
     <div class="empty-state-icon">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--color-border)">
         <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
@@ -39,6 +26,8 @@
     <p>Добавляйте товары в избранное, нажимая на ♡ на карточке товара</p>
     <a href="/catalog/" class="btn btn-primary" style="margin-top:var(--space-lg)">Перейти в каталог</a>
   </div>
+
+  <div class="products-grid" id="favorites-grid" style="display:none"></div>
 
   {% if user.is_authenticated and favorites %}
   <div class="products-grid" id="fav-auth-grid">
@@ -120,10 +109,13 @@ function updateFavBadge() {
 
 async function loadGuestFavorites() {
   if (_favorites.size === 0) {
-    document.getElementById('fav-empty-guest').style.display = 'flex';
-    document.getElementById('fav-empty-guest').style.flexDirection = 'column';
-    document.getElementById('fav-empty-guest').style.alignItems = 'center';
-    document.getElementById('fav-empty-guest').style.justifyContent = 'center';
+    const empty = document.getElementById('fav-empty');
+    if (empty) {
+      empty.style.display = 'flex';
+      empty.style.flexDirection = 'column';
+      empty.style.alignItems = 'center';
+      empty.style.justifyContent = 'center';
+    }
     return;
   }
   try {
@@ -132,13 +124,14 @@ async function loadGuestFavorites() {
     const data = await res.json();
     renderFavorites(data.results);
   } catch {
-    document.getElementById('fav-empty-guest').style.display = 'flex';
+    const empty = document.getElementById('fav-empty');
+    if (empty) { empty.style.display = 'flex'; empty.style.flexDirection = 'column'; empty.style.alignItems = 'center'; empty.style.justifyContent = 'center'; }
   }
 }
 
 function renderFavorites(products) {
   const grid = document.getElementById('favorites-grid');
-  const empty = document.getElementById('fav-empty-guest');
+  const empty = document.getElementById('fav-empty');
   const authGrid = document.getElementById('fav-auth-grid');
 
   if (!products || products.length === 0) {
@@ -194,7 +187,12 @@ function removeFavorite(productId, btn) {
     setTimeout(() => {
       card.remove();
       updateFavBadge();
-      if (_favorites.size === 0) loadGuestFavorites();
+      if (_favorites.size === 0) {
+        const empty = document.getElementById('fav-empty');
+        const grid = document.getElementById('favorites-grid');
+        if (grid) grid.style.display = 'none';
+        if (empty) { empty.style.display = 'flex'; empty.style.flexDirection = 'column'; empty.style.alignItems = 'center'; empty.style.justifyContent = 'center'; }
+      }
     }, 270);
   }
 }
@@ -202,22 +200,12 @@ function removeFavorite(productId, btn) {
 document.addEventListener('DOMContentLoaded', () => {
   const isAuth = document.body.dataset.authenticated === 'true';
   const hasAuthFavs = document.getElementById('fav-auth-grid');
-  const prompt = document.getElementById('fav-guest-prompt');
-  const empty = document.getElementById('fav-empty-guest');
 
   if (isAuth && hasAuthFavs) {
     updateFavBadge();
-  } else if (!isAuth) {
-    if (_favorites.size === 0 && prompt) {
-      prompt.style.display = 'flex';
-      prompt.style.flexDirection = 'column';
-      prompt.style.alignItems = 'center';
-      prompt.style.justifyContent = 'center';
-    } else {
-      loadGuestFavorites();
-    }
+  } else {
+    loadGuestFavorites();
   }
-  updateFavBadge();
 });
 </script>
 {% endblock %}

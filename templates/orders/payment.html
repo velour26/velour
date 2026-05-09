@@ -44,14 +44,14 @@
              alt="QR для оплаты" width="220" height="220"
              style="display:block;margin:0 auto var(--space-lg);border-radius:var(--radius-md);background:#fff;padding:12px">
         <div style="font-size:.82rem;color:var(--color-text-muted);padding:12px;background:#fff;border-radius:var(--radius-md);border:1px solid var(--color-border)">
-          После оплаты нажмите "Проверить оплату"<br>или отсканируйте QR-код камерой телефона
+          После сканирования нажмите "Готово" в приложении банка.<br>Вы будете автоматически перенаправлены на страницу подтверждения.
         </div>
       </div>
-      <button class="btn btn-primary btn-lg btn-block" id="sbp-pay-btn" onclick="checkSBP(this)">
-        Проверить оплату
-      </button>
+      <a href="/orders/sbp-success/{{ order.number }}/" class="btn btn-primary btn-lg btn-block">
+        Открыть страницу оплаты
+      </a>
       <div style="font-size:.78rem;color:var(--color-text-light);margin-top:var(--space-sm)">
-        Оплата подтверждается автоматически при сканировании QR-кода
+        Наведите камеру телефона на QR-код для оплаты
       </div>
 
     {% elif order.payment_method == 'card' %}

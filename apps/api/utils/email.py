@@ -1,22 +1,23 @@
-import resend
-import os
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def send_email(to, subject, html):
-    api_key = os.environ.get('RESEND_API_KEY', '')
-    email_from = os.environ.get('EMAIL_FROM', 'VELOUR <velour@resend.dev>')
-    if not api_key:
-        return False
+    recipients = to if isinstance(to, list) else [to]
     try:
-        recipients = to if isinstance(to, list) else [to]
-        resend.Emails.send({
-            'from': email_from,
-            'to': recipients,
-            'subject': subject,
-            'html': html,
-        })
+        send_mail(
+            subject=subject,
+            message='',
+            html_message=html,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=recipients,
+            fail_silently=False,
+        )
         return True
     except Exception as e:
-        import logging
-        logging.error(f'Resend error: {e}')
+        logger.error(f'Email send failed: {e}')
         return False
