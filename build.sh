@@ -7,6 +7,9 @@ pip install -r requirements.txt
 python manage.py collectstatic --noinput
 python manage.py migrate --noinput
 
+echo ">>> RUN_IMPORT=${RUN_IMPORT:-unset}"
+echo ">>> CI=${CI:-unset}"
+
 if [ "${RUN_IMPORT:-false}" = "true" ]; then
   echo "RUN_IMPORT=true detected, loading fixture..."
   mkdir -p media/products
