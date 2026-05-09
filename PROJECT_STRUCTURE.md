@@ -460,10 +460,11 @@ Seed создаёт:
 - `DATABASE_URL` - подключение PostgreSQL, например Render Internal Database URL;
 - `SEED_DEMO_DATA=false` - отключает demo seed в `build.sh`;
 - `DJANGO_LOAD_FIXTURE=seed_data/current_db.json` - разово загружает fixture во время build;
+- `IMPORT_PRODUCT_IMAGES=true` - пересобирает `ProductImage` из committed `media/products` по префиксу артикула;
 - `EMAIL_*` - SMTP-настройки;
 - `CORS_ALLOWED_ORIGINS` - внешние frontend origins, если нужны.
 
-`build.sh` выполняет установку зависимостей, `collectstatic`, миграции, загрузку локальных шрифтов, затем опциональный `loaddata` из `DJANGO_LOAD_FIXTURE` и demo seed, если товары отсутствуют и `SEED_DEMO_DATA` не выключен.
+`build.sh` выполняет установку зависимостей, `collectstatic`, миграции, загрузку локальных шрифтов, затем опциональный `loaddata` из `DJANGO_LOAD_FIXTURE`, опциональный `import_images --flat-dir media/products --replace` при `IMPORT_PRODUCT_IMAGES=true` и demo seed, если товары отсутствуют и `SEED_DEMO_DATA` не выключен.
 
 ## 9. PostgreSQL и перенос данных
 
@@ -482,7 +483,8 @@ $env:PYTHONIOENCODING = "utf-8"
 ```
 
 6. Закоммитить fixture и задать `DJANGO_LOAD_FIXTURE=seed_data/current_db.json`.
-7. После успешного импорта очистить `DJANGO_LOAD_FIXTURE`.
+7. Если product image records нужно восстановить из committed `media/products`, задать `IMPORT_PRODUCT_IMAGES=true`.
+8. После успешного импорта очистить `DJANGO_LOAD_FIXTURE`; `IMPORT_PRODUCT_IMAGES` можно выключить после проверки картинок.
 
 Подробно: `docs/POSTGRESQL_RENDER_MIGRATION.md`.
 

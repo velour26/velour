@@ -20,6 +20,8 @@ services:
         sync: false
       - key: DJANGO_LOAD_FIXTURE
         sync: false
+      - key: IMPORT_PRODUCT_IMAGES
+        value: "false"
       - key: EMAIL_BACKEND
         value: "django.core.mail.backends.smtp.EmailBackend"
       - key: EMAIL_HOST

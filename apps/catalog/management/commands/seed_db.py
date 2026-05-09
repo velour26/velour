@@ -318,12 +318,20 @@ class Command(BaseCommand):
     def _create_categories(self, filters):
         from apps.catalog.models import Category, SubCategory, SubSubCategory
         cat_data = {}
+        category_images = {
+            0: 'categories/female.jpg',
+            1: 'categories/male.jpg',
+            2: 'categories/acs.jpg',
+        }
 
         for ci, (cat_name, subcats) in enumerate(CATALOG.items()):
             slug = make_slug(cat_name, Category)
             cat, _ = Category.objects.get_or_create(slug=slug, defaults={
                 'name': cat_name, 'sort_order': ci, 'is_active': True
             })
+            if not cat.image and ci in category_images:
+                cat.image = category_images[ci]
+                cat.save(update_fields=['image'])
             # attach all filter groups to category
             for g_slug, (g, _) in filters.items():
                 cat.filter_groups.add(g)

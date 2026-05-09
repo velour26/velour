@@ -15,6 +15,11 @@ if [ -n "$DJANGO_LOAD_FIXTURE" ]; then
   python manage.py loaddata "$DJANGO_LOAD_FIXTURE"
 fi
 
+# Optional rebuild of ProductImage records from committed media/products files.
+if [ "${IMPORT_PRODUCT_IMAGES:-false}" = "true" ]; then
+  python manage.py import_images --flat-dir media/products --replace
+fi
+
 # Seed DB only if products table is empty and demo seed is not disabled.
 python manage.py shell -c "
 import os

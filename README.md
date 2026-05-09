@@ -77,6 +77,7 @@ ALLOWED_HOSTS=localhost,127.0.0.1
 # Render deploy helpers
 # SEED_DEMO_DATA=false
 # DJANGO_LOAD_FIXTURE=seed_data/current_db.json
+# IMPORT_PRODUCT_IMAGES=true
 
 # Email через SMTP
 EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
@@ -298,7 +299,19 @@ DJANGO_LOAD_FIXTURE=seed_data/current_db.json
 SEED_DEMO_DATA=false
 ```
 
-После успешного деплоя удалить или очистить `DJANGO_LOAD_FIXTURE`, чтобы fixture не загружался повторно на каждом build. Подробная инструкция лежит в [docs/POSTGRESQL_RENDER_MIGRATION.md](docs/POSTGRESQL_RENDER_MIGRATION.md).
+Если после переноса БД нужно пересобрать связи изображений товаров по файлам из `media/products`, добавьте:
+
+```env
+IMPORT_PRODUCT_IMAGES=true
+```
+
+При деплое `build.sh` выполнит:
+
+```bash
+python manage.py import_images --flat-dir media/products --replace
+```
+
+После успешного деплоя удалить или очистить `DJANGO_LOAD_FIXTURE`, чтобы fixture не загружался повторно на каждом build. `IMPORT_PRODUCT_IMAGES` можно оставить `true`, если нужно каждый раз восстанавливать связи из committed media, или выключить после первого успешного импорта. Подробная инструкция лежит в [docs/POSTGRESQL_RENDER_MIGRATION.md](docs/POSTGRESQL_RENDER_MIGRATION.md).
 
 ---
 
@@ -391,7 +404,7 @@ gunicorn config.wsgi:application --workers 2 --bind 0.0.0.0:8000 --timeout 120
 - Проверьте хранение `media/`: в текущей конфигурации файлы лежат локально в репозитории/файловой системе.
 - Смените или удалите demo-пользователей.
 
-На Render сборка выполняется через `build.sh`: установка зависимостей, `collectstatic`, миграции, загрузка шрифтов, опциональный `loaddata` из `DJANGO_LOAD_FIXTURE` и seed только при пустой таблице товаров, если `SEED_DEMO_DATA` не выключен.
+На Render сборка выполняется через `build.sh`: установка зависимостей, `collectstatic`, миграции, загрузка шрифтов, опциональный `loaddata` из `DJANGO_LOAD_FIXTURE`, опциональный импорт картинок через `IMPORT_PRODUCT_IMAGES=true` и seed только при пустой таблице товаров, если `SEED_DEMO_DATA` не выключен.
 
 ---
 

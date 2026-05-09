@@ -8,7 +8,8 @@
 - Если `DATABASE_URL` не задан, локально используется `db.sqlite3`.
 - В `requirements.txt` добавлен `psycopg2-binary`.
 - `build.sh` умеет загружать fixture из переменной `DJANGO_LOAD_FIXTURE`.
-- `render.yaml` содержит env vars `DATABASE_URL` и `DJANGO_LOAD_FIXTURE`.
+- `build.sh` умеет пересобирать `ProductImage` из `media/products` при `IMPORT_PRODUCT_IMAGES=true`.
+- `render.yaml` содержит env vars `DATABASE_URL`, `DJANGO_LOAD_FIXTURE` и `IMPORT_PRODUCT_IMAGES`.
 
 ## 2. Создать PostgreSQL на Render
 
@@ -24,9 +25,11 @@
 ```env
 DATABASE_URL=<Internal Database URL>
 SEED_DEMO_DATA=false
+IMPORT_PRODUCT_IMAGES=true
 ```
 
 `SEED_DEMO_DATA=false` нужен на время переноса, чтобы пустая PostgreSQL база не заполнилась demo seed до импорта текущей БД.
+`IMPORT_PRODUCT_IMAGES=true` пересобирает связи `ProductImage` по файлам `media/products/ARTICLE_*`, если после переноса БД картинки должны совпадать с артикулами сайта.
 
 ## 4. Выгрузить текущую SQLite БД в fixture
 
@@ -86,6 +89,7 @@ SEED_DEMO_DATA=false
 ```bash
 python manage.py migrate --noinput
 python manage.py loaddata seed_data/current_db.json
+python manage.py import_images --flat-dir media/products --replace
 ```
 
 ## 6. После успешного импорта
@@ -94,7 +98,8 @@ python manage.py loaddata seed_data/current_db.json
 
 1. Удалите env var `DJANGO_LOAD_FIXTURE` или оставьте пустым.
 2. Оставьте `DATABASE_URL`.
-3. `SEED_DEMO_DATA` можно оставить `false`, если production уже содержит реальные данные.
+3. `IMPORT_PRODUCT_IMAGES` можно выключить после проверки картинок или оставить `true`, если связи нужно гарантированно пересобирать на каждом deploy.
+4. `SEED_DEMO_DATA` можно оставить `false`, если production уже содержит реальные данные.
 
 ## 7. Проверка
 
@@ -119,6 +124,7 @@ python manage.py shell -c "from apps.catalog.models import Product; from django.
 2. Обновить `DATABASE_URL`.
 3. Задать `DJANGO_LOAD_FIXTURE=seed_data/current_db.json`.
 4. Задать `SEED_DEMO_DATA=false`.
-5. Задеплоить заново.
+5. При необходимости задать `IMPORT_PRODUCT_IMAGES=true`.
+6. Задеплоить заново.
 
 Не импортируйте fixture поверх уже заполненной базы, если не уверены, что primary keys и уникальные поля не конфликтуют.
