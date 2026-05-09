@@ -1,25 +1,20 @@
-# VELOUR - интернет-магазин одежды
+# VELOUR — интернет-магазин одежды
 
-VELOUR - полнофункциональный интернет-магазин одежды на Django 5.1 и Django REST Framework. В проекте есть публичный каталог, фильтры, карточки товаров с вариантами, корзина, оформление заказов, личный кабинет, избранное, email-рассылки, редактируемые CMS-страницы и кастомизированная Jazzmin-админка.
+VELOUR — полнофункциональный интернет-магазин одежды на Django 4.2 и Django REST Framework. Каталог с фильтрами, корзина, оформление заказов, личный кабинет, избранное, подписка на рассылку, SBP-оплата, Jazzmin-админка.
 
-Проект рассчитан на локальную разработку без обязательных внешних сервисов: SQLite, локальные `media`-файлы, Django templates и vanilla JS. Для production поддерживается PostgreSQL через `DATABASE_URL`, SMTP, Gunicorn/WhiteNoise и Render-конфигурация.
+Проект рассчитан на локальную разработку без внешних обязательных сервисов: SQLite, локальные media-файлы. Yandex SMTP подключается опционально для отправки писем. PostgreSQL и S3 — для production на Render.
 
 ---
 
 ## Возможности
 
-- **Каталог одежды** - категории, подкатегории, вложенные подкатегории, бренды, поиск, сортировка, фильтры по цене/цвету/размеру/материалу/сезону/стилю.
-- **Товарные карточки** - изображения, артикулы `VL-*`, описание, состав, старая цена, скидка, флаги "новинка" и "рекомендуемое".
-- **Варианты товаров** - размеры, цвета, SKU и складские остатки для каждого варианта.
-- **Корзина** - работает для гостей через сессию и для авторизованных пользователей через связанную корзину; при входе гостевая корзина объединяется с пользовательской.
-- **Оформление заказа** - заказ для гостя или пользователя, адрес доставки, способы оплаты, создание аккаунта при checkout, списание остатков.
-- **Личный кабинет** - профиль, адреса, история заказов, детали заказа, смена пароля.
-- **Избранное** - хранение для авторизованных пользователей и синхронизация гостевых избранных через API.
-- **Отзывы** - новые отзывы создаются как `is_approved=False`, не попадают в публичный счётчик/рейтинг до одобрения и модерируются через админку.
-- **Рассылки** - подписчики, приветственные письма, отписка и отправка newsletter из админки.
-- **CMS-страницы** - главная, о магазине, доставка, контакты, возврат, оферта, политика конфиденциальности и редактируемые секции.
-- **Админка** - Jazzmin, inline-изображения, варианты товаров, адреса пользователей, статусы заказов, страницы, баннеры и рассылки.
-- **Demo seed** - команда создаёт каталог, фильтры, бренды, пользователей, корзины, заказы и CMS-контент.
+- **Каталог товаров** — категории, подкатегории, фильтры, поиск, сортировка, карточки с изображениями, sale-бейджи, новинки.
+- **Страница товара** — галерея, выбор размера и цвета, отзывы, похожие товары, QR-код и кнопка «Поделиться».
+- **Корзина и избранное** — работают для гостей через `localStorage` + Django session cache, для авторизованных — через API + backend.
+- **Оформление заказа** — наличными при получении, СБП (QR-код с автопроверкой статуса), банковская карта (симуляция).
+- **Личный кабинет** — профиль, адреса, история заказов, смена пароля.
+- **Админка** — кастомизированная Jazzmin-админка с фильтрами и навигацией.
+- **Email** — подтверждение подписки, заказ, восстановление пароля, приветствие.
 
 ---
 
@@ -27,38 +22,32 @@ VELOUR - полнофункциональный интернет-магазин 
 
 | Слой | Технологии |
 |---|---|
-| Backend | Python 3.11, Django 5.1.4, Django REST Framework 3.15 |
-| Admin | django-jazzmin 3.0.1 + кастомный CSS |
-| DB | SQLite локально, PostgreSQL через `DATABASE_URL` на Render/production |
+| Backend | Python 3.11+, Django 4.2, DRF 3.15 |
+| Admin | django-jazzmin 3.0 |
+| DB | SQLite локально, PostgreSQL через `DATABASE_URL` |
 | Frontend | Django templates, HTML, CSS, Vanilla JS |
-| API | DRF ViewSets/APIView, django-filter, Simple JWT |
-| Media | Django `ImageField`, Pillow, локальные `media/` и `seed_data/images/` |
-| Static | WhiteNoise, локальные шрифты через `scripts/download_fonts.py` |
-| Email | SMTP или Resend backend helper |
-| Deploy | Render, Gunicorn, `build.sh`, `render.yaml` |
+| Media | Django `ImageField`, локальные demo-файлы |
+| Email | Yandex SMTP (порт 587, TLS) |
 
 ---
 
 ## Быстрый старт
 
 ```bash
-git clone https://github.com/velour26/velour
+git clone <url-репозитория>
 cd velour
 python -m venv .venv
 .venv\Scripts\Activate.ps1      # Windows PowerShell
-# source .venv/bin/activate      # Linux/macOS
+# source .venv/bin/activate  # Linux/macOS
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py seed_db
-python manage.py import_images --replace
 python manage.py runserver
 ```
 
 Открыть сайт: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 Админка: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
-
-> Если `python` не найден, используйте полный путь к интерпретатору активного окружения или установите Python 3.11.
 
 ---
 
@@ -67,123 +56,59 @@ python manage.py runserver
 Создай `.env` на основе `.env.example` или вручную:
 
 ```env
+SECRET_KEY=dev-secret-key-change-me
 DEBUG=True
-SECRET_KEY=your-secret-key-here
 ALLOWED_HOSTS=localhost,127.0.0.1
 
-# Production DB, если нужно. Если не задано, используется SQLite db.sqlite3.
+# Production DB
 # DATABASE_URL=postgres://user:password@host:5432/dbname
 
-# Render deploy helpers
-# SEED_DEMO_DATA=false
-# DJANGO_LOAD_FIXTURE=seed_data/current_db.json
-# IMPORT_PRODUCT_IMAGES=true
-
-# Email через SMTP
-EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST=smtp-relay.brevo.com
+# Email (Yandex)
+EMAIL_HOST=smtp.yandex.ru
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_USE_SSL=False
-EMAIL_HOST_USER=your-brevo-login@email.com
-EMAIL_HOST_PASSWORD=your-brevo-smtp-key
+EMAIL_HOST_USER=your-email@yandex.ru
+EMAIL_HOST_PASSWORD=your-app-password
 DEFAULT_FROM_EMAIL=VELOUR <noreply@velour.ru>
 
-# CORS, если нужен внешний frontend
-CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+# Render/production
+# USE_S3_MEDIA=True
+# AWS_STORAGE_BUCKET_NAME=
+# AWS_ACCESS_KEY_ID=
+# AWS_SECRET_ACCESS_KEY=
+# AWS_S3_REGION_NAME=eu-central-1
+# AWS_S3_ENDPOINT_URL=
 ```
-
-В `render.yaml` также предусмотрены SMTP-настройки для Yandex/SSL, автоматическая генерация `SECRET_KEY`, `DATABASE_URL` для PostgreSQL и `DJANGO_LOAD_FIXTURE` для разовой загрузки fixture при деплое.
-
----
-
-## Demo seed
-
-Основная команда:
-
-```bash
-python manage.py seed_db
-python manage.py import_images --replace
-```
-
-Полная очистка demo-данных и повторная заливка:
-
-```bash
-python manage.py seed_db --flush
-python manage.py import_images --replace
-```
-
-Дополнительные утилиты:
-
-```bash
-python scripts/download_fonts.py
-python scripts/download_wb_images.py
-```
-
-Что создаёт `seed_db`:
-
-- настройки сайта VELOUR;
-- категории, подкатегории и вложенные подкатегории;
-- группы фильтров и опции: цвет, размер, материал, сезон, стиль;
-- бренды, включая Befree, Love Republic, LIME, 12 STOREEZ, ZARINA, Zara, H&M, Mango и другие;
-- 110+ товаров с артикулами `VL-*`, вариантами, остатками и изображениями-заглушками;
-- 2 администратора, 3 менеджера и 20 покупателей;
-- адреса покупателей, активные корзины и историю заказов;
-- CMS-страницы и баннеры.
-
-Команда `import_images` подтягивает реальные изображения из `seed_data/images/` в `media/products/`.
 
 ---
 
 ## Демо-доступы
 
-Вход покупателей: `/account/login/`  
-Вход менеджеров и админов: `/admin/`
+Вход покупателей: `/account/login/`
+Вход администраторов: `/admin/`
 
-### Покупатели
+### Покупатели (20 пользователей)
 
 Пароль для всех покупателей: `User123!`
 
-| Пользователь | Email | Пароль |
-|---|---|---|
-| `user1` | `user1@example.com` | `User123!` |
-| `user2` | `user2@example.com` | `User123!` |
-| `user3` | `user3@example.com` | `User123!` |
-| `...` | `userN@example.com` | `User123!` |
-| `user20` | `user20@example.com` | `User123!` |
+| Email | Пароль |
+|---|---|
+| `user1@example.com` … `user20@example.com` | `User123!` |
 
-### Менеджеры
+### Менеджеры (3 пользователя)
 
-Пароль для всех менеджеров: `Manager123!`
+Пароль для всех менеджеров: `Admin123!`
 
-| Пользователь | Email | Пароль |
-|---|---|---|
-| `manager1` | `manager1@velour.ru` | `Manager123!` |
-| `manager2` | `manager2@velour.ru` | `Manager123!` |
-| `manager3` | `manager3@velour.ru` | `Manager123!` |
+| Email | Пароль |
+|---|---|
+| `manager1@velour.ru` … `manager3@velour.ru` | `Admin123!` |
 
-### Администраторы
+### Администраторы (2 пользователя)
 
-Пароль для всех администраторов: `Admin123!`
-
-| Пользователь | Email | Пароль |
-|---|---|---|
-| `admin1` | `admin1@velour.ru` | `Admin123!` |
-| `admin2` | `admin2@velour.ru` | `Admin123!` |
-
-> Demo-пароли нужны только для разработки. Перед production удалите demo-пользователей или смените пароли.
-
----
-
-## Роли
-
-| Роль | Доступ | Назначение |
-|---|---|---|
-| Покупатель | `/account/login/`, пользовательские страницы | покупки, корзина, избранное, адреса, история заказов |
-| Менеджер | `/admin/` | операционная работа в админке |
-| Администратор | `/admin/` | полный доступ к админке и настройкам |
-
-Роль хранится в кастомной модели пользователя `accounts.User`: `customer`, `manager`, `admin`. В seed-данных менеджеры и администраторы получают staff/superuser-доступ.
+| Email | Пароль |
+|---|---|
+| `admin1@velour.ru`, `admin2@velour.ru` | `Admin123!` |
 
 ---
 
@@ -192,29 +117,22 @@ python scripts/download_wb_images.py
 | URL | Назначение |
 |---|---|
 | `/` | Главная страница |
-| `/catalog/` | Каталог товаров |
-| `/catalog/favorites/` | Избранное |
-| `/catalog/<category_slug>/` | Категория каталога |
-| `/catalog/<category_slug>/<product_slug>/` | Страница товара |
+| `/catalog/` | Каталог с фильтрами и сортировкой |
+| `/catalog/<category>/` | Категория |
+| `/catalog/<category>/<product>/` | Страница товара |
 | `/cart/` | Корзина |
 | `/orders/checkout/` | Оформление заказа |
-| `/orders/payment/<order_number>/` | Оплата заказа |
-| `/orders/success/<order_number>/` | Успешное оформление |
-| `/orders/sbp-success/<order_number>/` | Успешная SBP-оплата |
-| `/orders/my/` | Мои заказы |
-| `/orders/my/<number>/` | Детали заказа |
+| `/orders/payment/<number>/` | Оплата (СБП / карта) |
+| `/orders/success/<number>/` | Успешный заказ |
+| `/orders/sbp-success/<number>/` | Подтверждение СБП (QR-сканирование) |
+| `/catalog/favorites/` | Избранное |
 | `/account/login/` | Вход |
 | `/account/register/` | Регистрация |
-| `/account/profile/` | Профиль |
-| `/account/password-reset/` | Восстановление пароля |
-| `/about/` | О магазине |
-| `/delivery/` | Доставка |
+| `/account/profile/` | Профиль покупателя |
+| `/orders/my/` | Мои заказы |
+| `/about/` | О нас |
+| `/delivery/` | Доставка и оплата |
 | `/contacts/` | Контакты |
-| `/returns/` | Возврат |
-| `/privacy/` | Политика конфиденциальности |
-| `/terms/` | Условия / оферта |
-| `/newsletter/confirm/<token>/` | Подтверждение подписки |
-| `/newsletter/unsubscribe/` | Отписка |
 | `/admin/` | Админка |
 
 ---
@@ -223,124 +141,144 @@ python scripts/download_wb_images.py
 
 | Метод | URL | Доступ | Описание |
 |---|---|---|---|
+| GET | `/api/products/` | public | Товары, поиск, фильтры, сортировка, пагинация |
 | GET | `/api/categories/` | public | Категории |
-| GET | `/api/categories/{slug}/` | public | Деталка категории |
-| GET | `/api/products/` | public | Товары, фильтры, поиск, сортировка, пагинация |
-| GET | `/api/products/{slug}/` | public | Деталка товара |
-| GET | `/api/products/{slug}/reviews/` | public | Отзывы товара |
-| POST | `/api/products/{slug}/add_review/` | user | Добавить отзыв |
-| GET | `/api/filters/` | public | Группы фильтров и опции |
+| GET | `/api/filters/` | public | Схема фильтров каталога |
 | GET | `/api/brands/` | public | Бренды |
-| GET/DELETE | `/api/cart/` | any | Получить или очистить корзину |
-| POST | `/api/cart/add/` | any | Добавить товар в корзину |
-| PATCH/DELETE | `/api/cart/items/{item_id}/` | any | Изменить или удалить позицию |
-| GET | `/api/orders/` | user | История заказов пользователя |
+| GET/POST | `/api/cart/` | any | Корзина |
+| GET/POST | `/api/cart/add/` | any | Добавить товар |
+| PATCH/DELETE | `/api/cart/items/<id>/` | any | Обновить/удалить позицию |
 | POST | `/api/orders/create/` | any | Создать заказ |
-| GET | `/api/orders/{number}/` | owner/session | Детали заказа |
-| POST | `/api/orders/{number}/cancel/` | user | Отменить заказ |
-| POST | `/api/auth/login/` | any | API-вход |
-| POST | `/api/auth/logout/` | user | API-выход |
-| POST | `/api/auth/register/` | any | API-регистрация |
-| GET/PATCH | `/api/auth/profile/` | user | Профиль |
+| GET | `/api/orders/<number>/` | any | Детали заказа (гости — по session_key) |
+| POST | `/api/orders/<number>/cancel/` | user | Отменить заказ |
+| GET/POST | `/api/favorites/` | user | Избранное |
+| POST | `/api/favorites/<id>/` | user | Добавить/убрать из избранного |
+| GET | `/api/favorites/status/` | user | Статус избранного |
+| GET/POST | `/api/favorites/sync/` | any | Синхронизация избранного гостя (session cache) |
+| POST | `/api/auth/login/` | any | Вход |
+| POST | `/api/auth/logout/` | any | Выход |
+| POST | `/api/auth/register/` | any | Регистрация |
+| GET/POST | `/api/auth/profile/` | user | Профиль |
 | POST | `/api/auth/change-password/` | user | Смена пароля |
 | GET/POST | `/api/auth/addresses/` | user | Адреса |
-| GET/PATCH/DELETE | `/api/auth/addresses/{id}/` | user | Адрес |
-| GET | `/api/favorites/` | user | Избранные товары |
-| GET | `/api/favorites/status/` | user | ID избранных товаров |
-| POST | `/api/favorites/{product_id}/` | user | Добавить/убрать избранное |
-| GET/POST | `/api/favorites/sync/` | any | Синхронизация гостевого избранного |
+| PATCH/DELETE | `/api/auth/addresses/<id>/` | user | Адрес |
 | POST | `/api/newsletter/subscribe/` | any | Подписка |
-| GET | `/api/newsletter/confirm/{token}/` | any | Подтверждение подписки |
+| GET | `/api/newsletter/confirm/<token>/` | any | Подтверждение подписки |
 | POST | `/api/newsletter/unsubscribe/` | any | Отписка |
-
-DRF pagination: `PAGE_SIZE = 24`.
-
----
-
-## PostgreSQL на Render
-
-Локально проект работает с `db.sqlite3`, если переменная `DATABASE_URL` не задана. На Render для PostgreSQL нужно:
-
-1. Создать Render Postgres в том же регионе, что и web service.
-2. Скопировать `Internal Database URL`.
-3. В Render web service добавить:
-
-```env
-DATABASE_URL=<Internal Database URL>
-SEED_DEMO_DATA=false
-```
-
-`SEED_DEMO_DATA=false` нужен, если production база должна наполняться не demo seed, а переносом текущей SQLite БД.
-
-### Перенос текущей SQLite БД в PostgreSQL
-
-На машине с рабочим Python выгрузить текущую БД:
-
-```powershell
-$env:PYTHONUTF8 = "1"
-$env:PYTHONIOENCODING = "utf-8"
-[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
-
-python manage.py dumpdata `
-  --natural-foreign `
-  --natural-primary `
-  --exclude contenttypes `
-  --exclude auth.permission `
-  --indent 2 `
-  -o seed_data/current_db.json
-```
-
-UTF-8 переменные важны для Windows: без них `dumpdata` может упасть на символах вроде `₽` с ошибкой `charmap codec can't encode character`.
-
-Затем закоммитить `seed_data/current_db.json`, добавить в Render:
-
-```env
-DJANGO_LOAD_FIXTURE=seed_data/current_db.json
-SEED_DEMO_DATA=false
-```
-
-Если после переноса БД нужно пересобрать связи изображений товаров по файлам из `media/products`, добавьте:
-
-```env
-IMPORT_PRODUCT_IMAGES=true
-```
-
-При деплое `build.sh` выполнит:
-
-```bash
-python manage.py import_images --flat-dir media/products --replace
-```
-
-После успешного деплоя удалить или очистить `DJANGO_LOAD_FIXTURE`, чтобы fixture не загружался повторно на каждом build. `IMPORT_PRODUCT_IMAGES` можно оставить `true`, если нужно каждый раз восстанавливать связи из committed media, или выключить после первого успешного импорта. Подробная инструкция лежит в [docs/POSTGRESQL_RENDER_MIGRATION.md](docs/POSTGRESQL_RENDER_MIGRATION.md).
 
 ---
 
 ## Структура проекта
 
 ```text
-.
+velour/
 ├── apps/
-│   ├── accounts/       # пользователь, адреса, auth pages
-│   ├── api/            # DRF endpoints, serializers, filters, email utils
-│   ├── cart/           # корзина и позиции корзины
-│   ├── catalog/        # каталог, товары, бренды, фильтры, отзывы, seed commands
-│   ├── newsletter/     # подписчики и рассылки
-│   ├── orders/         # заказы, позиции, история статусов
-│   └── pages/          # главная, CMS-страницы, баннеры, site settings
-├── config/             # settings, urls, middleware, wsgi/asgi
-├── media/              # uploaded/generated media
-├── scripts/            # загрузка шрифтов и изображений
-├── seed_data/          # demo-изображения и опциональные fixture для переноса БД
-├── static/             # CSS, JS, images
-├── templates/          # HTML и email-шаблоны
-├── docs/               # инструкции по деплою и миграции данных
+│   ├── accounts/       # Пользователи, авторизация, адреса
+│   ├── api/            # REST API (catalog, cart, orders, accounts, favorites, newsletter)
+│   ├── cart/           # Модель корзины и сессии
+│   ├── catalog/        # Каталог: товары, категории, фильтры, избранное, отзывы
+│   ├── newsletter/     # Подписка на рассылку
+│   ├── orders/         # Заказы, оплата, SBP, success-страницы
+│   └── pages/          # Главная, о нас, доставка, контакты
+├── config/             # Django settings, urls, middleware, wsgi, asgi
+├── media/              # Изображения товаров, категорий, брендов
+├── scripts/            # Утилиты (загрузка шрифтов)
+├── seed_data/          # Экспорт/импорт БД, изображения для импорта
+├── static/
+│   ├── css/
+│   │   ├── base.css        # Базовые стили, переменные, кнопки, формы, модалки
+│   │   ├── catalog.css     # Карточки, сетка, фильтры, каталог
+│   │   ├── header.css     # Header, навигация, mobile nav
+│   │   ├── footer.css     # Footer
+│   │   ├── pages.css      # Home, product detail, cart, checkout, account, orders
+│   │   ├── admin_custom.css
+│   │   ├── fonts.css
+│   │   └── variables.css  # CSS-переменные (цвета, шрифты, spacing)
+│   └── js/
+│       ├── main.js         # Общие: header search, qty controls, toasts, fav badge
+│       ├── catalog.js      # Каталог: фильтры, AJAX загрузка, избранное
+│       ├── cart.js          # Корзина: обновление, удаление, пересчёт
+│       ├── checkout.js     # Checkout: валидация, создание заказа
+│       └── account.js      # Профиль: сохранение, заказы, адреса
+├── templates/
+│   ├── account/          # login, register, profile
+│   ├── catalog/          # catalog, product_detail, favorites
+│   ├── cart/             # cart
+│   ├── email/            # Письма: заказ, приветствие, подписка, сброс пароля
+│   ├── includes/         # header, footer, product_card
+│   ├── orders/           # checkout, payment, success, sbp_success, my_orders, order_detail
+│   ├── pages/            # home, page (о нас, доставка, контакты), unsubsribe, newsletter
+│   └── base.html
+├── .env.example
+├── db.sqlite3
 ├── manage.py
-├── requirements.txt
-├── build.sh
-├── Dockerfile
-├── Procfile
-└── render.yaml
+└── requirements.txt
 ```
+
+---
+
+## Ключевые механизмы
+
+### Избранное для гостей
+
+Гости хранят избранное в `localStorage` (`velour_favorites`). При каждом изменении набор синхронизируется с Django session cache через `/api/favorites/sync/` (30-дневный TTL). При авторизации избранное берётся из backend DB.
+
+### SBP-оплата
+
+1. QR-код содержит URL `/orders/sbp-success/<number>/`.
+2. Страница `/orders/payment/<number>/` поллит `/api/orders/<number>/` каждые 2 секунды.
+3. При сканировании телефона телефон открывает `/orders/sbp-success/<number>/`, сервер сразу помечает заказ как оплаченный.
+4. Desktop видит `payment_status: paid` → автопереход на success.
+
+### Заказы гостей
+
+Гости идентифицируются по `session_key`. При создании заказа поле `session_key` сохраняется. Views и API lookup сначала ищут по `session_key`, потом по `guest_email`.
+
+### Email
+
+Все письма отправляются через `threading.Thread` (async) для предотвращения timeout gunicorn workers.
+
+---
+
+## Экспорт и импорт базы данных
+
+Для локальной разработки данные можно выгрузить в JSON и загрузить на production (PostgreSQL на Render).
+
+### Экспорт
+
+```bash
+# Только JSON (пути к файлам сохраняются как строки)
+python manage.py export_db
+
+# JSON + копирование реальных изображений в seed_data/images/
+python manage.py export_db --images
+```
+
+Результат: `seed_data/current_db.json` (+ `seed_data/images/` при `--images`).
+
+### Импорт
+
+```bash
+# Только данные (изображения остаются как пути в JSON)
+python manage.py import_db
+
+# Данные + копирование файлов из seed_data/images/ в MEDIA_ROOT
+python manage.py import_db --images
+```
+
+Опция `--flush` удаляет все существующие данные перед загрузкой:
+
+```bash
+python manage.py import_db --flush --images
+```
+
+Пароли пользователей при импорте НЕ сохраняются. Все пользователи получают:
+- `Admin123!` — администраторы и менеджеры
+- `User123!` — покупатели
+
+### Порядок загрузки
+
+Импорт загружает модели в порядке зависимостей: SiteSettings → FilterGroups → Categories → Products → Images → Variants → Users → Addresses → Orders → Carts → Pages → Subscribers → Favorites. FK/M2M связи пересчитываются по old pk → new pk.
 
 ---
 
@@ -352,113 +290,49 @@ python manage.py runserver
 python manage.py check
 python manage.py migrate
 python manage.py makemigrations
+python manage.py createsuperuser
 python manage.py seed_db
 python manage.py seed_db --flush
-python manage.py import_images --replace
-python manage.py createsuperuser
 python manage.py collectstatic
 python manage.py shell
 
-# Data migration
-python manage.py dumpdata --natural-foreign --natural-primary --exclude contenttypes --exclude auth.permission --indent 2 -o seed_data/current_db.json
-python manage.py loaddata seed_data/current_db.json
+# Data export / import
+python manage.py export_db
+python manage.py export_db --images
+python manage.py import_db
+python manage.py import_db --flush --images
 
-# Assets
-python scripts/download_fonts.py
-python scripts/download_wb_images.py
-
-# Production-like запуск
+# Production
 gunicorn config.wsgi:application --workers 2 --bind 0.0.0.0:8000 --timeout 120
 ```
 
 ---
 
-## Админка
-
-Админка находится на `/admin/`. В ней редактируются:
-
-- пользователи, роли и адреса;
-- категории, подкатегории, бренды и фильтры;
-- товары, изображения и варианты;
-- отзывы и избранное;
-- заказы, позиции заказов и история статусов;
-- настройки сайта, CMS-страницы, секции и баннеры;
-- подписчики и email-рассылки.
-
-В проекте подключён Jazzmin и `static/css/admin_custom.css`.
-
----
-
 ## Production notes
 
-- Установите сильный `SECRET_KEY`.
-- Переведите `DEBUG=False` после проверки production-настроек.
-- Настройте `ALLOWED_HOSTS` и домен Render/сервера.
-- Подключите PostgreSQL через `DATABASE_URL`.
-- Для переноса текущей SQLite БД используйте `dumpdata`/`loaddata` и `DJANGO_LOAD_FIXTURE`.
-- Если импортируете реальную fixture, задайте `SEED_DEMO_DATA=false`, чтобы demo seed не заполнил пустую production БД.
+- Установите `DEBUG=False`.
+- Задайте сильный `SECRET_KEY`.
+- Настройте `ALLOWED_HOSTS` и `CSRF_TRUSTED_ORIGINS`.
+- Подключите PostgreSQL через `DATABASE_URL`, если SQLite недостаточно.
+- Настройте Yandex SMTP для отправки писем.
 - Выполните `python manage.py collectstatic`.
-- Выполните `python manage.py migrate`.
-- Запустите `python manage.py seed_db` только если нужны demo-данные.
-- Настройте SMTP-переменные для писем восстановления пароля, подтверждений заказа и рассылок.
-- Проверьте хранение `media/`: в текущей конфигурации файлы лежат локально в репозитории/файловой системе.
 - Смените или удалите demo-пользователей.
-
-На Render сборка выполняется через `build.sh`: установка зависимостей, `collectstatic`, миграции, загрузка шрифтов, опциональный `loaddata` из `DJANGO_LOAD_FIXTURE`, опциональный импорт картинок через `IMPORT_PRODUCT_IMAGES=true` и seed только при пустой таблице товаров, если `SEED_DEMO_DATA` не выключен.
 
 ---
 
 ## Типовые проблемы
 
-### `python` не найден
+### На Render нет картинок
+Render free использует ephemeral filesystem: загруженные во время работы файлы пропадают после redeploy/restart. Для production-сценария подключите внешний bucket через `USE_S3_MEDIA=True`.
 
-Установите Python 3.11 или активируйте виртуальное окружение:
+### Gmail SMTP не работает на Render
+Render блокирует исходящие соединения на порту 465. Используйте Yandex SMTP с портом 587 и `EMAIL_USE_TLS=True`.
 
-```bash
-.venv\Scripts\Activate.ps1
-```
+### Избранное не сохраняется между устройствами
+Для гостей избранное хранится в localStorage браузера и session cache сервера. При смене браузера/устройства избранное не сохраняется. Авторизованные пользователи видят избранное везде.
 
-### В каталоге нет товаров
-
-Проверьте, что выполнены миграции и seed:
-
-```bash
-python manage.py migrate
-python manage.py seed_db
-python manage.py import_images --replace
-```
-
-### В товарах нет реальных изображений
-
-Seed создаёт placeholder-изображения. Для загрузки demo-картинок из `seed_data/images/` выполните:
-
-```bash
-python manage.py import_images --replace
-```
-
-### Не работает вход в админку
-
-Убедитесь, что выполнен seed, затем используйте:
-
-```text
-admin1@velour.ru / Admin123!
-```
-
-### Не отправляются письма
-
-Проверьте `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USE_TLS`/`EMAIL_USE_SSL`, логин, пароль приложения и `DEFAULT_FROM_EMAIL`.
-
-### `dumpdata` падает с `charmap codec can't encode character`
-
-На Windows включите UTF-8 перед выгрузкой:
-
-```powershell
-$env:PYTHONUTF8 = "1"
-$env:PYTHONIOENCODING = "utf-8"
-[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
-```
-
-После этого повторите `python manage.py dumpdata ... -o seed_data/current_db.json`.
+### `import_db` выдаёт ошибку с изображениями
+При импорте в PostgreSQL изображения сохраняются как строки-пути. Если нужны реальные файлы, сначала экспортируйте с `--images`, скопируйте `seed_data/images/` в репозиторий, и импортируйте с `--images`.
 
 ---
 
