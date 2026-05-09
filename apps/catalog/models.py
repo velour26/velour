@@ -250,7 +250,7 @@ class Review(models.Model):
     rating = models.PositiveSmallIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
     text = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    is_approved = models.BooleanField(default=True)
+    is_approved = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Отзыв'

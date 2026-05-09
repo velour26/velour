@@ -70,7 +70,7 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
         product = self.get_object()
         serializer = ReviewSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
-        serializer.save(product=product)
+        serializer.save(product=product, is_approved=False)
         return Response(serializer.data, status=201)
 
 

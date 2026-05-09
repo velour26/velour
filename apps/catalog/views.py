@@ -1,6 +1,7 @@
 import json
 from django.views.generic import TemplateView
 from django.shortcuts import get_object_or_404, redirect
+from django.db.models import Avg
 from .models import Category, Product, FilterGroup, Favorite
 
 
@@ -75,6 +76,11 @@ class ProductDetailView(TemplateView):
             slug=product_slug, is_active=True
         )
         ctx['product'] = product
+        approved_reviews = product.approved_reviews.select_related('user')
+        ctx['approved_reviews'] = list(approved_reviews)
+        ctx['approved_reviews_count'] = len(ctx['approved_reviews'])
+        ctx['approved_reviews_avg'] = approved_reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+        ctx['approved_reviews_avg_rounded'] = round(ctx['approved_reviews_avg'])
         ctx['related'] = Product.objects.filter(
             category=product.category, is_active=True
         ).exclude(pk=product.pk).prefetch_related('images', 'variants').select_related('category')[:4]
