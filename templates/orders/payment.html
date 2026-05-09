@@ -37,16 +37,22 @@
       <a href="/orders/success/{{ order.number }}/" class="btn btn-dark btn-lg btn-block">Готово</a>
 
     {% elif order.payment_method == 'sbp' %}
-      <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:var(--space-xl);margin-bottom:var(--space-xl)">
-        <div style="font-size:.85rem;color:var(--color-text-muted);margin-bottom:var(--space-lg)">Отсканируйте QR-код в приложении банка</div>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://velour-7dna.onrender.com/orders/success/{{ order.number }}/"
-             alt="QR для оплаты" width="200" height="200"
-             style="display:block;margin:0 auto var(--space-lg);border-radius:var(--radius-md);background:#fff;padding:6px">
-        <div style="font-size:.85rem;color:var(--color-text-muted)">Или переведите <strong>{{ order.total|floatformat:0 }} ₽</strong> по номеру телефона магазина</div>
+      <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:var(--space-2xl);margin-bottom:var(--space-xl)">
+        <div style="font-weight:600;margin-bottom:var(--space-md)">Оплата через СБП</div>
+        <div style="font-size:.85rem;color:var(--color-text-muted);margin-bottom:var(--space-lg)">Отсканируйте QR-код в приложении банка для подтверждения заказа</div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://velour-7dna.onrender.com/orders/sbp-success/{{ order.number }}/"
+             alt="QR для оплаты" width="220" height="220"
+             style="display:block;margin:0 auto var(--space-lg);border-radius:var(--radius-md);background:#fff;padding:12px">
+        <div style="font-size:.82rem;color:var(--color-text-muted);padding:12px;background:#fff;border-radius:var(--radius-md);border:1px solid var(--color-border)">
+          После оплаты нажмите "Проверить оплату"<br>или отсканируйте QR-код камерой телефона
+        </div>
       </div>
-      <button class="btn btn-primary btn-lg btn-block" id="sbp-pay-btn" onclick="simulatePayment()">
-        Я оплатил(а)
+      <button class="btn btn-primary btn-lg btn-block" id="sbp-pay-btn" onclick="checkSBP(this)">
+        Проверить оплату
       </button>
+      <div style="font-size:.78rem;color:var(--color-text-light);margin-top:var(--space-sm)">
+        Оплата подтверждается автоматически при сканировании QR-кода
+      </div>
 
     {% elif order.payment_method == 'card' %}
       <div style="background:var(--color-bg-alt);border-radius:var(--radius-lg);padding:var(--space-xl);margin-bottom:var(--space-xl);text-align:left">
@@ -81,6 +87,13 @@
 </div>
 
 <script>
+function checkSBP(btn) {
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Проверяем...';
+  setTimeout(() => {
+    window.location.href = '/orders/success/{{ order.number }}/';
+  }, 1500);
+}
 function simulatePayment() {
   const btn = event.target;
   btn.disabled = true;

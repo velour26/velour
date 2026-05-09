@@ -37,6 +37,10 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
 
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
+        ids = self.request.query_params.get('ids', '')
+        if ids:
+            id_list = [int(x) for x in ids.split(',') if x.strip().isdigit()]
+            queryset = queryset.filter(pk__in=id_list)
         search = self.request.query_params.get('search', '').strip()
         if search:
             q = search.lower()

@@ -48,3 +48,12 @@ class OrderDetailView(LoginRequiredMixin, TemplateView):
         ctx = super().get_context_data(**kwargs)
         ctx['order_number'] = number
         return ctx
+
+
+class SBPSuccessView(TemplateView):
+    template_name = 'orders/sbp_success.html'
+
+    def get_context_data(self, order_number=None, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['order_number'] = order_number
+        return ctx
