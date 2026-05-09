@@ -4,7 +4,7 @@
     <div class="header-inner">
 
       <!-- Logo -->
-      <a href="/" class="logo" style="font-family:var(--font-display);font-size:1.7rem;letter-spacing:.08em">VEL<span>OUR</span></a>
+      <a href="/" class="logo">VEL<span>OUR</span></a>
 
       <!-- Desktop Nav -->
       <nav class="header-nav">
@@ -64,7 +64,7 @@
 
         {% if user.is_staff %}
         <!-- Admin panel link -->
-        <a href="/admin/" class="header-action-btn" title="Админ панель" style="font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--color-text-muted);width:auto;padding:0 10px">
+        <a href="/admin/" class="header-action-btn header-admin-link" title="Админ панель" style="font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--color-text-muted);width:auto;padding:0 10px">
           ADMIN
         </a>
         {% endif %}
