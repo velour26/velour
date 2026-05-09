@@ -608,11 +608,10 @@
   .checkout-layout { gap: var(--space-lg); }
   .checkout-form .form-row { gap: var(--space-sm); }
   .account-profile-form .form-group { margin-bottom: var(--space-md); }
+  .cart-item { padding: var(--space-md); gap: var(--space-md); }
 }
 
 @media (max-width: 390px) {
-  .container { padding: 0 var(--space-md); }
-  h1 { font-size: 1.6rem; }
   h2 { font-size: 1.3rem; }
   .breadcrumb { font-size: 0.75rem; gap: 4px; }
   .checkout-section { padding: var(--space-sm); }
@@ -620,7 +619,6 @@
   .checkout-step-num { width: 24px; height: 24px; font-size: 0.7rem; }
   .payment-method-name { font-size: 0.82rem; }
   .payment-method-desc { font-size: 0.72rem; }
-  .cart-item { padding: var(--space-md); gap: var(--space-md); }
   .orders-table th, .orders-table td { padding: var(--space-sm); font-size: 0.78rem; }
   .account-sidebar { padding: var(--space-md); }
   .account-nav-link { padding: 8px var(--space-sm); font-size: 0.82rem; }
@@ -631,6 +629,5 @@
 
 @media (max-width: 375px) {
   .auth-card { padding: var(--space-lg); }
-  .footer-main { grid-template-columns: 1fr; gap: var(--space-xl); }
   .cart-summary { padding: var(--space-lg); }
 }

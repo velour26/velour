@@ -110,4 +110,12 @@
 @media (max-width: 480px) {
   .footer-main { grid-template-columns: 1fr; }
   .footer-newsletter-form { flex-direction: column; }
+  .footer-bottom-links { gap: var(--space-md); flex-wrap: wrap; justify-content: center; }
+}
+
+@media (max-width: 425px) {
+  .footer-main { padding: var(--space-xl) 0; }
+  .footer-col-title { margin-bottom: var(--space-md); }
+  .footer-newsletter-form .footer-newsletter-btn { width: 100%; }
+  .footer-bottom { font-size: 0.72rem; }
 }

@@ -329,3 +329,8 @@
   .catalog-sort label { display: none; }
   .catalog-sort select { max-width: none; width: auto; }
 }
+@media (max-width: 425px) {
+  .products-grid { gap: var(--space-sm); }
+  .catalog-toolbar { flex-wrap: wrap; }
+  .filters-mobile-btn { padding: 8px 14px; font-size: 0.82rem; }
+}

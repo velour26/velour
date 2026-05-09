@@ -201,12 +201,12 @@ p:last-child { margin-bottom: 0; }
 .overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.5);
-  z-index: 489;   /* ниже header(500) и mobile-nav(490) */
+  z-index: 489;
   opacity: 0;
   pointer-events: none;
   transition: var(--transition);
 }
-.overlay.active { opacity: 1; pointer-events: all; }
+.overlay.active { opacity: 1; pointer-events: all; z-index: 1001; }
 
 /* Breadcrumb */
 .breadcrumb {
@@ -286,6 +286,9 @@ p:last-child { margin-bottom: 0; }
   .section { padding: var(--space-3xl) 0; }
   .section-sm { padding: var(--space-2xl) 0; }
   .hide-mobile { display: none !important; }
+}
+@media (max-width: 425px) {
+  .container { padding: 0 var(--space-md); }
 }
 @media (max-width: 390px) {
   .container { padding: 0 var(--space-sm); }
