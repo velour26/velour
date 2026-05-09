@@ -33,18 +33,15 @@ class Command(BaseCommand):
         parser.add_argument('--flush', action='store_true', help='Clear existing data first')
         parser.add_argument('--images', action='store_true',
                             help='Also restore image files from seed_data/images/')
-        parser.add_argument('--once', action='store_true',
-                            help='Run import only once (skips if marker file exists)')
 
     def handle(self, *args, **options):
         base_dir = Path(__file__).resolve().parent.parent.parent.parent
 
-        if options['once']:
-            marker = base_dir / 'seed_data' / '.imported'
-            if marker.exists():
-                self.stdout.write(self.style.WARNING('  ⏭  Import already done (marker exists), skipping.'))
-                return
-            marker.touch()
+        import_trigger = os.environ.get('RUN_IMPORT', '').lower()
+        if import_trigger not in ('true', '1'):
+            self.stdout.write(self.style.WARNING('  ⏭  RUN_IMPORT is not set, skipping import.'))
+            self.stdout.write('  Set RUN_IMPORT=true to trigger import (auto-skips next deploy).')
+            return
 
         json_file = base_dir / 'seed_data' / 'current_db.json'
         if not json_file.exists():
