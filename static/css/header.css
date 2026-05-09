@@ -130,12 +130,13 @@
   top: var(--header-h);
   left: 0; right: 0; bottom: 0;
   background: var(--color-white);
-  z-index: 490;
+  z-index: 1100;
   overflow-y: auto;
   padding: var(--space-lg) var(--space-md);
   transform: translateX(-100%);
   transition: transform var(--transition-slow);
 }
+.mobile-nav.open { pointer-events: auto; }
 .mobile-nav.open { transform: none; }
 .mobile-nav-link {
   display: block;

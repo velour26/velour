@@ -313,7 +313,7 @@
   .catalog-layout { grid-template-columns: 1fr; }
   .filters-sidebar {
     position: fixed; top: 0; left: 0; bottom: 0; width: 300px;
-    z-index: 1000; max-height: none;
+    z-index: 1100; max-height: none;
     border-radius: 0;
     transform: translateX(-100%);
     transition: transform var(--transition-slow);
