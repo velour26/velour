@@ -18,6 +18,8 @@ services:
         value: ".onrender.com"
       - key: DATABASE_URL
         sync: false
+      - key: RUN_IMPORT
+        value: "false"
       - key: DJANGO_LOAD_FIXTURE
         sync: false
       - key: IMPORT_PRODUCT_IMAGES
