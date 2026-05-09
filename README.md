@@ -276,6 +276,14 @@ python manage.py import_db --flush --images
 - `Admin123!` — администраторы и менеджеры
 - `User123!` — покупатели
 
+На Render: Build Command запускает импорт через переменную окружения:
+
+```bash
+python manage.py migrate && RUN_IMPORT=true python manage.py import_db --flush --images && python manage.py collectstatic --noinput
+```
+
+`RUN_IMPORT=true` запускает импорт. На всех последующих деплоях импорт НЕ сработает — команда проверяет значение переменной.
+
 ### Порядок загрузки
 
 Импорт загружает модели в порядке зависимостей: SiteSettings → FilterGroups → Categories → Products → Images → Variants → Users → Addresses → Orders → Carts → Pages → Subscribers → Favorites. FK/M2M связи пересчитываются по old pk → new pk.
