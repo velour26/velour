@@ -118,8 +118,11 @@
   min-width: 0;
 }
 
-/* Prevent grid children from overflowing */
-.catalog-layout > * { min-width: 0; }
+@media (max-width: 1440px) {
+  .products-grid { grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+}
+
+@media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
 
 /* Catalog Layout */
 .catalog-layout {

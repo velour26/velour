@@ -45,6 +45,45 @@
 }
 .hero-dot.active { background: var(--color-accent); width: 24px; border-radius: 4px; }
 
+/* Home features grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xl);
+  text-align: center;
+}
+
+@media (max-width: 1440px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-text { padding-left: var(--space-2xl); }
+}
+@media (max-width: 1024px) {
+  .hero { padding: 60px 0; }
+  .hero-image { flex: 1 1 400px; }
+  .hero-text { flex: 1 1 300px; padding-left: var(--space-xl); }
+  .hero-title { font-size: 2.5rem; }
+}
+@media (max-width: 768px) {
+  .hero { padding: 40px 0; }
+  .hero-image { flex: 1 1 100%; order: -1; }
+  .hero-text { flex: 1 1 100%; text-align: center; padding-left: 0; }
+  .hero-text > .container, .hero > .container { flex-direction: column; align-items: center; }
+  .hero-title { font-size: 2rem; }
+  .hero-subtitle { max-width: 100%; }
+  .hero-actions { justify-content: center; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+}
+@media (max-width: 480px) {
+  .features-grid { grid-template-columns: 1fr; gap: var(--space-md); }
+  .hero-title { font-size: 1.75rem; }
+  .hero-actions { flex-direction: column; gap: var(--space-sm); }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+}
+@media (max-width: 390px) {
+  .hero-title { font-size: 1.5rem; }
+  .hero-subtitle { font-size: 0.9rem; }
+}
+
 /* Categories Grid */
 .categories-grid {
   display: grid;
@@ -253,7 +292,10 @@
   gap: 0;
   border-bottom: 2px solid var(--color-border);
   margin-bottom: var(--space-xl);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.tabs-nav::-webkit-scrollbar { display: none; }
 .tab-btn {
   padding: 12px 24px;
   font-size: 0.9rem;
@@ -262,13 +304,15 @@
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
   transition: var(--transition);
+  white-space: nowrap;
 }
 .tab-btn:hover { color: var(--color-text); }
 .tab-btn.active { color: var(--color-primary); border-bottom-color: var(--color-accent); }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-/* Cart */
+/* Product detail responsive */
+@media (max-width: 768px) {
 .cart-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
@@ -516,6 +560,8 @@
   .cart-item-price { grid-column: 2; }
   .hero { height: 60vh; }
   .hero-content { padding: 0 var(--space-xl); }
+  .account-profile-form .form-row { grid-template-columns: 1fr; }
+  .account-profile-form .form-row > * { grid-column: 1; }
 }
 @media (max-width: 480px) {
   .categories-grid { grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
@@ -529,12 +575,36 @@
   .checkout-form .form-group select { font-size: 16px; }
   .product-detail-layout { grid-template-columns: 1fr; gap: var(--space-xl); }
   .product-gallery { max-width: 100%; }
+  .checkout-layout .checkout-section input,
+  .checkout-layout .checkout-section select { font-size: 16px; }
+  .checkout-section-title { font-size: 1rem; }
 }
 
 @media (max-width: 425px) {
   .checkout-section { padding: var(--space-md); }
   .payment-method { padding: var(--space-sm) var(--space-md); }
   .checkout-layout { gap: var(--space-lg); }
+  .checkout-form .form-row { gap: var(--space-sm); }
+  .account-profile-form .form-group { margin-bottom: var(--space-md); }
+}
+
+@media (max-width: 390px) {
+  .container { padding: 0 var(--space-md); }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  .breadcrumb { font-size: 0.75rem; gap: 4px; }
+  .checkout-section { padding: var(--space-sm); }
+  .checkout-section-title { font-size: 0.9rem; gap: var(--space-sm); }
+  .checkout-step-num { width: 24px; height: 24px; font-size: 0.7rem; }
+  .payment-method-name { font-size: 0.82rem; }
+  .payment-method-desc { font-size: 0.72rem; }
+  .cart-item { padding: var(--space-md); gap: var(--space-md); }
+  .orders-table th, .orders-table td { padding: var(--space-sm); font-size: 0.78rem; }
+  .account-sidebar { padding: var(--space-md); }
+  .account-nav-link { padding: 8px var(--space-sm); font-size: 0.82rem; }
+  .product-name { font-size: 1.3rem; }
+  .product-price-current { font-size: 1.6rem; }
+  .product-add-section { gap: var(--space-sm); }
 }
 
 @media (max-width: 375px) {

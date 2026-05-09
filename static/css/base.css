@@ -275,6 +275,9 @@ p:last-child { margin-bottom: 0; }
 .modal-close:hover { background: var(--color-border); }
 
 /* Responsive helpers */
+@media (max-width: 1440px) {
+  .container { padding: 0 var(--space-xl); }
+}
 @media (max-width: 1024px) {
   .container { padding: 0 var(--space-lg); }
 }

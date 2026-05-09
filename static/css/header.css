@@ -158,6 +158,11 @@
 }
 .announcement-bar a { color: var(--color-accent); }
 
+@media (max-width: 1440px) {
+  .header-nav .nav-link:nth-child(n+6) { display: none; }
+  .header-search { max-width: 280px; }
+}
+
 @media (max-width: 1024px) {
   .header-search { max-width: 240px; }
   .header-nav .nav-link:nth-child(n+5) { display: none; }
