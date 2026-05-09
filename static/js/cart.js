@@ -29,6 +29,9 @@ function renderCart(data) {
   }
 
   container.innerHTML = data.items.map(item => {
+    const productUrl = item.product?.category_slug && item.product?.slug
+      ? `/catalog/${item.product.category_slug}/${item.product.slug}/`
+      : '/catalog/';
     const img = item.product?.main_image
       ? `<img src="${item.product.main_image}" alt="${item.product?.name}">`
       : '<div style="width:100%;height:100%;background:var(--color-bg-alt)"></div>';
@@ -41,7 +44,7 @@ function renderCart(data) {
       <div class="cart-item" data-item-id="${item.id}" data-stock="${stock ?? ''}">
         <div class="cart-item-img">${img}</div>
         <div>
-          <a href="/catalog/${item.product?.slug}/" class="cart-item-name">${item.product?.name}</a>
+          <a href="${productUrl}" class="cart-item-name">${item.product?.name}</a>
           ${variant}
           <div class="qty-control" style="margin-top:12px;display:inline-flex">
             <button class="qty-btn qty-minus" onclick="updateItem(${item.id}, ${item.quantity - 1})">−</button>

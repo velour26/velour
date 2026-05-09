@@ -1,6 +1,6 @@
 import json
 from django.views.generic import TemplateView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from .models import Category, Product, FilterGroup, Favorite
 
 
@@ -17,6 +17,24 @@ class CatalogView(TemplateView):
 
 class CategoryView(TemplateView):
     template_name = 'catalog/catalog.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        category_slug = kwargs.get('category_slug')
+        if (
+            category_slug
+            and not Category.objects.filter(slug=category_slug, is_active=True).exists()
+        ):
+            product = Product.objects.filter(
+                slug=category_slug, is_active=True
+            ).select_related('category').first()
+            if product:
+                return redirect(
+                    'product-detail',
+                    category_slug=product.category.slug,
+                    product_slug=product.slug,
+                    permanent=True,
+                )
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, category_slug=None, **kwargs):
         ctx = super().get_context_data(**kwargs)
