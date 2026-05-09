@@ -80,18 +80,23 @@ function initMobileMenu() {
 }
 
 function updateFavBadge() {
-  const badge = document.getElementById('fav-count-badge');
-  if (!badge) return;
   const key = 'velour_favorites';
   const favs = JSON.parse(localStorage.getItem(key) || '[]');
   const count = favs.length;
-  if (count > 0) {
-    badge.textContent = count;
-    badge.style.display = 'flex';
-  } else {
-    badge.style.display = 'none';
-  }
+  document.querySelectorAll('#fav-count-badge').forEach(badge => {
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('#fav-count').forEach(el => {
+    el.textContent = count > 0 ? `${count} товар${count === 1 ? '' : count < 5 ? 'а' : 'ов'}` : '';
+  });
 }
+
+window.updateFavBadge = updateFavBadge;
 
 // Hero slider
 function initHeroSlider() {

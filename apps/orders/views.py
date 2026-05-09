@@ -50,6 +50,42 @@ class OrderDetailView(LoginRequiredMixin, TemplateView):
         return ctx
 
 
+class PaymentView(TemplateView):
+    template_name = 'orders/payment.html'
+
+    def get_context_data(self, order_number=None, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        qs = Order.objects.filter(number=order_number)
+        if self.request.user.is_authenticated:
+            qs = qs.filter(user=self.request.user)
+        else:
+            qs = qs.filter(user__isnull=True)
+        ctx['order'] = get_object_or_404(qs)
+        return ctx
+
+
+class OrderSuccessView(TemplateView):
+    template_name = 'orders/success.html'
+
+    def get_context_data(self, order_number=None, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['order_number'] = order_number
+        return ctx
+
+
+class MyOrdersView(LoginRequiredMixin, TemplateView):
+    template_name = 'orders/my_orders.html'
+
+
+class OrderDetailView(LoginRequiredMixin, TemplateView):
+    template_name = 'orders/order_detail.html'
+
+    def get_context_data(self, number=None, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['order_number'] = number
+        return ctx
+
+
 class SBPSuccessView(TemplateView):
     template_name = 'orders/sbp_success.html'
 
