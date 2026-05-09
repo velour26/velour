@@ -19,9 +19,9 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: RUN_IMPORT
-        sync: "true"
+        value: "true"
       - key: DJANGO_LOAD_FIXTURE
         sync: false
       - key: IMPORT_PRODUCT_IMAGES
-        sync: "false"
+        value: "false"
 
