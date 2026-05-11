@@ -309,6 +309,20 @@ function initCatalogFilters() {
         b.classList.toggle('btn-dark', isActive);
         b.classList.toggle('btn-secondary', !isActive);
       });
+      // Update URL
+      const url = new URL(window.location);
+      if (cat) {
+        url.pathname = '/catalog/' + cat + '/';
+      } else {
+        url.pathname = '/catalog/';
+      }
+      history.pushState({}, '', url);
+      // Update page title and H1
+      const h1 = document.querySelector('h1');
+      if (h1) {
+        const catName = cat ? btn.dataset.categoryName : 'Все товары';
+        h1.textContent = catName;
+      }
       refreshFiltersAndLoad();
     });
   });
@@ -354,6 +368,15 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.toggle('btn-dark', isActive);
     btn.classList.toggle('btn-secondary', !isActive);
   });
+
+  // Update H1 from URL on page load
+  const h1 = document.querySelector('h1');
+  if (h1 && state.category) {
+    const catBtn = document.querySelector(`[data-category="${state.category}"]`);
+    if (catBtn && catBtn.dataset.categoryName) {
+      h1.textContent = catBtn.dataset.categoryName;
+    }
+  }
 
   // Pre-fill sort from URL
   const sortEl = document.getElementById('catalog-sort');
