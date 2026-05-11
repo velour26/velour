@@ -1991,7 +1991,7 @@
   "pk": 42,
   "fields": {
     "group": 5,
-    "value": "Casual",
+    "value": "Повседневный",
     "slug": "casual",
     "color_code": "",
     "sort_order": 0
@@ -18419,7 +18419,7 @@
   "pk": 673,
   "fields": {
     "product": 85,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 14,
     "stock": 27,
     "sku": "VL-01422-One Size-ТЕМН"
@@ -18430,7 +18430,7 @@
   "pk": 674,
   "fields": {
     "product": 85,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 12,
     "stock": 0,
     "sku": "VL-01422-One Size-СИНИ"
@@ -18441,7 +18441,7 @@
   "pk": 675,
   "fields": {
     "product": 86,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 6,
     "stock": 18,
     "sku": "VL-01423-One Size-КРЕМ"
@@ -18452,7 +18452,7 @@
   "pk": 676,
   "fields": {
     "product": 86,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 11,
     "stock": 19,
     "sku": "VL-01423-One Size-ПЕРС"
@@ -18463,7 +18463,7 @@
   "pk": 677,
   "fields": {
     "product": 87,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 3,
     "stock": 4,
     "sku": "VL-01427-One Size-СЕРЫ"
@@ -18474,7 +18474,7 @@
   "pk": 678,
   "fields": {
     "product": 87,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 18,
     "stock": 8,
     "sku": "VL-01427-One Size-ЖЁЛТ"
@@ -18485,7 +18485,7 @@
   "pk": 679,
   "fields": {
     "product": 88,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 14,
     "stock": 9,
     "sku": "VL-01435-One Size-ТЕМН"
@@ -18496,7 +18496,7 @@
   "pk": 680,
   "fields": {
     "product": 88,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 10,
     "stock": 21,
     "sku": "VL-01435-One Size-РОЗО"
@@ -18507,7 +18507,7 @@
   "pk": 681,
   "fields": {
     "product": 89,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 16,
     "stock": 25,
     "sku": "VL-01442-One Size-ХАКИ"
@@ -18518,7 +18518,7 @@
   "pk": 682,
   "fields": {
     "product": 89,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 2,
     "stock": 21,
     "sku": "VL-01442-One Size-БЕЛЫ"
@@ -18529,7 +18529,7 @@
   "pk": 683,
   "fields": {
     "product": 90,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 16,
     "stock": 14,
     "sku": "VL-01451-One Size-ХАКИ"
@@ -18540,7 +18540,7 @@
   "pk": 684,
   "fields": {
     "product": 90,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 6,
     "stock": 4,
     "sku": "VL-01451-One Size-КРЕМ"
@@ -18551,7 +18551,7 @@
   "pk": 685,
   "fields": {
     "product": 91,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 12,
     "stock": 13,
     "sku": "VL-01455-One Size-СИНИ"
@@ -18562,7 +18562,7 @@
   "pk": 686,
   "fields": {
     "product": 91,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 6,
     "stock": 7,
     "sku": "VL-01455-One Size-КРЕМ"
@@ -18573,7 +18573,7 @@
   "pk": 687,
   "fields": {
     "product": 92,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 13,
     "stock": 21,
     "sku": "VL-01463-One Size-ГОЛУ"
@@ -18584,7 +18584,7 @@
   "pk": 688,
   "fields": {
     "product": 92,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 5,
     "stock": 14,
     "sku": "VL-01463-One Size-МОЛО"
@@ -18595,7 +18595,7 @@
   "pk": 689,
   "fields": {
     "product": 93,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 8,
     "stock": 10,
     "sku": "VL-01468-One Size-КРАС"
@@ -18606,7 +18606,7 @@
   "pk": 690,
   "fields": {
     "product": 93,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 15,
     "stock": 30,
     "sku": "VL-01468-One Size-ЗЕЛЁ"
@@ -18617,7 +18617,7 @@
   "pk": 691,
   "fields": {
     "product": 94,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 17,
     "stock": 23,
     "sku": "VL-01472-One Size-ОЛИВ"
@@ -18628,7 +18628,7 @@
   "pk": 692,
   "fields": {
     "product": 94,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 8,
     "stock": 9,
     "sku": "VL-01472-One Size-КРАС"
@@ -18639,7 +18639,7 @@
   "pk": 693,
   "fields": {
     "product": 95,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 2,
     "stock": 3,
     "sku": "VL-01477-One Size-БЕЛЫ"
@@ -18650,7 +18650,7 @@
   "pk": 694,
   "fields": {
     "product": 95,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 20,
     "stock": 9,
     "sku": "VL-01477-One Size-ЛАВА"
@@ -18661,7 +18661,7 @@
   "pk": 695,
   "fields": {
     "product": 96,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 6,
     "stock": 26,
     "sku": "VL-01481-One Size-КРЕМ"
@@ -18672,7 +18672,7 @@
   "pk": 696,
   "fields": {
     "product": 96,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 2,
     "stock": 29,
     "sku": "VL-01481-One Size-БЕЛЫ"
@@ -18683,7 +18683,7 @@
   "pk": 697,
   "fields": {
     "product": 97,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 6,
     "stock": 21,
     "sku": "VL-01484-One Size-КРЕМ"
@@ -18694,7 +18694,7 @@
   "pk": 698,
   "fields": {
     "product": 97,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 7,
     "stock": 3,
     "sku": "VL-01484-One Size-КОРИ"
@@ -18705,7 +18705,7 @@
   "pk": 699,
   "fields": {
     "product": 98,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 11,
     "stock": 8,
     "sku": "VL-01485-One Size-ПЕРС"
@@ -18716,7 +18716,7 @@
   "pk": 700,
   "fields": {
     "product": 98,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 6,
     "stock": 23,
     "sku": "VL-01485-One Size-КРЕМ"
@@ -18727,7 +18727,7 @@
   "pk": 701,
   "fields": {
     "product": 99,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 12,
     "stock": 10,
     "sku": "VL-01490-One Size-СИНИ"
@@ -18738,7 +18738,7 @@
   "pk": 702,
   "fields": {
     "product": 99,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 6,
     "stock": 12,
     "sku": "VL-01490-One Size-КРЕМ"
@@ -18749,7 +18749,7 @@
   "pk": 703,
   "fields": {
     "product": 100,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 20,
     "stock": 29,
     "sku": "VL-01492-One Size-ЛАВА"
@@ -18760,7 +18760,7 @@
   "pk": 704,
   "fields": {
     "product": 100,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 8,
     "stock": 19,
     "sku": "VL-01492-One Size-КРАС"
@@ -18771,7 +18771,7 @@
   "pk": 705,
   "fields": {
     "product": 101,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 11,
     "stock": 12,
     "sku": "VL-01499-One Size-ПЕРС"
@@ -18782,7 +18782,7 @@
   "pk": 706,
   "fields": {
     "product": 101,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 15,
     "stock": 29,
     "sku": "VL-01499-One Size-ЗЕЛЁ"
@@ -18793,7 +18793,7 @@
   "pk": 707,
   "fields": {
     "product": 102,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 13,
     "stock": 7,
     "sku": "VL-01501-One Size-ГОЛУ"
@@ -18804,7 +18804,7 @@
   "pk": 708,
   "fields": {
     "product": 102,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 20,
     "stock": 18,
     "sku": "VL-01501-One Size-ЛАВА"
@@ -18815,7 +18815,7 @@
   "pk": 709,
   "fields": {
     "product": 103,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 13,
     "stock": 9,
     "sku": "VL-01509-One Size-ГОЛУ"
@@ -18826,7 +18826,7 @@
   "pk": 710,
   "fields": {
     "product": 103,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 17,
     "stock": 26,
     "sku": "VL-01509-One Size-ОЛИВ"
@@ -18837,7 +18837,7 @@
   "pk": 711,
   "fields": {
     "product": 104,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 13,
     "stock": 13,
     "sku": "VL-01512-One Size-ГОЛУ"
@@ -18848,7 +18848,7 @@
   "pk": 712,
   "fields": {
     "product": 104,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 4,
     "stock": 16,
     "sku": "VL-01512-One Size-БЕЖЕ"
@@ -18859,7 +18859,7 @@
   "pk": 713,
   "fields": {
     "product": 105,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 10,
     "stock": 7,
     "sku": "VL-01520-One Size-РОЗО"
@@ -18870,7 +18870,7 @@
   "pk": 714,
   "fields": {
     "product": 105,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 4,
     "stock": 30,
     "sku": "VL-01520-One Size-БЕЖЕ"
@@ -18881,7 +18881,7 @@
   "pk": 715,
   "fields": {
     "product": 106,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 17,
     "stock": 8,
     "sku": "VL-01528-One Size-ОЛИВ"
@@ -18892,7 +18892,7 @@
   "pk": 716,
   "fields": {
     "product": 106,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 8,
     "stock": 24,
     "sku": "VL-01528-One Size-КРАС"
@@ -18903,7 +18903,7 @@
   "pk": 717,
   "fields": {
     "product": 107,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 13,
     "stock": 1,
     "sku": "VL-01529-One Size-ГОЛУ"
@@ -18914,7 +18914,7 @@
   "pk": 718,
   "fields": {
     "product": 107,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 12,
     "stock": 2,
     "sku": "VL-01529-One Size-СИНИ"
@@ -18925,7 +18925,7 @@
   "pk": 719,
   "fields": {
     "product": 108,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 1,
     "stock": 18,
     "sku": "VL-01537-One Size-ЧЁРН"
@@ -18936,7 +18936,7 @@
   "pk": 720,
   "fields": {
     "product": 108,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 4,
     "stock": 21,
     "sku": "VL-01537-One Size-БЕЖЕ"
@@ -18947,7 +18947,7 @@
   "pk": 721,
   "fields": {
     "product": 109,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 4,
     "stock": 0,
     "sku": "VL-01545-One Size-БЕЖЕ"
@@ -18958,7 +18958,7 @@
   "pk": 722,
   "fields": {
     "product": 109,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 7,
     "stock": 11,
     "sku": "VL-01545-One Size-КОРИ"
@@ -18969,7 +18969,7 @@
   "pk": 723,
   "fields": {
     "product": 110,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 3,
     "stock": 8,
     "sku": "VL-01546-One Size-СЕРЫ"
@@ -18980,7 +18980,7 @@
   "pk": 724,
   "fields": {
     "product": 110,
-    "size": "One Size",
+    "size": "Единый размер",
     "color": 13,
     "stock": 10,
     "sku": "VL-01546-One Size-ГОЛУ"

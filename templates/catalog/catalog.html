@@ -19,6 +19,14 @@
 
   <h1 style="margin-bottom:var(--space-xl)">{% if current_category %}{{ current_category.name }}{% else %}Все товары{% endif %}</h1>
 
+  <!-- Categories -->
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--space-xl)">
+    <button class="btn btn-sm btn-dark{% if not current_category %} active{% endif %}" data-category="">Все</button>
+    {% for cat in categories %}
+    <button class="btn btn-sm btn-secondary{% if current_category.slug == cat.slug %} active{% endif %}" data-category="{{ cat.slug }}">{{ cat.name }}</button>
+    {% endfor %}
+  </div>
+
   <!-- Subcategories -->
   {% if current_category and current_category.subcategories.exists %}
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--space-xl)">

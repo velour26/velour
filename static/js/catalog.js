@@ -80,7 +80,7 @@ const state = {
   filters: {},
   priceMin: _urlParams.get('price_min') || '',
   priceMax: _urlParams.get('price_max') || '',
-  category: window.CATALOG_CATEGORY || '',
+  category: _urlParams.get('category') || window.CATALOG_CATEGORY || '',
   subcategory: '',
   subsubcategory: '',
   search: _urlParams.get('search') || '',
@@ -296,6 +296,23 @@ function initCatalogFilters() {
     });
   });
 
+  // Category links
+  document.querySelectorAll('[data-category]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const cat = btn.dataset.category;
+      state.category = cat;
+      document.querySelectorAll('[data-category]').forEach(b => {
+        const isAllEmpty = b.dataset.category === '';
+        const isActive = cat === '' ? isAllEmpty : b.dataset.category === cat;
+        b.classList.toggle('active', isActive);
+        b.classList.toggle('btn-dark', isActive);
+        b.classList.toggle('btn-secondary', !isActive);
+      });
+      refreshFiltersAndLoad();
+    });
+  });
+
   // Clear all
   document.querySelector('.filters-clear')?.addEventListener('click', () => {
     state.filters = {}; state.priceMin = ''; state.priceMax = '';
@@ -327,6 +344,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const isEmpty = btn.dataset.subcategory === '';
     const isActive = !state.subcategory ? isEmpty : btn.dataset.subcategory === state.subcategory;
     btn.classList.toggle('active', isActive);
+  });
+
+  // Restore category active state from URL
+  document.querySelectorAll('[data-category]').forEach(btn => {
+    const isEmpty = btn.dataset.category === '';
+    const isActive = !state.category ? isEmpty : btn.dataset.category === state.category;
+    btn.classList.toggle('active', isActive);
+    btn.classList.toggle('btn-dark', isActive);
+    btn.classList.toggle('btn-secondary', !isActive);
   });
 
   // Pre-fill sort from URL
