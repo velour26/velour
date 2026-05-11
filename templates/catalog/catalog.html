@@ -19,12 +19,12 @@
 
   <h1 style="margin-bottom:var(--space-xl)">{% if current_category %}{{ current_category.name }}{% else %}Все товары{% endif %}</h1>
 
-  <!-- Categories (hide when already in a category) -->
+  <!-- Categories (show only on main catalog page, not in category page) -->
   {% if not current_category %}
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--space-xl)">
     <button class="btn btn-sm btn-dark active" data-category="" data-category-name="Все товары">Все</button>
     {% for cat in categories %}
-    <button class="btn btn-sm btn-secondary{% if current_category.slug == cat.slug %} active{% endif %}" data-category="{{ cat.slug }}" data-category-name="{{ cat.name }}">{{ cat.name }}</button>
+    <button class="btn btn-sm btn-secondary" data-category="{{ cat.slug }}" data-category-name="{{ cat.name }}">{{ cat.name }}</button>
     {% endfor %}
   </div>
   {% endif %}
