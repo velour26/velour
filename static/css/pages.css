@@ -151,9 +151,9 @@
 .gallery-thumb.active { border-color: var(--color-accent); }
 .gallery-thumb:hover { border-color: var(--color-border); }
 
-.product-info { display: flex; flex-direction: column; gap: var(--space-lg); }
+.product-info { display: flex; flex-direction: column; gap: var(--space-lg); min-width: 0; }
 .product-brand { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); }
-.product-name { font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 500; color: var(--color-primary); }
+.product-name { font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 500; color: var(--color-primary); overflow-wrap: anywhere; }
 .product-rating { display: flex; align-items: center; gap: var(--space-sm); }
 .stars { color: var(--color-accent); font-size: 0.9rem; }
 .rating-count { font-size: 0.82rem; color: var(--color-text-muted); }
