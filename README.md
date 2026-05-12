@@ -41,7 +41,7 @@ python -m venv .venv
 # source .venv/bin/activate  # Linux/macOS
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py seed_db
+python manage.py loaddata seed_data/current_db.json
 python manage.py runserver
 ```
 
@@ -240,56 +240,6 @@ velour/
 
 ---
 
-## Экспорт и импорт базы данных
-
-Для локальной разработки данные можно выгрузить в JSON и загрузить на production (PostgreSQL на Render).
-
-### Экспорт
-
-```bash
-# Только JSON (пути к файлам сохраняются как строки)
-python manage.py export_db
-
-# JSON + копирование реальных изображений в seed_data/images/
-python manage.py export_db --images
-```
-
-Результат: `seed_data/current_db.json` (+ `seed_data/images/` при `--images`).
-
-### Импорт
-
-```bash
-# Только данные (изображения остаются как пути в JSON)
-python manage.py import_db
-
-# Данные + копирование файлов из seed_data/images/ в MEDIA_ROOT
-python manage.py import_db --images
-```
-
-Опция `--flush` удаляет все существующие данные перед загрузкой:
-
-```bash
-python manage.py import_db --flush --images
-```
-
-Пароли пользователей при импорте НЕ сохраняются. Все пользователи получают:
-- `Admin123!` — администраторы и менеджеры
-- `User123!` — покупатели
-
-На Render: Build Command запускает импорт через переменную окружения:
-
-```bash
-python manage.py migrate && RUN_IMPORT=true python manage.py import_db --flush --images && python manage.py collectstatic --noinput
-```
-
-`RUN_IMPORT=true` запускает импорт. На всех последующих деплоях импорт НЕ сработает — команда проверяет значение переменной.
-
-### Порядок загрузки
-
-Импорт загружает модели в порядке зависимостей: SiteSettings → FilterGroups → Categories → Products → Images → Variants → Users → Addresses → Orders → Carts → Pages → Subscribers → Favorites. FK/M2M связи пересчитываются по old pk → new pk.
-
----
-
 ## Полезные команды
 
 ```bash
@@ -299,16 +249,9 @@ python manage.py check
 python manage.py migrate
 python manage.py makemigrations
 python manage.py createsuperuser
-python manage.py seed_db
-python manage.py seed_db --flush
+python manage.py loaddata seed_data/current_db.json
 python manage.py collectstatic
 python manage.py shell
-
-# Data export / import
-python manage.py export_db
-python manage.py export_db --images
-python manage.py import_db
-python manage.py import_db --flush --images
 
 # Production
 gunicorn config.wsgi:application --workers 2 --bind 0.0.0.0:8000 --timeout 120
@@ -338,9 +281,6 @@ Render блокирует исходящие соединения на порт�
 
 ### Избранное не сохраняется между устройствами
 Для гостей избранное хранится в localStorage браузера и session cache сервера. При смене браузера/устройства избранное не сохраняется. Авторизованные пользователи видят избранное везде.
-
-### `import_db` выдаёт ошибку с изображениями
-При импорте в PostgreSQL изображения сохраняются как строки-пути. Если нужны реальные файлы, сначала экспортируйте с `--images`, скопируйте `seed_data/images/` в репозиторий, и импортируйте с `--images`.
 
 ---
 

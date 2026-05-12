@@ -126,8 +126,7 @@
 - фильтры и опции фильтров;
 - бренды;
 - товары, изображения и варианты;
-- избранное и отзывы;
-- management commands для seed/import.
+- избранное и отзывы.
 
 Модели:
 
@@ -143,9 +142,7 @@
 - `models.py` - основная модель каталога;
 - `views.py` - server-rendered каталог, категория, товар, избранное;
 - `urls.py` - `/catalog/`, `/catalog/favorites/`, category/product routes;
-- `admin.py` - inline-изображения и варианты, фильтры, превью, остатки;
-- `management/commands/seed_db.py` - demo seed;
-- `management/commands/import_images.py` - импорт demo-изображений.
+- `admin.py` - inline-изображения и варианты, фильтры, превью, остатки.
 
 Особенности:
 
@@ -401,8 +398,7 @@ seed_data/current_db.json
 ...
 ```
 
-`import_images.py` сопоставляет артикулы товаров с папками `seed_data/images/<article>/` и переносит изображения в Django media.
-`current_db.json` не нужен для обычной разработки; он используется только для разового `loaddata` при переносе SQLite -> PostgreSQL.
+`current_db.json` — fixture для наполнения БД; загружается через `python manage.py loaddata seed_data/current_db.json`.
 
 ### 6.3 Принципы организации
 
@@ -413,11 +409,10 @@ seed_data/current_db.json
 
 ## 7. Seed, роли и служебные команды
 
-Основные management commands:
+Данные для наполнения БД:
 
-- `seed_db.py` - наполнение БД demo-данными;
-- `import_images.py` - импорт изображений товаров из `seed_data/images/`.
-- `dumpdata`/`loaddata` - штатные Django-команды для fixture-переноса данных между SQLite и PostgreSQL.
+- `seed_data/current_db.json` — fixture с demo-данными, загружается через `python manage.py loaddata seed_data/current_db.json`.
+- `dumpdata`/`loaddata` — штатные Django-команды для fixture-переноса данных между SQLite и PostgreSQL.
 
 Скрипты:
 
@@ -464,7 +459,7 @@ Seed создаёт:
 - `EMAIL_*` - SMTP-настройки;
 - `CORS_ALLOWED_ORIGINS` - внешние frontend origins, если нужны.
 
-`build.sh` выполняет установку зависимостей, `collectstatic`, миграции, загрузку локальных шрифтов, затем опциональный `loaddata` из `DJANGO_LOAD_FIXTURE`, опциональный `import_images --flat-dir media/products --replace` при `IMPORT_PRODUCT_IMAGES=true` и demo seed, если товары отсутствуют и `SEED_DEMO_DATA` не выключен.
+`build.sh` выполняет установку зависимостей, `collectstatic`, миграции, затем опциональный `loaddata` из `seed_data/current_db.json` при `RUN_IMPORT=true`.
 
 ## 9. PostgreSQL и перенос данных
 
@@ -539,8 +534,7 @@ python manage.py migrate
 Проверка demo-данных:
 
 ```bash
-python manage.py seed_db --flush
-python manage.py import_images --replace
+python manage.py loaddata seed_data/current_db.json
 python manage.py runserver
 ```
 

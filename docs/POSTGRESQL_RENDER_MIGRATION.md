@@ -89,7 +89,6 @@ SEED_DEMO_DATA=false
 ```bash
 python manage.py migrate --noinput
 python manage.py loaddata seed_data/current_db.json
-python manage.py import_images --flat-dir media/products --replace
 ```
 
 ## 6. После успешного импорта
