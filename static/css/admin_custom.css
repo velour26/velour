@@ -34,6 +34,66 @@
 .small-box { border-radius: 8px; }
 .small-box-footer { background: rgba(0,0,0,0.15); border-radius: 0 0 8px 8px; }
 
+/* ── Module cards ── */
+#content-main .module {
+  border-radius: 10px;
+  border: 1px solid #e8e4dd;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+#content-main .module caption,
+#content-main .module h2 {
+  background: #1a1a2e !important;
+  color: #fff !important;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 10px 14px !important;
+}
+#content-main .module table { width: 100%; border-collapse: collapse; }
+#content-main .module td { padding: 9px 14px; border-bottom: 1px solid #f0ece6; font-size: .88rem; vertical-align: middle; }
+#content-main .module tr:last-child td { border-bottom: none; }
+#content-main .module tr:hover td { background: #faf8f5; }
+
+/* Keep action buttons together, never wrap/clip */
+#content-main .module td:last-child {
+  white-space: nowrap;
+  width: 1%;
+}
+
+/* ── Recent actions panel ── */
+#recent-actions-module .actionlist li { padding: 6px 0; border-bottom: 1px solid #f0ece6; }
+#recent-actions-module .actionlist li:last-child { border-bottom: none; }
+#recent-actions-module .actionlist .action-message { font-size: .82rem; color: #555; word-break: break-word; white-space: normal; }
+#recent-actions-module .actionlist .mini { font-size: .72rem; color: #999; margin-bottom: 2px; display: block; white-space: normal; }
+
+/* ── Breadcrumb ── */
+.content-header .breadcrumb {
+  background: transparent;
+  font-size: .82rem;
+  color: #999;
+  padding: 0;
+  margin: 0;
+}
+.content-header .breadcrumb a { color: var(--jazzmin-accent); }
+
+/* ── Добавить / Изменить links in module ── */
+#content-main .module .addlink,
+#content-main .module .changelink {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+#content-main .module .addlink    { background: var(--jazzmin-accent); color: #fff; }
+#content-main .module .changelink { background: #1a1a2e; color: #fff; }
+
 /* Mobile 320px fixes */
 @media (max-width: 360px) {
   html, body { overflow-x: hidden; max-width: 100%; }
