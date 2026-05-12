@@ -617,10 +617,11 @@
   .categories-grid { grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
   .auth-card { padding: var(--space-xl); }
   .product-add-section { flex-direction: column; }
-  .product-add-section .btn { width: 100%; justify-content: center; }
-  .qty-control { display: inline-flex; }
-  .qty-btn { width: 36px; height: 40px; font-size: 1rem; }
-  .qty-value { width: 40px; height: 40px; font-size: 0.85rem; }
+  .product-add-section .btn:not(.fav-btn-detail) { width: 100%; justify-content: center; }
+  .fav-btn-detail { align-self: center; width: 52px; height: 52px; }
+  .qty-control { display: flex; width: 100%; }
+  .qty-btn { flex: 1; height: 52px; font-size: 1.1rem; width: auto; }
+  .qty-value { flex: 1; height: 52px; font-size: 0.95rem; width: auto; }
   .checkout-form .form-group input,
   .checkout-form .form-group select { font-size: 16px; }
   .product-detail-layout { grid-template-columns: 1fr; gap: var(--space-xl); }

@@ -176,6 +176,7 @@
   .menu-toggle { display: flex; }
   .mobile-nav { display: block; }
   .site-header .container { padding: 0 var(--space-md); }
+  .header-admin-link { display: none; }
 }
 
 @media (max-width: 480px) {
