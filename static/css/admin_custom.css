@@ -33,3 +33,31 @@
 
 .small-box { border-radius: 8px; }
 .small-box-footer { background: rgba(0,0,0,0.15); border-radius: 0 0 8px 8px; }
+
+/* Mobile 320px fixes */
+@media (max-width: 360px) {
+  html, body { overflow-x: hidden; max-width: 100%; }
+
+  /* Navbar — prevent overflow */
+  .main-header.navbar { flex-wrap: nowrap; padding: 0 6px; }
+  .main-header .navbar-nav { flex-wrap: nowrap; }
+  .main-header .form-inline { display: none !important; }
+
+  /* Content wrapper — no left shift when sidebar is hidden */
+  .content-wrapper,
+  .main-footer { margin-left: 0 !important; }
+
+  /* Breadcrumb — stack below title */
+  .content-header { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .content-header .breadcrumb { float: none !important; position: static !important; margin: 0 !important; font-size: 0.78rem; }
+
+  /* Module tables — prevent overflow */
+  #content-main .module { overflow-x: hidden; }
+  #content-main .module table { width: 100%; table-layout: fixed; }
+  #content-main .module caption { font-size: 1rem; }
+  #content-main td, #content-main th { word-break: break-word; font-size: 0.82rem; }
+
+  /* Action buttons row */
+  .object-tools { float: none; margin: 8px 0; }
+  .object-tools li { margin: 0 0 4px; }
+}
