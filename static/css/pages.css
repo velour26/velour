@@ -126,8 +126,9 @@
   align-items: start;
 }
 
-.product-gallery { position: sticky; top: calc(var(--header-h) + 16px); }
+.product-gallery { position: sticky; top: calc(var(--header-h) + 16px); width: 100%; min-width: 0; overflow: hidden; }
 .gallery-main {
+  width: 100%;
   aspect-ratio: 3/4;
   border-radius: var(--radius-lg);
   overflow: hidden;
