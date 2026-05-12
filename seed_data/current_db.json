@@ -884,7 +884,7 @@
     "pk": 1,
     "fields": {
       "name": "Мужчинам",
-      "slug": "мужчинам",
+      "slug": "женщинам",
       "description": "",
       "image": "categories/male.jpg",
       "sort_order": 1,
@@ -896,7 +896,7 @@
     "pk": 2,
     "fields": {
       "name": "Женщинам",
-      "slug": "женщинам",
+      "slug": "мужчинам",
       "description": "",
       "image": "categories/female.jpg",
       "sort_order": 0,
