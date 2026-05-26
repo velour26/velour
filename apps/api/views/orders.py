@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.conf import settings as django_settings
 from apps.orders.models import Order, OrderItem, StatusHistory
 from apps.cart.models import Cart, CartItem
-from apps.accounts.models import User
+from apps.accounts.models import User, Store
 from apps.api.serializers.orders import (
     CreateOrderSerializer, OrderListSerializer, OrderDetailSerializer
 )
@@ -78,6 +78,14 @@ class CreateOrderView(APIView):
                 'delivery_postal_code': data['delivery_postal_code'],
             }
 
+        # Магазин (для заказов от сотрудников)
+        store = None
+        store_id = data.get('store_id')
+        if store_id and user and user.is_employee:
+            store = user.assigned_stores.filter(pk=store_id, is_active=True).first()
+            if not store:
+                return Response({'detail': 'Магазин не найден или недоступен'}, status=status.HTTP_400_BAD_REQUEST)
+
         order = Order.objects.create(
             user=user,
             session_key=request.session.session_key or '',
@@ -89,6 +97,7 @@ class CreateOrderView(APIView):
             subtotal=subtotal,
             delivery_cost=delivery_cost,
             total=total,
+            store=store,
             **address_data,
         )
 

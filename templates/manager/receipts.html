@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Приёмки — {{ warehouse.name }} — {{ site_settings.site_name|default:"VELOUR" }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
+
+  <div style="font-size:.85rem;color:var(--color-text-muted);margin-bottom:var(--space-lg)">
+    <a href="/orders/manager/" style="color:var(--color-accent);text-decoration:none">Панель менеджера</a> ›
+    <a href="/manager/warehouse/" style="color:var(--color-accent);text-decoration:none">Склад</a> ›
+    {{ warehouse.name }} › Приёмки
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:var(--space-md)">
+    <div>
+      <h1 style="margin-bottom:4px">Приёмки товара</h1>
+      <p style="color:var(--color-text-muted);font-size:.9rem;margin:0">Склад: {{ warehouse.name }}</p>
+    </div>
+    <div style="display:flex;gap:var(--space-md)">
+      <a href="/manager/warehouse/{{ warehouse.pk }}/revisions/" class="btn btn-secondary">Ревизии</a>
+      <a href="/admin/warehouse/stockreceipt/add/" class="btn btn-primary">Новая приёмка</a>
+    </div>
+  </div>
+
+  {% if receipts %}
+  <div style="display:flex;flex-direction:column;gap:var(--space-lg)">
+    {% for receipt in receipts %}
+    <div style="background:var(--color-bg-secondary);border-radius:var(--radius-lg);border:1px solid var(--color-border);overflow:hidden">
+      <!-- Header -->
+      <div style="padding:var(--space-lg) var(--space-xl);border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-sm)">
+        <div style="display:flex;align-items:center;gap:var(--space-lg)">
+          <div>
+            <div style="font-weight:700;font-size:1rem">{{ receipt.number }}</div>
+            {% if receipt.supplier %}<div style="font-size:.83rem;color:var(--color-text-muted)">{{ receipt.supplier }}</div>{% endif %}
+          </div>
+          {% if receipt.status == 'completed' %}
+            <span style="background:#27ae6020;color:#27ae60;font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:20px">{{ receipt.get_status_display }}</span>
+          {% elif receipt.status == 'draft' %}
+            <span style="background:#f39c1220;color:#f39c12;font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:20px">{{ receipt.get_status_display }}</span>
+          {% else %}
+            <span style="background:#e74c3c20;color:#e74c3c;font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:20px">{{ receipt.get_status_display }}</span>
+          {% endif %}
+        </div>
+        <div style="font-size:.83rem;color:var(--color-text-muted)">
+          {{ receipt.created_at|date:"d.m.Y H:i" }}
+          {% if receipt.created_by %} · {{ receipt.created_by.get_full_name }}{% endif %}
+        </div>
+      </div>
+
+      <!-- Items -->
+      {% if receipt.items.all %}
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="border-bottom:1px solid var(--color-border-light)">
+              <th style="padding:10px 20px;text-align:left;font-size:.78rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase">Товар</th>
+              <th style="padding:10px 20px;text-align:left;font-size:.78rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase">Вариант</th>
+              <th style="padding:10px 20px;text-align:right;font-size:.78rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase">Кол-во</th>
+              <th style="padding:10px 20px;text-align:right;font-size:.78rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase">Цена</th>
+              <th style="padding:10px 20px;text-align:right;font-size:.78rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase">Сумма</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in receipt.items.all %}
+            <tr style="border-bottom:1px solid var(--color-border-light)">
+              <td style="padding:12px 20px;font-size:.9rem;font-weight:500">{{ item.product.name }}</td>
+              <td style="padding:12px 20px;font-size:.85rem;color:var(--color-text-muted)">
+                {% if item.variant %}{{ item.variant }}{% else %}—{% endif %}
+              </td>
+              <td style="padding:12px 20px;text-align:right;font-size:.9rem">{{ item.quantity }}</td>
+              <td style="padding:12px 20px;text-align:right;font-size:.9rem">{{ item.unit_price|floatformat:0 }} ₽</td>
+              <td style="padding:12px 20px;text-align:right;font-size:.9rem;font-weight:600">{{ item.subtotal|floatformat:0 }} ₽</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div style="padding:var(--space-xl);text-align:center;color:var(--color-text-muted);font-size:.88rem">Позиции не добавлены</div>
+      {% endif %}
+
+      {% if receipt.note %}
+      <div style="padding:var(--space-md) var(--space-xl);border-top:1px solid var(--color-border-light);font-size:.83rem;color:var(--color-text-muted)">
+        Примечание: {{ receipt.note }}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:var(--space-4xl);color:var(--color-text-muted)">
+    <div style="font-size:2.5rem;margin-bottom:var(--space-md)">📥</div>
+    <div style="font-size:1rem;font-weight:500">Приёмок пока нет</div>
+    <div style="margin-top:var(--space-md)">
+      <a href="/admin/warehouse/stockreceipt/add/" class="btn btn-primary">Создать первую приёмку</a>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

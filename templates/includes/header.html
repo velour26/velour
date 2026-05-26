@@ -62,8 +62,17 @@
         </a>
         {% endif %}
 
+        {% if user.is_authenticated and user.is_employee %}
+        <a href="/orders/checkout/" class="header-action-btn" title="Заказ для магазина" style="font-size:.7rem;font-weight:700;letter-spacing:.04em;color:#8e44ad;width:auto;padding:0 10px;white-space:nowrap">
+          МОЙ МАГАЗИН
+        </a>
+        {% endif %}
+        {% if user.is_authenticated and user.is_manager %}
+        <a href="/orders/manager/" class="header-action-btn" title="Панель менеджера" style="font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--color-accent);width:auto;padding:0 10px;white-space:nowrap">
+          МЕНЕДЖЕР
+        </a>
+        {% endif %}
         {% if user.is_staff %}
-        <!-- Admin panel link -->
         <a href="/admin/" class="header-action-btn header-admin-link" title="Админ панель" style="font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--color-text-muted);width:auto;padding:0 10px">
           ADMIN
         </a>
@@ -94,6 +103,12 @@
     </div>
     {% if user.is_authenticated %}
     <a href="/account/profile/" class="btn btn-secondary btn-block">Личный кабинет</a>
+    {% if user.is_employee %}
+    <a href="/orders/checkout/" class="btn btn-secondary btn-block" style="margin-top:8px;color:#8e44ad;border-color:#8e44ad">Заказ для магазина</a>
+    {% endif %}
+    {% if user.is_manager %}
+    <a href="/orders/manager/" class="btn btn-secondary btn-block" style="margin-top:8px">Панель менеджера</a>
+    {% endif %}
     {% else %}
     <a href="/account/login/" class="btn btn-primary btn-block">Войти</a>
     {% endif %}

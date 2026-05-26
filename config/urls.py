@@ -16,6 +16,7 @@ urlpatterns = [
     path('orders/', include('apps.orders.urls')),
     path('account/', include('apps.accounts.urls')),
     path('newsletter/', include('apps.newsletter.urls')),
+    path('manager/warehouse/', include('apps.warehouse.urls')),
 ]
 
 # Медиафайлы отдаём всегда — они лежат в репозитории и деплоятся вместе с кодом

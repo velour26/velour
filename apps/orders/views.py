@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
+from apps.accounts.views import ManagerRequiredMixin
 from .models import Order
 
 
@@ -9,8 +10,23 @@ class CheckoutView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            ctx['addresses'] = self.request.user.addresses.all()
+        user = self.request.user
+        if user.is_authenticated:
+            ctx['addresses'] = user.addresses.all()
+            if user.is_employee:
+                ctx['employee_stores'] = user.assigned_stores.filter(is_active=True)
+        return ctx
+
+
+class ManagerDashboardView(ManagerRequiredMixin, TemplateView):
+    template_name = 'manager/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        qs = Order.objects.filter(store__isnull=False).select_related('store', 'user').prefetch_related('items')
+        ctx['store_orders'] = qs.order_by('-created_at')[:50]
+        ctx['store_orders_count'] = qs.count()
+        ctx['pending_count'] = qs.filter(status='pending').count()
         return ctx
 
 

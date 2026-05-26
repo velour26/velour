@@ -85,6 +85,7 @@ function initOrderSubmit() {
     btn.innerHTML = '<span class="spinner"></span> Оформляем...';
 
     const fd = new FormData(form);
+    const storeId = fd.get('store_id');
     const payload = {
       payment_method: fd.get('payment_method') || document.querySelector('.payment-method.selected input')?.value || 'cash',
       delivery_city: fd.get('delivery_city'),
@@ -97,6 +98,7 @@ function initOrderSubmit() {
       guest_phone: fd.get('guest_phone') || '',
       create_account: document.getElementById('create-account-toggle')?.checked || false,
       account_password: fd.get('account_password') || '',
+      ...(storeId ? { store_id: parseInt(storeId) } : {}),
     };
 
     try {

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Склад — {{ site_settings.site_name|default:"VELOUR" }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:var(--space-md)">
+    <div>
+      <div style="font-size:.85rem;color:var(--color-text-muted);margin-bottom:4px">
+        <a href="/orders/manager/" style="color:var(--color-accent);text-decoration:none">Панель менеджера</a> › Склад
+      </div>
+      <h1 style="margin:0">Управление складом</h1>
+    </div>
+    <a href="/admin/warehouse/" class="btn btn-secondary">Полное управление в админке</a>
+  </div>
+
+  <!-- Warehouses -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-lg);margin-bottom:var(--space-3xl)">
+    {% for w in warehouses %}
+    <div style="background:var(--color-bg-secondary);border-radius:var(--radius-lg);border:1px solid var(--color-border);padding:var(--space-xl)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--space-md)">
+        <div>
+          <div style="font-size:1.05rem;font-weight:700">{{ w.name }}</div>
+          {% if w.address %}<div style="font-size:.83rem;color:var(--color-text-muted);margin-top:2px">{{ w.address }}</div>{% endif %}
+        </div>
+        <span style="background:#27ae6020;color:#27ae60;font-size:.75rem;font-weight:600;padding:3px 8px;border-radius:20px">Активен</span>
+      </div>
+      {% if w.manager %}
+      <div style="font-size:.83rem;color:var(--color-text-muted);margin-bottom:var(--space-lg)">Менеджер: {{ w.manager.get_full_name }}</div>
+      {% endif %}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm)">
+        <a href="/manager/warehouse/{{ w.pk }}/receipts/" class="btn btn-secondary" style="font-size:.83rem;text-align:center">
+          Приёмки
+        </a>
+        <a href="/manager/warehouse/{{ w.pk }}/revisions/" class="btn btn-secondary" style="font-size:.83rem;text-align:center">
+          Ревизии
+        </a>
+      </div>
+    </div>
+    {% empty %}
+    <div style="grid-column:1/-1;text-align:center;padding:var(--space-4xl);color:var(--color-text-muted)">
+      <div style="font-size:2rem;margin-bottom:var(--space-md)">🏭</div>
+      <div>Склады не настроены. <a href="/admin/warehouse/warehouse/add/" style="color:var(--color-accent)">Добавить склад</a></div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Recent activity -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-xl)">
+
+    <!-- Recent Receipts -->
+    <div style="background:var(--color-bg-secondary);border-radius:var(--radius-lg);border:1px solid var(--color-border);overflow:hidden">
+      <div style="padding:var(--space-lg) var(--space-xl);border-bottom:1px solid var(--color-border)">
+        <h3 style="margin:0;font-size:1rem">Последние приёмки</h3>
+      </div>
+      {% if recent_receipts %}
+      <div>
+        {% for r in recent_receipts %}
+        <div style="padding:12px var(--space-xl);border-bottom:1px solid var(--color-border-light);display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:.88rem;font-weight:600">{{ r.number }}</div>
+            <div style="font-size:.78rem;color:var(--color-text-muted)">{{ r.warehouse.name }} · {{ r.created_at|date:"d.m.Y" }}</div>
+          </div>
+          {% if r.status == 'completed' %}
+            <span style="background:#27ae6020;color:#27ae60;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:20px">{{ r.get_status_display }}</span>
+          {% elif r.status == 'draft' %}
+            <span style="background:#f39c1220;color:#f39c12;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:20px">{{ r.get_status_display }}</span>
+          {% else %}
+            <span style="background:#e74c3c20;color:#e74c3c;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:20px">{{ r.get_status_display }}</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div style="padding:var(--space-2xl);text-align:center;color:var(--color-text-muted);font-size:.88rem">Приёмок пока нет</div>
+      {% endif %}
+    </div>
+
+    <!-- Recent Revisions -->
+    <div style="background:var(--color-bg-secondary);border-radius:var(--radius-lg);border:1px solid var(--color-border);overflow:hidden">
+      <div style="padding:var(--space-lg) var(--space-xl);border-bottom:1px solid var(--color-border)">
+        <h3 style="margin:0;font-size:1rem">Последние ревизии</h3>
+      </div>
+      {% if recent_revisions %}
+      <div>
+        {% for r in recent_revisions %}
+        <div style="padding:12px var(--space-xl);border-bottom:1px solid var(--color-border-light);display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:.88rem;font-weight:600">{{ r.number }}</div>
+            <div style="font-size:.78rem;color:var(--color-text-muted)">{{ r.warehouse.name }} · {{ r.created_at|date:"d.m.Y" }}</div>
+          </div>
+          {% if r.status == 'completed' %}
+            <span style="background:#27ae6020;color:#27ae60;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:20px">{{ r.get_status_display }}</span>
+          {% elif r.status == 'in_progress' %}
+            <span style="background:#3498db20;color:#3498db;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:20px">{{ r.get_status_display }}</span>
+          {% else %}
+            <span style="background:#e74c3c20;color:#e74c3c;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:20px">{{ r.get_status_display }}</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div style="padding:var(--space-2xl);text-align:center;color:var(--color-text-muted);font-size:.88rem">Ревизий пока нет</div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -21,6 +21,28 @@
       <!-- Left: form -->
       <div>
 
+        <!-- Store order block for employees -->
+        {% if user.is_authenticated and user.is_employee and employee_stores %}
+        <div class="checkout-section" style="border:2px solid #8e44ad30;background:#8e44ad08">
+          <div class="checkout-section-title" style="color:#8e44ad">
+            <div class="checkout-step-num" style="background:#8e44ad">🏪</div>
+            Заказ для магазина
+          </div>
+          <p style="font-size:.88rem;color:var(--color-text-muted);margin-bottom:var(--space-md)">
+            Вы оформляете заказ как сотрудник магазина. Выберите магазин, для которого делается заказ.
+          </p>
+          <div class="form-group">
+            <label class="form-label">Магазин *</label>
+            <select name="store_id" id="store-select" class="form-control" required>
+              <option value="">— выберите магазин —</option>
+              {% for store in employee_stores %}
+              <option value="{{ store.pk }}">{{ store.name }} ({{ store.address }})</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% endif %}
+
         <!-- Contact info -->
         <div class="checkout-section">
           <div class="checkout-section-title">

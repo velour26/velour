@@ -4,6 +4,20 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 
+class EmployeeRequiredMixin(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_employee:
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class ManagerRequiredMixin(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_manager:
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+
+
 class LoginPageView(TemplateView):
     template_name = 'account/login.html'
 

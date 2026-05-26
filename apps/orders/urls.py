@@ -8,4 +8,5 @@ urlpatterns = [
     path('sbp-success/<str:order_number>/', views.SBPSuccessView.as_view(), name='sbp-success'),
     path('my/', views.MyOrdersView.as_view(), name='my-orders'),
     path('my/<str:number>/', views.OrderDetailView.as_view(), name='order-detail'),
+    path('manager/', views.ManagerDashboardView.as_view(), name='manager-dashboard'),
 ]

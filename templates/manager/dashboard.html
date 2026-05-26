@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Панель менеджера — {{ site_settings.site_name|default:"VELOUR" }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:var(--space-xl);padding-bottom:var(--space-4xl)">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:var(--space-md)">
+    <div>
+      <h1 style="margin-bottom:4px">Панель менеджера</h1>
+      <p style="color:var(--color-text-muted);font-size:.9rem;margin:0">Заказы от магазинов и управление складом</p>
+    </div>
+    <div style="display:flex;gap:var(--space-md)">
+      <a href="/manager/warehouse/" class="btn btn-secondary">Склад</a>
+      <a href="/admin/" class="btn btn-primary">Админка</a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-lg);margin-bottom:var(--space-2xl)">
+    <div style="background:var(--color-bg-secondary);border-radius:var(--radius-lg);padding:var(--space-xl);border:1px solid var(--color-border)">
+      <div style="font-size:2rem;font-weight:700;color:var(--color-accent)">{{ store_orders_count }}</div>
+      <div style="color:var(--color-text-muted);font-size:.85rem;margin-top:4px">Заказов от магазинов</div>
+    </div>
+    <div style="background:var(--color-bg-secondary);border-radius:var(--radius-lg);padding:var(--space-xl);border:1px solid var(--color-border)">
+      <div style="font-size:2rem;font-weight:700;color:#f39c12">{{ pending_count }}</div>
+      <div style="color:var(--color-text-muted);font-size:.85rem;margin-top:4px">Ожидают обработки</div>
+    </div>
+  </div>
+
+  <!-- Store orders table -->
+  <div style="background:var(--color-bg-secondary);border-radius:var(--radius-lg);border:1px solid var(--color-border);overflow:hidden">
+    <div style="padding:var(--space-lg) var(--space-xl);border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between">
+      <h2 style="margin:0;font-size:1.1rem">Заказы от магазинов</h2>
+    </div>
+
+    {% if store_orders %}
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="border-bottom:1px solid var(--color-border)">
+            <th style="padding:12px 20px;text-align:left;font-size:.8rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em">Номер</th>
+            <th style="padding:12px 20px;text-align:left;font-size:.8rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em">Магазин</th>
+            <th style="padding:12px 20px;text-align:left;font-size:.8rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em">Сотрудник</th>
+            <th style="padding:12px 20px;text-align:left;font-size:.8rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em">Товаров</th>
+            <th style="padding:12px 20px;text-align:left;font-size:.8rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em">Сумма</th>
+            <th style="padding:12px 20px;text-align:left;font-size:.8rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em">Статус</th>
+            <th style="padding:12px 20px;text-align:left;font-size:.8rem;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em">Дата</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in store_orders %}
+          <tr style="border-bottom:1px solid var(--color-border-light);transition:background .15s" onmouseover="this.style.background='var(--color-accent-light)'" onmouseout="this.style.background=''">
+            <td style="padding:14px 20px;font-weight:600;font-size:.9rem">
+              <a href="/admin/orders/order/{{ order.pk }}/change/" style="color:var(--color-accent);text-decoration:none">{{ order.number }}</a>
+            </td>
+            <td style="padding:14px 20px">
+              <span style="background:#8e44ad20;color:#8e44ad;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:600">{{ order.store.name }}</span>
+            </td>
+            <td style="padding:14px 20px;font-size:.9rem;color:var(--color-text-muted)">
+              {% if order.user %}{{ order.user.get_full_name|default:order.user.email }}{% else %}—{% endif %}
+            </td>
+            <td style="padding:14px 20px;font-size:.9rem">{{ order.items.count }}</td>
+            <td style="padding:14px 20px;font-weight:600;font-size:.9rem">{{ order.total|floatformat:0 }} ₽</td>
+            <td style="padding:14px 20px">
+              {% if order.status == 'pending' %}
+                <span style="background:#f39c1220;color:#f39c12;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:600">{{ order.get_status_display }}</span>
+              {% elif order.status == 'confirmed' %}
+                <span style="background:#3498db20;color:#3498db;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:600">{{ order.get_status_display }}</span>
+              {% elif order.status == 'delivered' %}
+                <span style="background:#27ae6020;color:#27ae60;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:600">{{ order.get_status_display }}</span>
+              {% elif order.status == 'cancelled' %}
+                <span style="background:#e74c3c20;color:#e74c3c;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:600">{{ order.get_status_display }}</span>
+              {% else %}
+                <span style="background:var(--color-border);color:var(--color-text-muted);padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:600">{{ order.get_status_display }}</span>
+              {% endif %}
+            </td>
+            <td style="padding:14px 20px;font-size:.85rem;color:var(--color-text-muted)">{{ order.created_at|date:"d.m.Y H:i" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div style="padding:var(--space-4xl);text-align:center;color:var(--color-text-muted)">
+      <div style="font-size:2.5rem;margin-bottom:var(--space-md)">📦</div>
+      <div style="font-size:1rem;font-weight:500">Заказов от магазинов пока нет</div>
+      <div style="font-size:.85rem;margin-top:6px">Как только сотрудник магазина оформит заказ — он появится здесь</div>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

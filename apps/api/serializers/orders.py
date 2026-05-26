@@ -63,3 +63,5 @@ class CreateOrderSerializer(serializers.Serializer):
     create_account = serializers.BooleanField(required=False, default=False)
     account_password = serializers.CharField(required=False, allow_blank=True, write_only=True)
     use_address_id = serializers.IntegerField(required=False, allow_null=True)
+    # Заказ от сотрудника магазина
+    store_id = serializers.IntegerField(required=False, allow_null=True)
