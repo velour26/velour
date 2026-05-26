@@ -26522,5 +26522,699 @@
       "expected_quantity": 30,
       "actual_quantity": 32
     }
+  },
+  {
+    "model": "orders.order",
+    "pk": 58,
+    "fields": {
+      "number": "ORD-ST010Y6D",
+      "user": [
+        "employee1@velour.ru"
+      ],
+      "session_key": "",
+      "store": 1,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "pending",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "ул. Тверская, д. 15",
+      "delivery_apartment": "маг. 1",
+      "delivery_postal_code": "125009",
+      "comment": "Заказ для магазина #1 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "67410.00",
+      "delivery_cost": "0.00",
+      "total": "67410.00",
+      "created_at": "2026-04-01T00:00:00.000Z",
+      "updated_at": "2026-04-01T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 59,
+    "fields": {
+      "number": "ORD-ST02XTHV",
+      "user": [
+        "employee2@velour.ru"
+      ],
+      "session_key": "",
+      "store": 2,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "pending",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "ул. Арбат, д. 36",
+      "delivery_apartment": "",
+      "delivery_postal_code": "119002",
+      "comment": "Заказ для магазина #2 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "117900.00",
+      "delivery_cost": "0.00",
+      "total": "117900.00",
+      "created_at": "2026-04-04T02:00:00.000Z",
+      "updated_at": "2026-04-04T02:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 60,
+    "fields": {
+      "number": "ORD-ST038MDD",
+      "user": [
+        "employee3@velour.ru"
+      ],
+      "session_key": "",
+      "store": 1,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "pending",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "Кутузовский пр., д. 22",
+      "delivery_apartment": "склад 3",
+      "delivery_postal_code": "121151",
+      "comment": "Заказ для магазина #1 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "44940.00",
+      "delivery_cost": "0.00",
+      "total": "44940.00",
+      "created_at": "2026-04-07T04:00:00.000Z",
+      "updated_at": "2026-04-07T04:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 61,
+    "fields": {
+      "number": "ORD-ST043W5U",
+      "user": [
+        "employee1@velour.ru"
+      ],
+      "session_key": "",
+      "store": 2,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "confirmed",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "ул. Мясницкая, д. 10",
+      "delivery_apartment": "",
+      "delivery_postal_code": "101000",
+      "comment": "Заказ для магазина #2 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "70880.00",
+      "delivery_cost": "0.00",
+      "total": "70880.00",
+      "created_at": "2026-04-10T06:00:00.000Z",
+      "updated_at": "2026-04-10T06:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 62,
+    "fields": {
+      "number": "ORD-ST05NQ4F",
+      "user": [
+        "employee2@velour.ru"
+      ],
+      "session_key": "",
+      "store": 1,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "confirmed",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "Ленинградский пр., д. 80",
+      "delivery_apartment": "офис 5",
+      "delivery_postal_code": "125315",
+      "comment": "Заказ для магазина #1 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "57900.00",
+      "delivery_cost": "0.00",
+      "total": "57900.00",
+      "created_at": "2026-04-13T08:00:00.000Z",
+      "updated_at": "2026-04-13T08:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 63,
+    "fields": {
+      "number": "ORD-ST06IQJ7",
+      "user": [
+        "employee3@velour.ru"
+      ],
+      "session_key": "",
+      "store": 2,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "assembling",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "ул. Большая Дмитровка, д. 7",
+      "delivery_apartment": "",
+      "delivery_postal_code": "125009",
+      "comment": "Заказ для магазина #2 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "69870.00",
+      "delivery_cost": "0.00",
+      "total": "69870.00",
+      "created_at": "2026-04-16T10:00:00.000Z",
+      "updated_at": "2026-04-16T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 64,
+    "fields": {
+      "number": "ORD-ST07JH75",
+      "user": [
+        "employee1@velour.ru"
+      ],
+      "session_key": "",
+      "store": 1,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "assembling",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "Садовническая ул., д. 14",
+      "delivery_apartment": "маг. 2",
+      "delivery_postal_code": "115035",
+      "comment": "Заказ для магазина #1 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "141830.00",
+      "delivery_cost": "0.00",
+      "total": "141830.00",
+      "created_at": "2026-04-19T12:00:00.000Z",
+      "updated_at": "2026-04-19T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 65,
+    "fields": {
+      "number": "ORD-ST08IUJV",
+      "user": [
+        "employee2@velour.ru"
+      ],
+      "session_key": "",
+      "store": 2,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "shipped",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "ул. Охотный ряд, д. 2",
+      "delivery_apartment": "",
+      "delivery_postal_code": "125009",
+      "comment": "Заказ для магазина #2 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "36930.00",
+      "delivery_cost": "0.00",
+      "total": "36930.00",
+      "created_at": "2026-04-22T14:00:00.000Z",
+      "updated_at": "2026-04-22T14:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 66,
+    "fields": {
+      "number": "ORD-ST09BDW2",
+      "user": [
+        "employee3@velour.ru"
+      ],
+      "session_key": "",
+      "store": 1,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "delivered",
+      "payment_method": "cash",
+      "payment_status": "paid",
+      "delivery_city": "Москва",
+      "delivery_street": "Лубянская пл., д. 5",
+      "delivery_apartment": "склад",
+      "delivery_postal_code": "101000",
+      "comment": "Заказ для магазина #1 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "57900.00",
+      "delivery_cost": "0.00",
+      "total": "57900.00",
+      "created_at": "2026-04-25T16:00:00.000Z",
+      "updated_at": "2026-04-25T16:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 67,
+    "fields": {
+      "number": "ORD-ST10YTJX",
+      "user": [
+        "employee1@velour.ru"
+      ],
+      "session_key": "",
+      "store": 2,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "pending",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "ул. Петровка, д. 38",
+      "delivery_apartment": "",
+      "delivery_postal_code": "127051",
+      "comment": "Заказ для магазина #2 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "178840.00",
+      "delivery_cost": "0.00",
+      "total": "178840.00",
+      "created_at": "2026-04-28T18:00:00.000Z",
+      "updated_at": "2026-04-28T18:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 68,
+    "fields": {
+      "number": "ORD-ST11SDW4",
+      "user": [
+        "employee2@velour.ru"
+      ],
+      "session_key": "",
+      "store": 1,
+      "guest_email": "",
+      "guest_name": "",
+      "guest_phone": "",
+      "status": "confirmed",
+      "payment_method": "cash",
+      "payment_status": "pending",
+      "delivery_city": "Москва",
+      "delivery_street": "Страстной бульвар, д. 9",
+      "delivery_apartment": "маг. 4",
+      "delivery_postal_code": "107045",
+      "comment": "Заказ для магазина #1 от сотрудника",
+      "promo_code": "",
+      "discount_amount": "0.00",
+      "subtotal": "118890.00",
+      "delivery_cost": "0.00",
+      "total": "118890.00",
+      "created_at": "2026-05-01T20:00:00.000Z",
+      "updated_at": "2026-05-01T20:00:00.000Z"
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 140,
+    "fields": {
+      "order": 58,
+      "product": 2,
+      "variant": null,
+      "product_name": "Белая блуза",
+      "product_article": "VL-00102",
+      "variant_info": "",
+      "price": "3490.00",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 141,
+    "fields": {
+      "order": 58,
+      "product": 1,
+      "variant": null,
+      "product_name": "Классический пиджак",
+      "product_article": "VL-00101",
+      "variant_info": "",
+      "price": "8990.00",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 142,
+    "fields": {
+      "order": 58,
+      "product": 5,
+      "variant": null,
+      "product_name": "Платье шёлк",
+      "product_article": "VL-00105",
+      "variant_info": "",
+      "price": "9990.00",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 143,
+    "fields": {
+      "order": 59,
+      "product": 1,
+      "variant": null,
+      "product_name": "Классический пиджак",
+      "product_article": "VL-00101",
+      "variant_info": "",
+      "price": "8990.00",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 144,
+    "fields": {
+      "order": 59,
+      "product": 9,
+      "variant": null,
+      "product_name": "Тренч",
+      "product_article": "VL-00109",
+      "variant_info": "",
+      "price": "12990.00",
+      "quantity": 7
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 145,
+    "fields": {
+      "order": 60,
+      "product": 6,
+      "variant": null,
+      "product_name": "Джинсы slim",
+      "product_article": "VL-00106",
+      "variant_info": "",
+      "price": "4990.00",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 146,
+    "fields": {
+      "order": 60,
+      "product": 5,
+      "variant": null,
+      "product_name": "Платье шёлк",
+      "product_article": "VL-00105",
+      "variant_info": "",
+      "price": "9990.00",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 147,
+    "fields": {
+      "order": 61,
+      "product": 9,
+      "variant": null,
+      "product_name": "Тренч",
+      "product_article": "VL-00109",
+      "variant_info": "",
+      "price": "12990.00",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 148,
+    "fields": {
+      "order": 61,
+      "product": 2,
+      "variant": null,
+      "product_name": "Белая блуза",
+      "product_article": "VL-00102",
+      "variant_info": "",
+      "price": "3490.00",
+      "quantity": 6
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 149,
+    "fields": {
+      "order": 61,
+      "product": 7,
+      "variant": null,
+      "product_name": "Свитер merino",
+      "product_article": "VL-00107",
+      "variant_info": "",
+      "price": "5990.00",
+      "quantity": 4
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 150,
+    "fields": {
+      "order": 62,
+      "product": 2,
+      "variant": null,
+      "product_name": "Белая блуза",
+      "product_article": "VL-00102",
+      "variant_info": "",
+      "price": "3490.00",
+      "quantity": 8
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 151,
+    "fields": {
+      "order": 62,
+      "product": 4,
+      "variant": null,
+      "product_name": "Пальто",
+      "product_article": "VL-00104",
+      "variant_info": "",
+      "price": "14990.00",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 152,
+    "fields": {
+      "order": 63,
+      "product": 2,
+      "variant": null,
+      "product_name": "Белая блуза",
+      "product_article": "VL-00102",
+      "variant_info": "",
+      "price": "3490.00",
+      "quantity": 6
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 153,
+    "fields": {
+      "order": 63,
+      "product": 3,
+      "variant": null,
+      "product_name": "Брюки из шерсти",
+      "product_article": "VL-00103",
+      "variant_info": "",
+      "price": "6990.00",
+      "quantity": 7
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 154,
+    "fields": {
+      "order": 64,
+      "product": 1,
+      "variant": null,
+      "product_name": "Классический пиджак",
+      "product_article": "VL-00101",
+      "variant_info": "",
+      "price": "8990.00",
+      "quantity": 8
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 155,
+    "fields": {
+      "order": 64,
+      "product": 4,
+      "variant": null,
+      "product_name": "Пальто",
+      "product_article": "VL-00104",
+      "variant_info": "",
+      "price": "14990.00",
+      "quantity": 4
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 156,
+    "fields": {
+      "order": 64,
+      "product": 10,
+      "variant": null,
+      "product_name": "Футболка базовая",
+      "product_article": "VL-00110",
+      "variant_info": "",
+      "price": "1990.00",
+      "quantity": 5
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 157,
+    "fields": {
+      "order": 65,
+      "product": 8,
+      "variant": null,
+      "product_name": "Юбка-миди",
+      "product_article": "VL-00108",
+      "variant_info": "",
+      "price": "3990.00",
+      "quantity": 4
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 158,
+    "fields": {
+      "order": 65,
+      "product": 3,
+      "variant": null,
+      "product_name": "Брюки из шерсти",
+      "product_article": "VL-00103",
+      "variant_info": "",
+      "price": "6990.00",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 159,
+    "fields": {
+      "order": 66,
+      "product": 9,
+      "variant": null,
+      "product_name": "Тренч",
+      "product_article": "VL-00109",
+      "variant_info": "",
+      "price": "12990.00",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 160,
+    "fields": {
+      "order": 66,
+      "product": 8,
+      "variant": null,
+      "product_name": "Юбка-миди",
+      "product_article": "VL-00108",
+      "variant_info": "",
+      "price": "3990.00",
+      "quantity": 8
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 161,
+    "fields": {
+      "order": 67,
+      "product": 9,
+      "variant": null,
+      "product_name": "Тренч",
+      "product_article": "VL-00109",
+      "variant_info": "",
+      "price": "12990.00",
+      "quantity": 7
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 162,
+    "fields": {
+      "order": 67,
+      "product": 5,
+      "variant": null,
+      "product_name": "Платье шёлк",
+      "product_article": "VL-00105",
+      "variant_info": "",
+      "price": "9990.00",
+      "quantity": 7
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 163,
+    "fields": {
+      "order": 67,
+      "product": 1,
+      "variant": null,
+      "product_name": "Классический пиджак",
+      "product_article": "VL-00101",
+      "variant_info": "",
+      "price": "8990.00",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 164,
+    "fields": {
+      "order": 68,
+      "product": 5,
+      "variant": null,
+      "product_name": "Платье шёлк",
+      "product_article": "VL-00105",
+      "variant_info": "",
+      "price": "9990.00",
+      "quantity": 8
+    }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 165,
+    "fields": {
+      "order": 68,
+      "product": 9,
+      "variant": null,
+      "product_name": "Тренч",
+      "product_article": "VL-00109",
+      "variant_info": "",
+      "price": "12990.00",
+      "quantity": 3
+    }
   }
 ]
