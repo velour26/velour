@@ -24,15 +24,15 @@ class StatusHistoryInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline, StatusHistoryInline]
-    list_display = ('number', 'customer_info', 'status_badge', 'payment_method', 'total_display', 'created_at')
-    list_filter = ('status', 'payment_method', 'payment_status', 'created_at')
-    search_fields = ('number', 'user__email', 'guest_email', 'guest_name')
+    list_display = ('number', 'customer_info', 'store_badge', 'status_badge', 'payment_method', 'total_display', 'created_at')
+    list_filter = ('status', 'payment_method', 'payment_status', 'store', 'created_at')
+    search_fields = ('number', 'user__email', 'guest_email', 'guest_name', 'store__name')
     readonly_fields = ('number', 'created_at', 'updated_at', 'subtotal', 'total')
     ordering = ('-created_at',)
 
     fieldsets = (
         ('Заказ', {'fields': ('number', 'status', 'payment_method', 'payment_status')}),
-        ('Клиент', {'fields': ('user', 'guest_name', 'guest_email', 'guest_phone')}),
+        ('Клиент / Магазин', {'fields': ('user', 'store', 'guest_name', 'guest_email', 'guest_phone')}),
         ('Доставка', {'fields': ('delivery_city', 'delivery_street', 'delivery_apartment', 'delivery_postal_code')}),
         ('Суммы', {'fields': ('subtotal', 'delivery_cost', 'discount_amount', 'total')}),
         ('Прочее', {'fields': ('comment', 'promo_code', 'created_at', 'updated_at')}),
@@ -43,6 +43,15 @@ class OrderAdmin(admin.ModelAdmin):
             return obj.user.email
         return obj.guest_email or obj.guest_name
     customer_info.short_description = 'Клиент'
+
+    def store_badge(self, obj):
+        if obj.store:
+            return format_html(
+                '<span style="background:#8e44ad;color:#fff;padding:3px 8px;border-radius:12px;font-size:12px">{}</span>',
+                obj.store.name
+            )
+        return '-'
+    store_badge.short_description = 'Магазин'
 
     STATUS_COLORS = {
         'pending': '#f39c12', 'confirmed': '#3498db', 'paid': '#27ae60',

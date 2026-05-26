@@ -5,6 +5,7 @@ from django.db import models
 class User(AbstractUser):
     class Role(models.TextChoices):
         CUSTOMER = 'customer', 'Покупатель'
+        EMPLOYEE = 'employee', 'Сотрудник магазина'
         MANAGER = 'manager', 'Менеджер'
         ADMIN = 'admin', 'Администратор'
 
@@ -33,6 +34,10 @@ class User(AbstractUser):
     def is_admin_user(self):
         return self.role == self.Role.ADMIN or self.is_superuser
 
+    @property
+    def is_employee(self):
+        return self.role == self.Role.EMPLOYEE
+
     def get_full_name(self):
         full = f'{self.first_name} {self.last_name}'.strip()
         return full or self.email
@@ -58,3 +63,27 @@ class Address(models.Model):
         if self.is_default:
             Address.objects.filter(user=self.user, is_default=True).exclude(pk=self.pk).update(is_default=False)
         super().save(*args, **kwargs)
+
+
+class Store(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Название')
+    address = models.CharField(max_length=300, verbose_name='Адрес')
+    phone = models.CharField(max_length=20, blank=True, verbose_name='Телефон')
+    manager = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='managed_stores', verbose_name='Менеджер',
+        limit_choices_to={'role': 'manager'},
+    )
+    employees = models.ManyToManyField(
+        User, blank=True, related_name='assigned_stores',
+        verbose_name='Сотрудники', limit_choices_to={'role': 'employee'},
+    )
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
+
+    def __str__(self):
+        return self.name

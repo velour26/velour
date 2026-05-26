@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Address
+from .models import User, Address, Store
 
 
 class AddressInline(admin.TabularInline):
@@ -37,3 +37,19 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ('user', 'label', 'city', 'street', 'is_default')
     list_filter = ('city',)
     search_fields = ('user__email', 'city', 'street')
+
+
+@admin.register(Store)
+class StoreAdmin(admin.ModelAdmin):
+    list_display = ('name', 'address', 'phone', 'manager', 'employee_count', 'is_active')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'address', 'manager__email')
+    filter_horizontal = ('employees',)
+    fieldsets = (
+        ('Магазин', {'fields': ('name', 'address', 'phone', 'is_active')}),
+        ('Персонал', {'fields': ('manager', 'employees')}),
+    )
+
+    def employee_count(self, obj):
+        return obj.employees.count()
+    employee_count.short_description = 'Сотрудников'

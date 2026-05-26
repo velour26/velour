@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.pages',
     'apps.newsletter',
     'apps.api',
+    'apps.warehouse',
 ]
 
 MIDDLEWARE = [

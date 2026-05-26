@@ -27,6 +27,10 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
                              null=True, blank=True, related_name='orders')
     session_key = models.CharField(max_length=40, blank=True, db_index=True)
+    store = models.ForeignKey(
+        'accounts.Store', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='orders', verbose_name='Магазин (заказ от сотрудника)',
+    )
     # Гость (если без аккаунта)
     guest_email = models.EmailField(blank=True)
     guest_name = models.CharField(max_length=100, blank=True)

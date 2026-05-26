@@ -96,13 +96,17 @@ DEFAULT_FROM_EMAIL=VELOUR <noreply@velour.ru>
 |---|---|
 | `user1@example.com` … `user20@example.com` | `User123!` |
 
-### Менеджеры (3 пользователя)
-
-Пароль для всех менеджеров: `Admin123!`
+### Сотрудники магазина (3 пользователя)
 
 | Email | Пароль |
 |---|---|
-| `manager1@velour.ru` … `manager3@velour.ru` | `Admin123!` |
+| `employee1@velour.ru` … `employee3@velour.ru` | `Employee123!` |
+
+### Менеджеры (3 пользователя)
+
+| Email | Пароль |
+|---|---|
+| `manager1@velour.ru` … `manager3@velour.ru` | `Manager123!` |
 
 ### Администраторы (2 пользователя)
 
@@ -173,13 +177,14 @@ DEFAULT_FROM_EMAIL=VELOUR <noreply@velour.ru>
 ```text
 velour/
 ├── apps/
-│   ├── accounts/       # Пользователи, авторизация, адреса
+│   ├── accounts/       # Пользователи, роли (customer/employee/manager/admin), адреса, магазины
 │   ├── api/            # REST API (catalog, cart, orders, accounts, favorites, newsletter)
 │   ├── cart/           # Модель корзины и сессии
 │   ├── catalog/        # Каталог: товары, категории, фильтры, избранное, отзывы
 │   ├── newsletter/     # Подписка на рассылку
-│   ├── orders/         # Заказы, оплата, SBP, success-страницы
-│   └── pages/          # Главная, о нас, доставка, контакты
+│   ├── orders/         # Заказы (клиентские и от магазинов), оплата, SBP
+│   ├── pages/          # Главная, о нас, доставка, контакты
+│   └── warehouse/      # Склад: приёмка (StockReceipt), ревизия (StockRevision)
 ├── config/             # Django settings, urls, middleware, wsgi, asgi
 ├── media/              # Изображения товаров, категорий, брендов
 ├── scripts/            # Утилиты (загрузка шрифтов)

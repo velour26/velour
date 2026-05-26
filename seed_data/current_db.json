@@ -25444,5 +25444,157 @@
       "action_flag": 2,
       "change_message": "[]"
     }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$Jy30nHU7U7bWluc23D3PHu$U/JwsGWl/ofV5vT6KoYiV5kc/zaG+afSIue1PXQc06w=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "employee1",
+      "first_name": "Анна",
+      "last_name": "Сергеева",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-07T16:43:10.000Z",
+      "email": "employee1@velour.ru",
+      "role": "employee",
+      "phone": "+7 (916) 601-11-22",
+      "avatar": "",
+      "email_confirmed": true,
+      "email_confirm_token": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$Jy30nHU7U7bWluc23D3PHu$U/JwsGWl/ofV5vT6KoYiV5kc/zaG+afSIue1PXQc06w=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "employee2",
+      "first_name": "Дмитрий",
+      "last_name": "Павлов",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-07T16:43:12.000Z",
+      "email": "employee2@velour.ru",
+      "role": "employee",
+      "phone": "+7 (926) 602-22-33",
+      "avatar": "",
+      "email_confirmed": true,
+      "email_confirm_token": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$Jy30nHU7U7bWluc23D3PHu$U/JwsGWl/ofV5vT6KoYiV5kc/zaG+afSIue1PXQc06w=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "employee3",
+      "first_name": "Ольга",
+      "last_name": "Иванова",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-07T16:43:14.000Z",
+      "email": "employee3@velour.ru",
+      "role": "employee",
+      "phone": "+7 (903) 603-33-44",
+      "avatar": "",
+      "email_confirmed": true,
+      "email_confirm_token": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.store",
+    "pk": 1,
+    "fields": {
+      "name": "Velour на Тверской",
+      "address": "г. Москва, ул. Тверская, д. 12",
+      "phone": "+7 (495) 100-10-01",
+      "manager": [
+        "manager1@velour.ru"
+      ],
+      "employees": [
+        [
+          "employee1@velour.ru"
+        ],
+        [
+          "employee2@velour.ru"
+        ]
+      ],
+      "is_active": true,
+      "created_at": "2026-05-07T16:43:20.000Z"
+    }
+  },
+  {
+    "model": "accounts.store",
+    "pk": 2,
+    "fields": {
+      "name": "Velour на Арбате",
+      "address": "г. Москва, ул. Арбат, д. 35",
+      "phone": "+7 (495) 200-20-02",
+      "manager": [
+        "manager2@velour.ru"
+      ],
+      "employees": [
+        [
+          "employee3@velour.ru"
+        ]
+      ],
+      "is_active": true,
+      "created_at": "2026-05-07T16:43:22.000Z"
+    }
+  },
+  {
+    "model": "warehouse.warehouse",
+    "pk": 1,
+    "fields": {
+      "name": "Центральный склад",
+      "address": "г. Москва, Складской пер., д. 5",
+      "phone": "+7 (495) 300-30-03",
+      "manager": [
+        "manager3@velour.ru"
+      ],
+      "is_active": true,
+      "created_at": "2026-05-07T16:43:24.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 1,
+    "fields": {
+      "number": "REC-DEMO0001",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ООО Велюр Поставки",
+      "note": "Первичная приёмка товара",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-05-08T10:00:00.000Z",
+      "updated_at": "2026-05-08T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 1,
+    "fields": {
+      "number": "REV-DEMO0001",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "Плановая ревизия",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-05-09T09:00:00.000Z",
+      "updated_at": "2026-05-09T11:00:00.000Z"
+    }
   }
 ]
