@@ -26,6 +26,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    # Приложения, доступные менеджеру в /admin/
+    _MANAGER_APPS = {'orders', 'warehouse'}
+
     @property
     def is_manager(self):
         return self.role in (self.Role.MANAGER, self.Role.ADMIN) or self.is_staff
@@ -41,6 +44,25 @@ class User(AbstractUser):
     def get_full_name(self):
         full = f'{self.first_name} {self.last_name}'.strip()
         return full or self.email
+
+    def has_module_perms(self, app_label):
+        if not self.is_active:
+            return False
+        if self.is_superuser:
+            return True
+        if self.is_staff and self.role == self.Role.MANAGER:
+            return app_label in self._MANAGER_APPS
+        return super().has_module_perms(app_label)
+
+    def has_perm(self, perm, obj=None):
+        if not self.is_active:
+            return False
+        if self.is_superuser:
+            return True
+        if self.is_staff and self.role == self.Role.MANAGER:
+            app = perm.split('.')[0] if '.' in perm else perm
+            return app in self._MANAGER_APPS
+        return super().has_perm(perm, obj)
 
 
 class Address(models.Model):

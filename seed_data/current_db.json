@@ -56,7 +56,7 @@
     "fields": {
       "password": "pbkdf2_sha256$870000$iE1oJjhC0HZLvpJkXdj1wn$KQYezomzcD2HBllVJGBkkdGxGfPzS0l79F2kUuYvP0Y=",
       "last_login": null,
-      "is_superuser": true,
+      "is_superuser": false,
       "username": "manager1",
       "first_name": "Екатерина",
       "last_name": "Орлова",
@@ -78,7 +78,7 @@
     "fields": {
       "password": "pbkdf2_sha256$870000$jolYzl9QFEDs6lsZETiZcD$eKPBFh96HAjxTWhMO40rXg5g78xGUbvmpb8+wt266Os=",
       "last_login": null,
-      "is_superuser": true,
+      "is_superuser": false,
       "username": "manager2",
       "first_name": "Андрей",
       "last_name": "Титов",
@@ -100,7 +100,7 @@
     "fields": {
       "password": "pbkdf2_sha256$870000$c1mGKrSZov1WFrgOQTFHxB$wqDoo0O3tVeQvWTw2aodWDNLJ/vdj0h0h6m/40mBUcg=",
       "last_login": null,
-      "is_superuser": true,
+      "is_superuser": false,
       "username": "manager3",
       "first_name": "Юлия",
       "last_name": "Макарова",
@@ -25595,6 +25595,932 @@
       ],
       "created_at": "2026-05-09T09:00:00.000Z",
       "updated_at": "2026-05-09T11:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 2,
+    "fields": {
+      "number": "REC-20260002",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ООО Велюр Поставки",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-01-10T09:00:00.000Z",
+      "updated_at": "2026-01-10T09:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 1,
+    "fields": {
+      "receipt": 2,
+      "product": 1,
+      "variant": 1,
+      "quantity": 15,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 2,
+    "fields": {
+      "receipt": 2,
+      "product": 2,
+      "variant": 2,
+      "quantity": 48,
+      "unit_price": "3490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 3,
+    "fields": {
+      "number": "REC-20260003",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ИП Смирнов А.В.",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-01-28T11:00:00.000Z",
+      "updated_at": "2026-01-28T11:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 3,
+    "fields": {
+      "receipt": 3,
+      "product": 4,
+      "variant": 4,
+      "quantity": 50,
+      "unit_price": "2490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 4,
+    "fields": {
+      "receipt": 3,
+      "product": 5,
+      "variant": 5,
+      "quantity": 31,
+      "unit_price": "4990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 4,
+    "fields": {
+      "number": "REC-20260004",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ООО ТекстильОпт",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-02-05T10:30:00.000Z",
+      "updated_at": "2026-02-05T10:30:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 5,
+    "fields": {
+      "receipt": 4,
+      "product": 7,
+      "variant": 7,
+      "quantity": 42,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 6,
+    "fields": {
+      "receipt": 4,
+      "product": 8,
+      "variant": 8,
+      "quantity": 42,
+      "unit_price": "1490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 7,
+    "fields": {
+      "receipt": 4,
+      "product": 9,
+      "variant": 9,
+      "quantity": 24,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 5,
+    "fields": {
+      "number": "REC-20260005",
+      "warehouse": 1,
+      "status": "draft",
+      "supplier": "ЗАО МодаТрейд",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-02-19T14:00:00.000Z",
+      "updated_at": "2026-02-19T14:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 8,
+    "fields": {
+      "receipt": 5,
+      "product": 10,
+      "variant": 10,
+      "quantity": 41,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 9,
+    "fields": {
+      "receipt": 5,
+      "product": 11,
+      "variant": 11,
+      "quantity": 19,
+      "unit_price": "2490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 6,
+    "fields": {
+      "number": "REC-20260006",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ООО ФэшнГрупп",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-03-03T09:00:00.000Z",
+      "updated_at": "2026-03-03T09:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 10,
+    "fields": {
+      "receipt": 6,
+      "product": 13,
+      "variant": 13,
+      "quantity": 26,
+      "unit_price": "1490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 11,
+    "fields": {
+      "receipt": 6,
+      "product": 14,
+      "variant": 14,
+      "quantity": 27,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 7,
+    "fields": {
+      "number": "REC-20260007",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ООО Велюр Поставки",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-03-17T10:00:00.000Z",
+      "updated_at": "2026-03-17T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 12,
+    "fields": {
+      "receipt": 7,
+      "product": 16,
+      "variant": 16,
+      "quantity": 28,
+      "unit_price": "1490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 13,
+    "fields": {
+      "receipt": 7,
+      "product": 17,
+      "variant": 17,
+      "quantity": 11,
+      "unit_price": "3490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 14,
+    "fields": {
+      "receipt": 7,
+      "product": 18,
+      "variant": 18,
+      "quantity": 13,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 8,
+    "fields": {
+      "number": "REC-20260008",
+      "warehouse": 1,
+      "status": "draft",
+      "supplier": "ИП Смирнов А.В.",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-04-02T11:30:00.000Z",
+      "updated_at": "2026-04-02T11:30:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 15,
+    "fields": {
+      "receipt": 8,
+      "product": 19,
+      "variant": 19,
+      "quantity": 50,
+      "unit_price": "1490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 16,
+    "fields": {
+      "receipt": 8,
+      "product": 20,
+      "variant": 20,
+      "quantity": 50,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 9,
+    "fields": {
+      "number": "REC-20260009",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ООО ТекстильОпт",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-04-15T09:00:00.000Z",
+      "updated_at": "2026-04-15T09:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 17,
+    "fields": {
+      "receipt": 9,
+      "product": 2,
+      "variant": 22,
+      "quantity": 23,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 18,
+    "fields": {
+      "receipt": 9,
+      "product": 3,
+      "variant": 23,
+      "quantity": 30,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 10,
+    "fields": {
+      "number": "REC-20260010",
+      "warehouse": 1,
+      "status": "cancelled",
+      "supplier": "ЗАО МодаТрейд",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-04-28T14:00:00.000Z",
+      "updated_at": "2026-04-28T14:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 19,
+    "fields": {
+      "receipt": 10,
+      "product": 5,
+      "variant": 25,
+      "quantity": 11,
+      "unit_price": "1990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 20,
+    "fields": {
+      "receipt": 10,
+      "product": 6,
+      "variant": 26,
+      "quantity": 42,
+      "unit_price": "990.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 21,
+    "fields": {
+      "receipt": 10,
+      "product": 7,
+      "variant": 27,
+      "quantity": 7,
+      "unit_price": "2490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceipt",
+    "pk": 11,
+    "fields": {
+      "number": "REC-20260011",
+      "warehouse": 1,
+      "status": "completed",
+      "supplier": "ООО ФэшнГрупп",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-05-06T10:00:00.000Z",
+      "updated_at": "2026-05-06T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 22,
+    "fields": {
+      "receipt": 11,
+      "product": 8,
+      "variant": 28,
+      "quantity": 25,
+      "unit_price": "2490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockreceiptitem",
+    "pk": 23,
+    "fields": {
+      "receipt": 11,
+      "product": 9,
+      "variant": 29,
+      "quantity": 26,
+      "unit_price": "2490.00"
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 2,
+    "fields": {
+      "number": "REV-20260002",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "Плановая ревизия",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-01-15T10:00:00.000Z",
+      "updated_at": "2026-01-15T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 1,
+    "fields": {
+      "revision": 2,
+      "product": 1,
+      "variant": 1,
+      "expected_quantity": 18,
+      "actual_quantity": 15
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 2,
+    "fields": {
+      "revision": 2,
+      "product": 2,
+      "variant": 2,
+      "expected_quantity": 67,
+      "actual_quantity": 69
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 3,
+    "fields": {
+      "revision": 2,
+      "product": 3,
+      "variant": 3,
+      "expected_quantity": 38,
+      "actual_quantity": 37
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 3,
+    "fields": {
+      "number": "REV-20260003",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-02-01T11:00:00.000Z",
+      "updated_at": "2026-02-01T11:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 4,
+    "fields": {
+      "revision": 3,
+      "product": 5,
+      "variant": 5,
+      "expected_quantity": 100,
+      "actual_quantity": 99
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 5,
+    "fields": {
+      "revision": 3,
+      "product": 6,
+      "variant": 6,
+      "expected_quantity": 24,
+      "actual_quantity": 24
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 6,
+    "fields": {
+      "revision": 3,
+      "product": 7,
+      "variant": 7,
+      "expected_quantity": 28,
+      "actual_quantity": 27
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 7,
+    "fields": {
+      "revision": 3,
+      "product": 8,
+      "variant": 8,
+      "expected_quantity": 54,
+      "actual_quantity": 56
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 4,
+    "fields": {
+      "number": "REV-20260004",
+      "warehouse": 1,
+      "status": "in_progress",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-02-14T09:00:00.000Z",
+      "updated_at": "2026-02-14T09:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 8,
+    "fields": {
+      "revision": 4,
+      "product": 9,
+      "variant": 9,
+      "expected_quantity": 17,
+      "actual_quantity": 17
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 9,
+    "fields": {
+      "revision": 4,
+      "product": 10,
+      "variant": 10,
+      "expected_quantity": 37,
+      "actual_quantity": 38
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 10,
+    "fields": {
+      "revision": 4,
+      "product": 11,
+      "variant": 11,
+      "expected_quantity": 99,
+      "actual_quantity": 98
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 5,
+    "fields": {
+      "number": "REV-20260005",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "Плановая ревизия",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-02-28T10:00:00.000Z",
+      "updated_at": "2026-02-28T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 11,
+    "fields": {
+      "revision": 5,
+      "product": 13,
+      "variant": 13,
+      "expected_quantity": 69,
+      "actual_quantity": 71
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 12,
+    "fields": {
+      "revision": 5,
+      "product": 14,
+      "variant": 14,
+      "expected_quantity": 64,
+      "actual_quantity": 64
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 6,
+    "fields": {
+      "number": "REV-20260006",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-03-10T11:00:00.000Z",
+      "updated_at": "2026-03-10T11:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 13,
+    "fields": {
+      "revision": 6,
+      "product": 17,
+      "variant": 17,
+      "expected_quantity": 96,
+      "actual_quantity": 96
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 14,
+    "fields": {
+      "revision": 6,
+      "product": 18,
+      "variant": 18,
+      "expected_quantity": 62,
+      "actual_quantity": 62
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 15,
+    "fields": {
+      "revision": 6,
+      "product": 19,
+      "variant": 19,
+      "expected_quantity": 95,
+      "actual_quantity": 94
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 16,
+    "fields": {
+      "revision": 6,
+      "product": 20,
+      "variant": 20,
+      "expected_quantity": 44,
+      "actual_quantity": 44
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 7,
+    "fields": {
+      "number": "REV-20260007",
+      "warehouse": 1,
+      "status": "cancelled",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-03-25T09:30:00.000Z",
+      "updated_at": "2026-03-25T09:30:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 17,
+    "fields": {
+      "revision": 7,
+      "product": 1,
+      "variant": 21,
+      "expected_quantity": 65,
+      "actual_quantity": 65
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 18,
+    "fields": {
+      "revision": 7,
+      "product": 2,
+      "variant": 22,
+      "expected_quantity": 37,
+      "actual_quantity": 34
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 19,
+    "fields": {
+      "revision": 7,
+      "product": 3,
+      "variant": 23,
+      "expected_quantity": 12,
+      "actual_quantity": 9
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 20,
+    "fields": {
+      "revision": 7,
+      "product": 4,
+      "variant": 24,
+      "expected_quantity": 35,
+      "actual_quantity": 35
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 8,
+    "fields": {
+      "number": "REV-20260008",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "Плановая ревизия",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-04-05T10:00:00.000Z",
+      "updated_at": "2026-04-05T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 21,
+    "fields": {
+      "revision": 8,
+      "product": 5,
+      "variant": 25,
+      "expected_quantity": 14,
+      "actual_quantity": 15
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 22,
+    "fields": {
+      "revision": 8,
+      "product": 6,
+      "variant": 26,
+      "expected_quantity": 34,
+      "actual_quantity": 36
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 23,
+    "fields": {
+      "revision": 8,
+      "product": 7,
+      "variant": 27,
+      "expected_quantity": 11,
+      "actual_quantity": 11
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 9,
+    "fields": {
+      "number": "REV-20260009",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-04-20T11:00:00.000Z",
+      "updated_at": "2026-04-20T11:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 24,
+    "fields": {
+      "revision": 9,
+      "product": 9,
+      "variant": 29,
+      "expected_quantity": 75,
+      "actual_quantity": 72
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 25,
+    "fields": {
+      "revision": 9,
+      "product": 10,
+      "variant": 30,
+      "expected_quantity": 84,
+      "actual_quantity": 85
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 26,
+    "fields": {
+      "revision": 9,
+      "product": 11,
+      "variant": 1,
+      "expected_quantity": 24,
+      "actual_quantity": 26
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 10,
+    "fields": {
+      "number": "REV-20260010",
+      "warehouse": 1,
+      "status": "in_progress",
+      "note": "",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-05-01T09:00:00.000Z",
+      "updated_at": "2026-05-01T09:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 27,
+    "fields": {
+      "revision": 10,
+      "product": 13,
+      "variant": 3,
+      "expected_quantity": 22,
+      "actual_quantity": 22
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 28,
+    "fields": {
+      "revision": 10,
+      "product": 14,
+      "variant": 4,
+      "expected_quantity": 66,
+      "actual_quantity": 67
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 29,
+    "fields": {
+      "revision": 10,
+      "product": 15,
+      "variant": 5,
+      "expected_quantity": 70,
+      "actual_quantity": 70
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 30,
+    "fields": {
+      "revision": 10,
+      "product": 16,
+      "variant": 6,
+      "expected_quantity": 28,
+      "actual_quantity": 28
+    }
+  },
+  {
+    "model": "warehouse.stockrevision",
+    "pk": 11,
+    "fields": {
+      "number": "REV-20260011",
+      "warehouse": 1,
+      "status": "completed",
+      "note": "Плановая ревизия",
+      "created_by": [
+        "manager3@velour.ru"
+      ],
+      "created_at": "2026-05-10T10:00:00.000Z",
+      "updated_at": "2026-05-10T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 31,
+    "fields": {
+      "revision": 11,
+      "product": 17,
+      "variant": 7,
+      "expected_quantity": 54,
+      "actual_quantity": 54
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 32,
+    "fields": {
+      "revision": 11,
+      "product": 18,
+      "variant": 8,
+      "expected_quantity": 38,
+      "actual_quantity": 40
+    }
+  },
+  {
+    "model": "warehouse.stockrevisionitem",
+    "pk": 33,
+    "fields": {
+      "revision": 11,
+      "product": 19,
+      "variant": 9,
+      "expected_quantity": 30,
+      "actual_quantity": 32
     }
   }
 ]
